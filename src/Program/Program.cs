@@ -12,11 +12,19 @@ namespace Program
             User user4 = new User("user4");
 
             //Console.WriteLine(User.users["user"]);
-           Console.WriteLine(user.Id);
-           Console.WriteLine(user2.Id);
-           Console.WriteLine(user4.Id);
+            //Console.WriteLine(user.Id);
+           // Console.WriteLine(user2.Id);
+           // Console.WriteLine(user4.Id);
 
-            
+            Stadistics stadistics = new Stadistics(user2);
+
+           // Stadistics.ShowStats(user2);
+
+            //QuickChat.SendPredefinedChat(1);
+            QuickChat.AllMessages();
+
+
+
         }
     }
 }
