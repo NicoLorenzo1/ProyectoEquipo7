@@ -13,15 +13,19 @@ namespace Program
 
             //Console.WriteLine(User.users["user"]);
             //Console.WriteLine(user.Id);
-           // Console.WriteLine(user2.Id);
-           // Console.WriteLine(user4.Id);
+            // Console.WriteLine(user2.Id);
+            // Console.WriteLine(user4.Id);
 
-            Stadistics stadistics = new Stadistics(user2);
+            TimeTrial timeTrial = new TimeTrial();
+            timeTrial.FinishTimeGame();
 
-           // Stadistics.ShowStats(user2);
+
+            Console.WriteLine(Stadistics.playedGames.Count);
+
+
 
             //QuickChat.SendPredefinedChat(1);
-            QuickChat.AllMessages();
+            //QuickChat.AllMessages();
 
 
 
