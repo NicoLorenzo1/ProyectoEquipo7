@@ -7,7 +7,8 @@ namespace Program
     {
         static void Main(string[] args)
         {
-           // User user = new User("user");
+            User user = new User("user");
+
             //User user2 = new User("user1");
             //User user4 = new User("user4");
 
@@ -27,6 +28,7 @@ namespace Program
 
             //QuickChat.SendPredefinedChat(1);
             //QuickChat.AllMessages();
+            //Stadistics.ShowStats(user);
 
 
 
