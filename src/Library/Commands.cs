@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PROYECTOEQUIPO7
+namespace Library
 {
-    public class Commands               //LO VOY A CAMBIAR A UN DICCIONARIO, LO SUBO PARA TENER ALGO NOMAS
-    {
-        private List<string> commandList = new List<string>() {"/ShowCommands", "/CommandSelect", " "};     //nombres de comandos
+    public class Commands            
+    {  
+        
+        public static Dictionary<int, string> predefinedCommands = new Dictionary<int, string>()
+        {
+            {1, ""},                         //nombres de los métodos para mostrarle al usuario
+            {2, ""},
+        };
 
         public void ShowCommands()
         {
-            Console.WriteLine(commandList);       //tengo que darle formato de lista prolijo todavía
+            foreach (var item in predefinedCommands)
+            {
+                Console.WriteLine($"-{item.Key}: {item.Value}");
+            }         
         }
-
-        //por aca definir más métodos de otros comandos
 
         public void CommandSelect(string userInput)
         {
@@ -26,8 +32,8 @@ namespace PROYECTOEQUIPO7
             }
             else
             {
-                Console.WriteLine(" ");     //mensaje de error
+                Console.WriteLine("No existe comando para el texto ingresado, vuelva a intentar");     //mensaje de error
             }
-        }
+        }        
     }
 }

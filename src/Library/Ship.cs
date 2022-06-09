@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PROYECTOEQUIPO7
+namespace Library
 {
     public class Ship
     {
@@ -47,10 +47,5 @@ namespace PROYECTOEQUIPO7
                 this.shipName = value;
             }
         }
-
-        
-        // placeShip()?
-        // removeShip()?
-
     }
 }
