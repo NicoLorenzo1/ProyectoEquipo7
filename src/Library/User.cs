@@ -4,35 +4,43 @@ namespace Library
 {
     public class User
     {
-        public static Dictionary<string, int> users = new Dictionary<string, int>();
+        //public static Dictionary<string, int> users = new Dictionary<string, int>();
+        public static List<User> users = new List<User>();
+
         private static int count = 0;
+        private string name;
+        private int id;
+
+        public Stadistics stadistics;
 
         public User(string name)
         {
-            this.Name = name;
-            this.Id = count += 1;
-
+            this.name = name;
+            this.id = count += 1;
+            this.stadistics = new Stadistics(this);
+            users.Add(this);
         }
 
-        private string Name { get; set; }
-        public int Id { get; set; }
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+        }
+        public int Id
+        {
+            get
+            {
+                return this.id;
+            }
+        }
+
 
 
         //checkUser debe ir en el el metodo de registrarse o en otro lado no aca 
-        public void CheckUser(int Id)
-        {
-            for (int i = 0; i <= users.Count; i++)
-            {
-                if (users.ContainsKey(this.Name) && users.ContainsValue(this.Id))
-                {
-                    Console.WriteLine("El usuario ya esta registrado en el juego");
-                }
-                else
-                {
-                    users.Add(this.Name, this.Id);
-                }
-            }
-        }
+
 
     }
 }
