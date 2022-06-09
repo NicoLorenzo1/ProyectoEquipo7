@@ -6,13 +6,13 @@ namespace Library
         private int UserId;
         private int PlayGames;
         private int Wins;
-        private int WinsPerModdle;
+        private int WinsPerMode;
         public Stadistics()
         {
             this.UserId = UserId;
             this.PlayGames = PlayGames;
             this.Wins = Wins;
-            this.WinsPerModdle = WinsPerModdle;
+            this.WinsPerMode = WinsPerMode;
         }
 
         public Stadistics ShowStats(int Id)
@@ -21,7 +21,7 @@ namespace Library
             stadisticUser.UserId = Id;
             stadisticUser.Wins = 0;
             stadisticUser.PlayGames = 0;
-            stadisticUser.WinsPerModdle = 0;
+            stadisticUser.WinsPerMode = 0;
             
     
 

@@ -6,6 +6,7 @@ namespace Library
     public class Ship
     {
         private string shipName;
+        private int shipLength;
 
         public Ship(int length)
         {
@@ -34,6 +35,7 @@ namespace Library
             {
                 Console.WriteLine("No existe nave de ese largo, vuelva a intentar");
             }
+            this.shipLength = length;
         }
 
         public string Shipname
@@ -41,10 +43,6 @@ namespace Library
             get
             {
                 return this.shipName;
-            }
-            set
-            {
-                this.shipName = value;
             }
         }
     }

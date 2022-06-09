@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
-namespace Proyecto
+namespace Library
 
 {
     public class Board
@@ -22,15 +22,15 @@ namespace Proyecto
             "-","X","O"
         };
         //private Ship PlayerShips{get; set;}
+        public User Username;
 
 
         //public List<string> Row_X = new List<string>();
         public List<List<string>> board_Rows = new List<List<string>>();
 
-        //public Board(User Username)
-        public Board()
+        public Board(User username)
         {
-           // this.Username;
+            this.Username = username;
             Start_Board();
             
         }
@@ -184,7 +184,7 @@ namespace Proyecto
                         }      
                     }
                 }
-            } 
+            }
         }
     }
 }
