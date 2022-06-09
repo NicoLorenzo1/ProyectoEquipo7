@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Library;
 
 namespace Program
@@ -35,3 +35,4 @@ namespace Program
         }
     }
 }
+
