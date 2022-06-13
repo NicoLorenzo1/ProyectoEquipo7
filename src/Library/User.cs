@@ -36,11 +36,5 @@ namespace Library
                 return this.id;
             }
         }
-
-
-
-        //checkUser debe ir en el el metodo de registrarse o en otro lado no aca 
-
-
     }
 }

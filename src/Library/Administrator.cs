@@ -2,72 +2,59 @@ namespace Library
 {
     public class Administrator
     {
-        public List<List<User>> modeList = new List<List<User>>(); //lista general de modos de juego.
+        public List<User> usersRegistered = new List<User>()
+        {
+            /*
+            new User("juan"),
+            new User("Lucas"),
+            new User("German"),
+            new User("Vale"),
+            */
 
-        public static List<User> Classic = new List<User>();
-        public static List<User> Bomb = new List<User>();
+        };
+        //lista general de modos de juego.
+        public List<Mode> modeList = new List<Mode>()
+        {
+            new TimeTrialMode("Time Trial"),
+            new ClassicMode("Classic")
 
-        public static List<User> TimeTrial = new List<User>();
+        };
 
-        public static List<User> Challenge = new List<User>();
 
-        //private List<Game> CurrentGames = new List<User>();
 
         private void MatchPlayers()
         {
-            while (true)
+            foreach (Mode m in modeList)
             {
-                foreach (var modelist in modeList)
+                if (m.usersWaiting.Count >= 1)
                 {
-                    if (modelist.Count > 2)
-                    {
-                        //Game.StartGame(modelist.ElementAt(0), modelist.ElementAt(1))
-
-                    }
+                    Mode mode = new Mode(m.Name);
+                    mode.StartGame(m.usersWaiting.ElementAt(0), m.usersWaiting.ElementAt(1));
+                    //Remuevo los usuarios de la lista de espera de ese modo.
+                    m.usersWaiting.Remove(m.usersWaiting.ElementAt(0));
+                    m.usersWaiting.Remove(m.usersWaiting.ElementAt(1));
+                    Console.WriteLine($"Comenzará una nueva partida de {m.Name} con los jugadores {m.usersWaiting.ElementAt(0)} , {m.usersWaiting.ElementAt(1)}.");
                 }
             }
-
-            /*
-                        while (true)
-                        {
-                            if (Classic.Count > 2)
-                            {
-                                //Game.StartGame(Classic.ElementAt(0), Classic.ElementAt(1))
-                            }
-                            if (Bomb.Count > 2)
-                            {
-                                //Game.StartGame()
-                            }
-                            if (TimeTrial.Count > 2)
-                            {
-                                //Game.StartGame()
-                            }
-                            if (Challenge.Count > 2)
-                            {
-                                //Game.StartGame()
-                            }
-                        }
-                    */
-
         }
 
-        public static User CheckUser(string name)
+        public User CheckUser(string name)
         {
-
-            foreach (var item in User.users)
+            foreach (User u in usersRegistered)
             {
-                if (item.Name == name)
+                if (u.Name == name)
                 {
-                    Console.WriteLine("El usuario ya esta registrado en el juego");
-                    return item;
+                    Console.WriteLine("\nEl usuario ya esta registrado en el juego");
+                    return u;
                 }
             }
 
-            var user = new User(name);
-            User.users.Add(user);
-            Console.WriteLine("Usuario registrado exitosamente");
+            User user = new User(name);
+            usersRegistered.Add(user);
+            Console.WriteLine("\nUsuario registrado exitosamente");
             return user;
         }
 
     }
+
 }

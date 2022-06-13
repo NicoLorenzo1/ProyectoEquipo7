@@ -4,14 +4,16 @@ using System.Timers;
 
 namespace Library
 {
-    public class TimeTrial
+    public class TimeTrialMode : Mode
     {
         public static int count = 0;
+
 
         //Seteo 3 minutos en milisegundos.
         System.Timers.Timer timerCounter = new System.Timers.Timer(180000);
 
-        public TimeTrial()//Game game)
+
+        public TimeTrialMode(string name) : base(name)
         {
 
         }
