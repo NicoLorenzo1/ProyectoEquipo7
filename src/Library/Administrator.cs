@@ -20,8 +20,6 @@ namespace Library
 
         };
 
-
-
         private void MatchPlayers()
         {
             foreach (Mode m in modeList)

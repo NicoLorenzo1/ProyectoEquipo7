@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
-namespace Proyecto
+namespace Library
 
 {
     public class Board
