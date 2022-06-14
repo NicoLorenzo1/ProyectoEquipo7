@@ -133,7 +133,7 @@ namespace Library
         public void Edit_Board(string coord1, string coord2, string editor)
 
         {
-            
+            /*
             if (ABC.Contains(coord1.ToUpper()))
             {
                 Console.WriteLine($"{coord1} es una coordenada válida");
@@ -142,6 +142,7 @@ namespace Library
             {
                 Console.WriteLine($"{coord1} no es una coordenada válida");
             }
+            */
             
 
 /*
@@ -271,11 +272,12 @@ namespace Library
                                             pos1=entry1;
                                             pos2=row_Num[Index_K-i];
                                             Edit_Board(entry1,pos2,"S");
-                                            posList.Add(entry1);
+                                            posList.Add(entry1.ToUpper());
                                             posList.Add(pos2);
                                         }                                           
-                                        shipPos.Add(posList);
+                                        
                                     }
+                                    shipPos.Add(posList);
                                     break;
                                 }
                             }    
@@ -310,11 +312,12 @@ namespace Library
                                             pos1=entry1;
                                             pos2=row_Num[Index_K+(i-2)];
                                             Edit_Board(entry1,pos2,"S");
-                                            posList.Add(entry1);
+                                            posList.Add(entry1.ToUpper());
                                             posList.Add(pos2);
                                         }                                           
-                                        shipPos.Add(posList);
+                                        
                                     }
+                                    shipPos.Add(posList);
                                     break;
                                 }
                             }
@@ -349,11 +352,12 @@ namespace Library
                                             pos1=ABC[Index_Z+(i-1)];
                                             pos2=entry2;
                                             Edit_Board(pos1,entry2,"S");
-                                            posList.Add(entry1);
+                                            posList.Add(entry1.ToUpper());
                                             posList.Add(pos2);
                                         }                                           
-                                        shipPos.Add(posList);
+                                        
                                     }
+                                    shipPos.Add(posList);
                                     break;
                                 }
                             }
@@ -388,11 +392,11 @@ namespace Library
                                             pos1=ABC[Index_Z-(i-1)];
                                             pos2=entry2;
                                             Edit_Board(pos1,entry2,"S");
-                                            posList.Add(entry1);
+                                            posList.Add(entry1.ToUpper());
                                             posList.Add(pos2);
                                         }                                           
-                                        shipPos.Add(posList);
                                     }
+                                    shipPos.Add(posList);
                                     break;
                                 }
                             }
@@ -401,10 +405,16 @@ namespace Library
 
                             }
                         }
+                        else
+                        {
+                            Console.WriteLine("No es una coordenada posible");
+                            System.Console.WriteLine();
+                        }
                     }    
                     else
                     {
                         Console.WriteLine("No es una coordenada posible");
+                        System.Console.WriteLine();
                     }
                 }
             }
@@ -414,8 +424,37 @@ namespace Library
         {
             foreach (ArrayList item in shipPos)
             {
-                System.Console.WriteLine($"{item}");
+                System.Console.WriteLine($"{item[0]} está ubicado en: ");
+                //System.Console.WriteLine($"{item[1]} {item[2]}");
+                //System.Console.WriteLine($"Rango maximo del elemento: {item.Count}");
+                //System.Console.WriteLine();
+                for (int i = 1; i < (item.Count-1); i+=2)
+                {
+                    for (int j = i; j <= (i+1); j++)
+                    {
+                     System.Console.Write($"[{item[j]}] ");                           
+                    }
+                    if (i==(item.Count-2))
+                    {
+                        System.Console.WriteLine();
+                    }
+                    else
+                    {
+                        System.Console.Write(",");
+                    }
+                }
+                System.Console.WriteLine();
+                /*
+                foreach (string coord in item)
+                {
+                    foreach (string letter in coord)
+                    {
+                        System.Console.Write($"{letter} ");
+                    }
+                }
+                */
             }
+            
             //System.Console.WriteLine(shipPos[0][0]); 
         }      
     }
