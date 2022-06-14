@@ -1,12 +1,41 @@
 using System;
+using System.Collections;
 
 namespace Library
 {
-    public class Ranking            //cuando mergeemos todo veo como hacer esta
+    public class Ranking          
     {
-        public Ranking(int playedGames, Statistics gameStats)
-        {
+        public List<User> playersList = new List<User>(){};
+        
+        private int userId;
+        private int totalGames;
+        private int totalWins;
 
+        public Ranking()
+        {
+            this.playersList = playersList;
+            this.userId = userId;
+            this.totalGames = totalGames;
+            this.totalWins = totalWins;
+        }
+
+        public void UpdateRanking()
+        {   
+
+            List<User> sortedList = User.users.OrderBy(x=>x.wins);
+            foreach (var item in sortedList)
+            {
+                if ()
+            }
+        }
+
+        public void ShowTop10()
+        {
+            Console.WriteLine("Top 10 jugadores:");
+            for (int i = 0; i < 11; i++)
+            {
+                Console.WriteLine(sortedList[i]);
+            }
         }
     }
 }

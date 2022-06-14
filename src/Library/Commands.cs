@@ -5,7 +5,6 @@ namespace Library
 {
     public class Commands            
     {  
-        
         public static Dictionary<int, string> predefinedCommands = new Dictionary<int, string>()
         {
             {1, ""},                         //nombres de los métodos para mostrarle al usuario
@@ -14,6 +13,7 @@ namespace Library
 
         public void ShowCommands()
         {
+            Console.WriteLine("Lista de comandos disponibles:");
             foreach (var item in predefinedCommands)
             {
                 Console.WriteLine($"-{item.Key}: {item.Value}");
