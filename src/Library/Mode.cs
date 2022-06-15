@@ -75,5 +75,19 @@ namespace Library
         {
             usersWaiting.Add(user);
         }
+
+//ver donde se va a llamar este metodo (se debe actualizar a cada rato pq solo agarra los dos primeros lugares)
+        public void MatchPlayers()
+        {
+            if (usersWaiting.Count >= 2)
+            {
+                
+                this.StartGame(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1));
+                //Remuevo los usuarios de la lista de espera de ese modo.
+                this.usersWaiting.Remove(this.usersWaiting.ElementAt(0));
+                this.usersWaiting.Remove(this.usersWaiting.ElementAt(1));
+                Console.WriteLine($"Comenzará una nueva partida de {this.Name} con los jugadores {this.usersWaiting.ElementAt(0)} , {this.usersWaiting.ElementAt(1)}.");
+            }
+        }
     }
 }
