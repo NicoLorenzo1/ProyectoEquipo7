@@ -4,7 +4,7 @@ namespace Library
     {
         private string name;
         public List<User> usersWaiting = new List<User>();
-
+        private bool OnGoing;
         private User player1;
         private User player2;
         private Board board1 = new Board();
@@ -76,12 +76,12 @@ namespace Library
             usersWaiting.Add(user);
         }
 
-//ver donde se va a llamar este metodo (se debe actualizar a cada rato pq solo agarra los dos primeros lugares)
+        //ver donde se va a llamar este metodo (se debe actualizar a cada rato pq solo agarra los dos primeros lugares)
         public void MatchPlayers()
         {
             if (usersWaiting.Count >= 2)
             {
-                
+
                 this.StartGame(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1));
                 //Remuevo los usuarios de la lista de espera de ese modo.
                 this.usersWaiting.Remove(this.usersWaiting.ElementAt(0));

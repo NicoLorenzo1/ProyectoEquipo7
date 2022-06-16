@@ -5,7 +5,7 @@ namespace Library
     public class Game
     {
 
-        private bool OnGoing;
+ 
 
         public Game()
         {

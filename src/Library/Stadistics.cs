@@ -29,5 +29,33 @@ namespace Library
             Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.stadistics.playedGames}\n Partidas ganadas: {user.stadistics.wins}\n Ratio de victorias: {user.stadistics.winRate}%");
         }
 
+        public int PlayedGames
+        {
+            get
+            {
+                return this.playedGames;
+            }
+        }
+        public int Wins
+        {
+            get
+            {
+                return this.wins;
+            }
+        }
+        public int WinRate
+        {
+            get
+            {
+                return this.winRate;
+            }
+        }
+        public User User
+        {
+            get
+            {
+                return this.user;
+            }
+        }
     }
 }

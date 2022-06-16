@@ -6,7 +6,7 @@ namespace Library
     {
         public ClassicMode(string name) : base(name)
         {
-
+    
         }
     }
 }
