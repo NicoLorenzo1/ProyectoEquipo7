@@ -24,7 +24,7 @@ namespace Library
             OnGoing = true;
             while (OnGoing)
             {
-                if (recentAttacker == this.Player1)
+                if (recentAttacker == player1)
                 {
                     this.Attack(this.Player2);
                     ShowBoard(BoardPlayer2);
@@ -76,9 +76,15 @@ namespace Library
             Console.WriteLine($"Tablero de {board.Username.Name}");
             board.Print_Board();
         }
+        /*
         public void EndGame()
         {
             OnGoing = false;            
         }
+            */
+
     }
 }
+
+
+
