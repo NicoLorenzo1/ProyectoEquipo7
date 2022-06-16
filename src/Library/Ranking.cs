@@ -5,7 +5,7 @@ namespace Library
 {
     public class Ranking          
     {
-        public List<User> playersList = new List<User>(){};
+        public List<Stadistics> playersList = new List<Stadistics>(){};
         
         private int userId;
         private int totalGames;
@@ -24,9 +24,9 @@ namespace Library
 
             // List<User> sortedList = User.users.OrderBy(x=>x.wins);
             
-            playersList.Sort((userA, userB) =>
+            playersList.Sort((Stadistics userA, Stadistics userB) =>
             {
-                int result userA.wins.CompareTo(userB.wins);
+                int result = userA.wins.CompareTo(userB.wins);
                 
                 return result == 0 ? userA.winRate.CompareTo(userB.winRate) : result;
             });
@@ -40,6 +40,11 @@ namespace Library
             {
                 Console.WriteLine(sortedList[i]);
             }
+        }
+
+        public void ShowMyRank(Stadistics stadistics)
+        {
+            Console.WriteLine($"Tu posición en el ranking global es: {stadistics.}");
         }
     }
 }
