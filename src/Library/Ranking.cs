@@ -22,11 +22,15 @@ namespace Library
         public void UpdateRanking()
         {   
 
-            List<User> sortedList = User.users.OrderBy(x=>x.wins);
-            foreach (var item in sortedList)
+            // List<User> sortedList = User.users.OrderBy(x=>x.wins);
+            
+            playersList.Sort((userA, userB) =>
             {
-                if ()
-            }
+                int result userA.wins.CompareTo(userB.wins);
+                
+                return result == 0 ? userA.winRate.CompareTo(userB.winRate) : result;
+            });
+
         }
 
         public void ShowTop10()
