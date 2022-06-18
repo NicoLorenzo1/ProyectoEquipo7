@@ -1,4 +1,3 @@
-/*
 using System;
 using System.Collections;
 
@@ -25,11 +24,13 @@ namespace Library
 
             // List<User> sortedList = User.users.OrderBy(x=>x.wins);
             
-            playersList.Sort((Stadistics userA, Stadistics userB) =>
+            playersList.Sort((Stadistics stats1, Stadistics stats2) =>
             {
-                int result = userA.wins.CompareTo(userB.wins);
+                int result = stats1.wins.CompareTo(stats2.wins);
                 
-                return result == 0 ? userA.winRate.CompareTo(userB.winRate) : result;
+                return result == 0 ? stats1.winRate.CompareTo(stats2.winRate) : result;
+
+                
             });
 
         }
@@ -43,10 +44,13 @@ namespace Library
             }
         }
 
-        public void ShowMyRank(Stadistics stadistics)
+        public void ShowMyRank(Stadistics stats)
         {
-            Console.WriteLine($"Tu posición en el ranking global es: {stadistics.}");
+            //Console.WriteLine($"Tu posición en el ranking global es: {playersList}");
+            foreach (var i = 0; i < this.playersList.Count; i++)
+            {
+
+            }
         }
     }
 }
-*/
