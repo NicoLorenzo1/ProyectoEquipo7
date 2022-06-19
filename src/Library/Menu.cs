@@ -59,13 +59,13 @@ namespace Library
         }
         public void SelectMode(User user)
         {
-            List<Mode> modes = administrator.modeList;
+            List<Lobby> modes = administrator.modeList;
 
             //Recorre la lista de nombres.
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");
             int n = 0;
-            foreach (Mode mode in modes)
+            foreach (Lobby mode in modes)
             {
                 n++;
                 Console.WriteLine($"{n}-{mode.Name}");

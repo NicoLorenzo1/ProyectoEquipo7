@@ -130,6 +130,10 @@ namespace Library
                 Console.WriteLine(Row_I);
             }
         }
+        public bool CheckShip(string coord1, string coord2)
+        {
+            return true;
+        }
         public void Edit_Board(string coord1, string coord2, string editor)
 
         {

@@ -10,12 +10,25 @@ namespace Library
         private Board BoardPlayer2;
         private bool Hit;
         private int MissedShots = 0;
-        public Bomb(User player1, User player2) : base(player1, player2)
+        public Bomb(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(player1);
             BoardPlayer2 = new Board(player2); 
+        }
+        public Bomb(string name) : base(name)
+        {
+            if (name.ToLower() == "bomb mode")
+            {
+                this.Name = name;
+                Bomb game = new Bomb(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
+                this.StartGame();   
+            }
+            else
+            {
+                Console.WriteLine("Modo incorrecto");
+            }
         }
         public override void Attack(User player)
         {
@@ -44,6 +57,11 @@ namespace Library
                     MissedShots += 1;
                 }
             } 
+        }
+        public override void MatchPlayers()
+        {
+            Bomb game = new Bomb("Bomb Mode");
+            base.MatchPlayers();
         }
     }
 }
