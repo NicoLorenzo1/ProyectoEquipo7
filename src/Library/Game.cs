@@ -35,8 +35,8 @@ namespace Library
         }
         public virtual void StartGame()
         {
-            BoardPlayer1.Position_Ships();
-            BoardPlayer2.Position_Ships();
+            //BoardPlayer1.Position_Ships();
+            //BoardPlayer2.Position_Ships();
             User recentAttacker = this.Player2;
             OnGoing = true;
             while (OnGoing)
@@ -44,13 +44,13 @@ namespace Library
                 if (recentAttacker == this.Player1)
                 {
                     this.Attack(this.Player2);
-                    ShowBoard(BoardPlayer2);
+                    ShowBoard(BoardPlayer1);
                     recentAttacker = Player2;
                 }
                 else
                 {
                     this.Attack(this.Player1);
-                    ShowBoard(BoardPlayer1);
+                    ShowBoard(BoardPlayer2);
                     recentAttacker = Player1;
                 }
                 if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
@@ -65,7 +65,7 @@ namespace Library
                     if (HitsPlayer1 == 15)
                     {
                         stadistics.ModifyStatics(Player1, true);
-                        stadistics.ModifyStatics(Player2, false);
+                        stadistics.ModifyStatics(Player1, false);
                         Console.WriteLine($"Gana {Player1.Name}");
                     }
                 }
@@ -74,12 +74,42 @@ namespace Library
         public virtual void Attack(User player)
         {
             bool hit = false;
+            bool attack = false;
+            Console.WriteLine("A donde quiere atacar?");
             Console.WriteLine("Escriba la primer coordenada(A-J)");
             string coord1 = Console.ReadLine();
             Console.WriteLine("Escriba la segunda coordenada(1-10)");
             string coord2 = Console.ReadLine();
             if (player == this.Player1)
             {
+                if (!Board.num.Contains(coord2))
+                {
+                    Console.WriteLine("No puede atacar en esta ubicacion");
+                    attack = true;
+                }
+                else if (!Board.abc.Contains(coord1.ToUpper()))
+                {
+                    Console.WriteLine("No puede atacar en esta ubicacion");
+                    attack = true;
+                }
+                        
+                for (int i = 0; i < BoardPlayer1.shots.Count; i+=2)
+                    {
+                        string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
+                        string setter2 = Convert.ToString(BoardPlayer1.shots[i+1]);
+                        if (setter1 == coord1.ToUpper())
+                        {
+                            if (setter2 == coord2)
+                            {
+                                Console.WriteLine("Ya ha atacado aqui");
+                                attack = true;
+                            }
+                        }
+                    }
+                if (attack)
+                {
+                    Attack(player);
+                }
                 hit = this.BoardPlayer2.CheckShip(coord1,coord2);
                 if (hit)
                 {
@@ -89,8 +119,11 @@ namespace Library
                 }
                 else
                 {
+                    this.BoardPlayer2.Edit_Board(coord1, coord2, "O");
                     Console.WriteLine("Agua");
                 }
+                BoardPlayer1.shots.Add(coord1.ToUpper());
+                BoardPlayer1.shots.Add(coord2);
             }
             else if (player == this.Player2)
             {
@@ -103,6 +136,7 @@ namespace Library
                 }
                 else
                 {
+                    this.BoardPlayer1.Edit_Board(coord1, coord2, "O");
                     Console.WriteLine("Agua");
                 }
             }
