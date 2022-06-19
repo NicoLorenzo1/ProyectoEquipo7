@@ -8,7 +8,6 @@ namespace Library
 {
     public class Board
     {
-       // private List<Ship> ships = new List<Ship>();
         private static List<string> ABC = new List<string>()
         {
             "/","A","B","C","D","E","F","G","H","I","J"
@@ -21,16 +20,22 @@ namespace Library
         {
             "-","X","O","S"
         };
-        //private Ship PlayerShips{get; set;}
-
-
-        //public List<string> Row_X = new List<string>();
         public List<List<string>> board_Rows = new List<List<string>>();
+        public ArrayList shipPos = new ArrayList();
+        public List<string> shots = new List<string>();
 
-        //public Board(User Username)
+        //public Board(User player1User, User player2User)
         public Board()
         {
-           // this.Username;
+           /*this.player1User;
+           this.player2User;
+           this.player1Ships;
+           this.player2Ships;
+           this.player1Shots;
+           this.player2Shots;
+           */
+
+
             Start_Board();
             //this.Start_Board();
         }
@@ -60,22 +65,6 @@ namespace Library
             return board_Rows;
         }
 #endregion ConstructorTablero
-         /*
-        public bool CheckPosition(coordinate1, coordinate2, ship)
-        {
-            for (int z = 1; z <= 11; z++)
-            for (int w = 1; w <= 11; w++)
-            {
-                if board_Rows[w] coordinate1
-                {
-
-                } 
-            }
-        }
-        public void Ships_position(PlayerShips.count)
-        {
-        */
-
         public void Print_Board()
         {
             string Row_I="";
@@ -131,44 +120,7 @@ namespace Library
             }
         }
         public void Edit_Board(string coord1, string coord2, string editor)
-
-        {
-            /*
-            if (ABC.Contains(coord1.ToUpper()))
-            {
-                Console.WriteLine($"{coord1} es una coordenada válida");
-            }
-            else
-            {
-                Console.WriteLine($"{coord1} no es una coordenada válida");
-            }
-            */
-            
-
-/*
-########################################################################################
-            //Prueba de indices
-            int Index_Z;
-            int Index_K;
-            Index_Z=coord1;
-            Index_K=coord2;
-            //Index_Z= ABC.IndexOf(coord1.ToUpper());
-            //Console.WriteLine($"El indice de {coord1.ToUpper()} es: {Index_Z}");
-            //Index_K= (row_Num.IndexOf(coord2)+1);
-            //Console.WriteLine($"El indice de {coord2} es: {Index_K}");
-            if (editor=="S")
-            {
-                //board_Rows[Index_K][Index_Z]=char_List[3];
-                board_Rows[Index_K][Index_Z]=char_List[3];
-            }
-########################################################################################
-*/
-            
-
-
-            // board_Rows=[[/,A,B,C,D,E,F,G,H,I,J][1-X--------][2----------][]]
-
-            
+        {   
             for (int y = 0; y < 11; y++)
             {
                 if (board_Rows[y][0]==coord2)
@@ -181,8 +133,6 @@ namespace Library
                         {
                             int Index_X;
                             Index_X=x;
-                            //hit=true;
-                            //if (hit==true)
                             if (editor== "-")
                             {
                                 board_Rows[Index_Y][Index_X]=char_List[0];
@@ -206,19 +156,17 @@ namespace Library
                         }      
                     }
                 }
-            } 
-            
+            }   
         }
-
-        public ArrayList shipPos = new ArrayList();
         public void Position_Ships()
         {
             for (int s = 1; s <=5; s++)
             {
                 Ship actualShip = new Ship(s);;
-                Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
+                
                 while (true)
-                {
+                {   
+                    Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.WriteLine("Ingrese la cordenada 1(A-J): ");
                     string entry1;
                     entry1=Console.ReadLine();
@@ -227,7 +175,6 @@ namespace Library
                         int Index_X;
                         Index_X= ABC.IndexOf(entry1.ToUpper());
         
-
                         string entry2;
                         Console.WriteLine("Ingrese la cordenada 2(1-10): ");
                         entry2=Console.ReadLine();
@@ -236,18 +183,24 @@ namespace Library
                             int Index_Y;
                             Index_Y= row_Num.IndexOf(entry2)+1;
                             string dir;
+                            System.Console.WriteLine();
                             System.Console.WriteLine("Dirección:");
-                            System.Console.WriteLine("---------------:");
+                            System.Console.WriteLine("---------------");
                             System.Console.WriteLine("1-Hacia arriba");
                             System.Console.WriteLine("2-Hacia abajo");
                             System.Console.WriteLine("3-Derecha");
                             System.Console.WriteLine("4-Izquierda");
+                            System.Console.WriteLine();
+                            System.Console.WriteLine("Ingrese la dirección escogida (1-4): ");
                             dir = Console.ReadLine();
+                            System.Console.WriteLine();
                             if(dir=="1")
                             {
                                 if (Index_Y-actualShip.ShipDim<0)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
+                                    System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
+                                    System.Console.WriteLine();
                                 }
                                 else
                                 {
@@ -260,10 +213,10 @@ namespace Library
                                         int IndexCheck2;
                                         bool shipTest;
                                         
-                                        IndexCheck1 = (row_Num.IndexOf(entry2)+1);
-                                        if(x==1)
+                                        IndexCheck1 = (row_Num.IndexOf(entry2));
+                                        if(x==0)
                                         {
-                                            shipTest=CheckShip(entry1,entry2);
+                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1]);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -279,13 +232,13 @@ namespace Library
                                                 trigger=true;
                                             }
                                         }
-                                        
                                     }
                                     if (trigger==true)
                                     {
                                         System.Console.WriteLine("No podes posicionar un barco ahi");
                                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                                         System.Console.WriteLine();
+                                        
                                     }
                                     else
                                     {
@@ -312,134 +265,255 @@ namespace Library
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
-                                            
                                         }
                                         shipPos.Add(posList);
                                         break;
-                                       
                                     }
-
                                 }
                             }    
                             else if(dir=="2")
                             {
-                                //System.Console.WriteLine($"El Index_Y es: {Index_Y} y el actualShip.ShipDim es: {actualShip.ShipDim}");
-                                //System.Console.WriteLine("Tiene que superar la condición Index_Y-actualShip.ShipDim>10 para que le diga que no");
                                 if (Index_Y+actualShip.ShipDim>11)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
+                                    System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
+                                    System.Console.WriteLine();
                                 }
                                 else
                                 {
-                                    ArrayList posList = new ArrayList();
-                                    posList.Add(actualShip.Shipname);
-                                    for (int i = 1; i <= actualShip.ShipDim; i++)
+                                    bool trigger=false;
+                                    for (int x = 0; x < actualShip.ShipDim; x++)
                                     {
-                                        string pos1;
-                                        string pos2;
-                                        int Index_K;
-                                        int Index_Z;
-                                        Index_K= (row_Num.IndexOf(entry2)+1);
-                                        if (i==1)
+                                        string poscheck1;
+                                        string poscheck2;
+                                        int IndexCheck1;
+                                        int IndexCheck2;
+                                        bool shipTest;
+
+                                        IndexCheck1 = (row_Num.IndexOf(entry2));
+                                        if(x==0)
                                         {
-                                            Edit_Board(entry1,entry2,"S");                                                
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(entry2);
+                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1]);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
                                         }
                                         else
                                         {
-                                            pos1=entry1;
-                                            pos2=row_Num[Index_K+(i-2)];
-                                            Edit_Board(entry1,pos2,"S");
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(pos2);
-                                        }                                           
-                                        
+                                            poscheck1=entry1;
+                                            poscheck2=row_Num[IndexCheck1+x];
+                                            shipTest=CheckShip(entry1,poscheck2);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
+                                        }
                                     }
-                                    shipPos.Add(posList);
-                                    break;
+                                    if (trigger==true)
+                                    {
+                                        System.Console.WriteLine("No podes posicionar un barco ahi");
+                                        System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
+                                        System.Console.WriteLine();
+                                    }
+                                    else
+                                    {
+                                        ArrayList posList = new ArrayList();
+                                        posList.Add(actualShip.Shipname);
+                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        {
+                                            string pos1;
+                                            string pos2;
+                                            int Index_K;
+                                            int Index_Z;
+                                            Index_K= (row_Num.IndexOf(entry2)+1);
+                                            if (i==1)
+                                            {
+                                                //ACORDATE DE SACAR ESTE COMENT
+
+                                                //Edit_Board(entry1,entry2,"S");                                                
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(entry2);
+                                            }
+                                            else
+                                            {
+                                                pos1=entry1;
+                                                pos2=row_Num[Index_K+(i-2)];
+
+                                                //ACORDATE DE SACAR ESTE COMENT
+
+                                                //Edit_Board(entry1,pos2,"S");
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(pos2);
+                                            }                                           
+                                        }
+                                        shipPos.Add(posList);
+                                        break;
+                                    }
                                 }
                             }
                             else if(dir=="3")
                             {
-                                //System.Console.WriteLine($"El Index_Y es: {Index_Y} y el actualShip.ShipDim es: {actualShip.ShipDim}");
-                                //System.Console.WriteLine("Tiene que superar la condición Index_Y-actualShip.ShipDim>10 para que le diga que no");
                                 if (Index_X+actualShip.ShipDim>11)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
+                                    System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
+                                    System.Console.WriteLine();
                                 }
                                 else
                                 {
-                                    ArrayList posList = new ArrayList();
-                                    posList.Add(actualShip.Shipname);
-                                    for (int i = 1; i <= actualShip.ShipDim; i++)
+                                    bool trigger=false;
+
+                                    for (int x = 0; x < actualShip.ShipDim; x++)
                                     {
-                                        string pos1;
-                                        string pos2;
-                                        int Index_K;
-                                        int Index_Z;
-                                        Index_Z= (ABC.IndexOf(entry1.ToUpper()));
-                                        if (i==1)
+                                        string poscheck1;
+                                        string poscheck2;
+                                        int IndexCheck1;
+                                        int IndexCheck2;
+                                        bool shipTest;
+
+                                        IndexCheck1 = (row_Num.IndexOf(entry2));
+                                        IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
+                                        if (x==0)
                                         {
-                                            Edit_Board(entry1,entry2,"S");                                                
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(entry2);
+                                            shipTest=CheckShip(ABC[IndexCheck2],entry2);
+                                            //System.Console.WriteLine(shipTest);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
                                         }
                                         else
                                         {
-                                            pos1=ABC[Index_Z+(i-1)];
-                                            pos2=entry2;
-                                            Edit_Board(pos1,entry2,"S");
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(pos2);
-                                        }                                           
-                                        
+                                            poscheck1=ABC[IndexCheck2+1];
+                                            poscheck2=entry2;
+                                            shipTest=CheckShip(poscheck1,entry2);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
+                                        } 
                                     }
-                                    shipPos.Add(posList);
-                                    break;
+                                    if (trigger==true)
+                                    {
+                                        System.Console.WriteLine("No podes posicionar un barco ahi");
+                                        System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
+                                        System.Console.WriteLine();
+                                    }
+                                    else
+                                    {
+                                        ArrayList posList = new ArrayList();
+                                        posList.Add(actualShip.Shipname);
+                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        {
+                                            string pos1;
+                                            string pos2;
+                                            int Index_K;
+                                            int Index_Z;
+                                            Index_Z= (ABC.IndexOf(entry1.ToUpper()));
+                                            if (i==1)
+                                            {
+                                                Edit_Board(entry1,entry2,"S");                                                
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(entry2);
+                                            }
+                                            else
+                                            {
+                                                pos1=ABC[Index_Z+(i-1)];
+                                                pos2=entry2;
+                                                Edit_Board(pos1,entry2,"S");
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(pos2);
+                                            }                                           
+                                        }
+                                        shipPos.Add(posList);
+                                        break;
+                                    }    
                                 }
                             }
                             else if(dir=="4")
                             {
-                                //System.Console.WriteLine($"El Index_Y es: {Index_Y} y el actualShip.ShipDim es: {actualShip.ShipDim}");
-                                //System.Console.WriteLine("Tiene que superar la condición Index_Y-actualShip.ShipDim>10 para que le diga que no");
                                 if (Index_X-actualShip.ShipDim<1)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
+                                    System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
+                                    System.Console.WriteLine();
                                 }
                                 else
                                 {
-                                    ArrayList posList = new ArrayList();
-                                    posList.Add(actualShip.Shipname);
-                                    for (int i = 1; i <= actualShip.ShipDim; i++)
+                                    bool trigger=false;
+
+                                    for (int x = 0; x < actualShip.ShipDim; x++)
                                     {
-                                        string pos1;
-                                        string pos2;
-                                        int Index_K;
-                                        int Index_Z;
-                                        Index_Z= (ABC.IndexOf(entry1.ToUpper()));
-                                        if (i==1)
+                                        string poscheck1;
+                                        string poscheck2;
+                                        int IndexCheck1;
+                                        int IndexCheck2;
+                                        bool shipTest;
+
+                                        IndexCheck1 = (row_Num.IndexOf(entry2));
+                                        IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
+                                        if (x==0)
                                         {
-                                            Edit_Board(entry1,entry2,"S");                                                
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(entry2);
+                                            shipTest=CheckShip(ABC[IndexCheck2],entry2);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
                                         }
                                         else
                                         {
-                                            pos1=ABC[Index_Z-(i-1)];
-                                            pos2=entry2;
-                                            Edit_Board(pos1,entry2,"S");
-                                            posList.Add(entry1.ToUpper());
-                                            posList.Add(pos2);
-                                        }                                           
+                                            poscheck1=ABC[IndexCheck2-1];
+                                            poscheck2=entry2;
+                                            shipTest=CheckShip(poscheck1,entry2);
+                                            if (shipTest==true)
+                                            {
+                                                trigger=true;
+                                            }
+                                        }
                                     }
-                                    shipPos.Add(posList);
-                                    break;
+                                    if (trigger==true)
+                                    {
+                                        System.Console.WriteLine("No podes posicionar un barco ahi");
+                                        System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
+                                        System.Console.WriteLine();
+                                    }
+                                    else
+                                    {
+                                        ArrayList posList = new ArrayList();
+                                        posList.Add(actualShip.Shipname);
+                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        {
+                                            string pos1;
+                                            string pos2;
+                                            int Index_K;
+                                            int Index_Z;
+                                            Index_Z= (ABC.IndexOf(entry1.ToUpper()));
+                                            if (i==1)
+                                            {
+                                                Edit_Board(entry1,entry2,"S");                                                
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(entry2);
+                                            }
+                                            else
+                                            {
+                                                pos1=ABC[Index_Z-(i-1)];
+                                                pos2=entry2;
+                                                Edit_Board(pos1,entry2,"S");
+                                                posList.Add(entry1.ToUpper());
+                                                posList.Add(pos2);
+                                            }                                           
+                                        }
+                                        shipPos.Add(posList);
+                                        break;                  
+                                    }
                                 }
                             }
                             else
                             {
-
+                                System.Console.WriteLine();
+                                System.Console.WriteLine("No es una dirección válida");
+                                System.Console.WriteLine();
                             }
                         }
                         else
@@ -456,15 +530,12 @@ namespace Library
                 }
             }
         }
-        
         public void showList()
         {
             foreach (ArrayList item in shipPos)
             {
                 System.Console.WriteLine($"{item[0]} está ubicado en: ");
-                //System.Console.WriteLine($"{item[1]} {item[2]}");
-                //System.Console.WriteLine($"Rango maximo del elemento: {item.Count}");
-                //System.Console.WriteLine();
+
                 for (int i = 1; i < (item.Count-1); i+=2)
                 {
                     for (int j = i; j <= (i+1); j++)
@@ -483,12 +554,9 @@ namespace Library
                 System.Console.WriteLine();
             }
         }
-
-
         public bool CheckShip(string check1, string check2)
         {   
             bool coincidence = false;
-            System.Console.WriteLine($"Control para saber si hay un barco en {check1} y {check2}: ");
             foreach (ArrayList item in shipPos)
             {
                 for (int i = 1; i <= (item.Count-1); i++)
@@ -498,9 +566,11 @@ namespace Library
                     
                     if (checker1==checker2)
                     {
-                        if (check2==item[i+1])
+                        string numCheck = Convert.ToString(item[i+1]);
+                        if (check2==numCheck)
                         {
                             coincidence=true;
+                            return coincidence;
                         }
                         else
                         {
@@ -512,14 +582,57 @@ namespace Library
                 }                    
             }
             return coincidence;
-            /*
-            if (coincidence==true)
-            {
-                
-                System.Console.WriteLine("Se encontró coincidencia");
-            }
-            */
         }
+        public void RefreshBoard()
+        {
+            shots.Add("A");
+            shots.Add("9");
+            shots.Add("I");
+            shots.Add("9");
+
+            foreach (ArrayList item in shipPos)
+            {
+                for (int i = 1; i <= (item.Count-1); i+=2)
+                {
+                    string setter1 = Convert.ToString(item[i]);
+                    string setter2 = Convert.ToString(item[i+1]);
+                    Edit_Board(setter1,setter2,"S");                                   
+                }                    
+            }
+            for (int i = 0; i < shots.Count; i+=2)
+            {
+                string setter1 = Convert.ToString(shots[i]);
+                string setter2 = Convert.ToString(shots[i+1]);
+
+                bool result=CheckShip(setter1,setter2);
+                if (result == true)
+                {
+                    Edit_Board(setter1,setter2,"X"); 
+                }
+                else
+                {
+                    Edit_Board(setter1,setter2,"O"); 
+                }  
+            }
+        }
+
+        
+/*        public void PrintSelector(User requestor, string action)
+        {
+            /*
+            Action1 = My board
+            Action2 = Enemy Board
+            //
+
+            if (requestor==this.player1 && action==1)
+            {
+                boardMaker=Start_Board();
+
+
+            }
+            
+        }*/
+        
     }
 }
 
