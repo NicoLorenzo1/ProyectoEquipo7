@@ -3,53 +3,89 @@ using System.Collections;
 
 namespace Library
 {
-    public class Ranking          
+    public class Ranking
     {
-        public List<Stadistics> playersList = new List<Stadistics>(){};
-        
-        private int userId;
-        private int totalGames;
-        private int totalWins;
+        public static HashSet<Statistics> playerStats = new HashSet<Statistics>() { };  //Stat
 
-        public Ranking()
+        public List<Statistics> top10 = new List<Statistics>() { };
+
+        public Ranking() { }
+
+        private List<Statistics> getAllSorted()
         {
-            this.playersList = playersList;
-            this.userId = userId;
-            this.totalGames = totalGames;
-            this.totalWins = totalWins;
+            List<Statistics> statsList = playerStats.ToList();
+
+            sortStats(statsList);
+
+            return statsList;
         }
 
-        public void UpdateRanking()
-        {   
+        private void sortStats(List<Statistics> stats)
+        {
+            stats.Sort((Statistics stats1, Statistics stats2) =>
+                {
+                    int result = stats1.Wins.CompareTo(stats2.Wins);
 
-            // List<User> sortedList = User.users.OrderBy(x=>x.wins);
-            
-            playersList.Sort((Stadistics stats1, Stadistics stats2) =>
-            {
-                int result = stats1.wins.CompareTo(stats2.wins);
-                
-                return result == 0 ? stats1.winRate.CompareTo(stats2.winRate) : result;
+                    return result == 0 ? stats1.WinRate.CompareTo(stats2.WinRate) : result;
 
-                
-            });
-
+                });
+       
         }
 
-        public void ShowTop10()
+
+        public void checkTop10Status(Statistics st)
         {
-            Console.WriteLine("Top 10 jugadores:");
-            for (int i = 0; i < 11; i++)
+            if (top10.IndexOf(st) == -1)
             {
-                Console.WriteLine(sortedList[i]);
+                int initialWins = top10.Count > 0 ? int.MaxValue : -1;
+
+                foreach (Statistics t10 in top10)
+                {
+                    initialWins = t10.Wins < initialWins ? t10.Wins : initialWins;
+                }
+
+                if (st.Wins > initialWins)
+                {
+                    top10.Add(st);
+
+                    sortStats(top10);
+
+                    if (top10.Count > 10)
+                    {
+                        top10.RemoveAt(10);
+                    }
+                }
             }
         }
 
-        public void ShowMyRank(Stadistics stats)
-        {
-            //Console.WriteLine($"Tu posición en el ranking global es: {playersList}");
-            foreach (var i = 0; i < this.playersList.Count; i++)
-            {
 
+
+        public void ShowAll()
+        {
+            List<Statistics> sortedAll = getAllSorted();
+
+            Console.WriteLine("Top 10 jugadores:");
+            for (int i = 0; i < sortedAll.Count ; i++)
+            {
+                Console.WriteLine($"{sortedAll[i]}"); //
+            }
+        }
+
+        public void ShowMyRank(User user)
+        {
+            List<Statistics> sortedAll = getAllSorted();
+
+            //Console.WriteLine($"Tu posición en el ranking global es: {playersList}");
+            int i = 1;
+
+            foreach (Statistics st in sortedAll)
+            {
+                if (user.Id == st.User.Id)
+                {
+                    Console.WriteLine($"Tu ranking es: {i}");
+                    break;
+                }
+                i++;
             }
         }
     }
