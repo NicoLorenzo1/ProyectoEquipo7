@@ -2,7 +2,6 @@ namespace Library
 {
     public class Statistics
     {
-
         private int playedGames;
         private int wins;
         private int winRate;
@@ -11,7 +10,7 @@ namespace Library
         public Statistics(User user)
         {
             this.user = user;
-            Ranking.playerStats.Add(this);     //siempre que se crea una stat, lo agrego al ranking global
+            Ranking.AddToRankList(this);     //siempre que se crea una stat, lo agrego al ranking global
         }
 
         public void ModifyStatics(User user, bool boolean)
@@ -68,7 +67,6 @@ namespace Library
             {
                 return false;
             }
-
             Statistics input = (Statistics)obj;
 
             return this.user.Id == input.user.Id;

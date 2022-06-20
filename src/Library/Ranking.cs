@@ -27,11 +27,8 @@ namespace Library
                     int result = stats1.Wins.CompareTo(stats2.Wins);
 
                     return result == 0 ? stats1.WinRate.CompareTo(stats2.WinRate) : result;
-
                 });
-       
         }
-
 
         public void checkTop10Status(Statistics st)
         {
@@ -43,7 +40,6 @@ namespace Library
                 {
                     initialWins = t10.Wins < initialWins ? t10.Wins : initialWins;
                 }
-
                 if (st.Wins > initialWins)
                 {
                     top10.Add(st);
@@ -58,7 +54,10 @@ namespace Library
             }
         }
 
-
+        public static void AddToRankList(Statistics stats)
+        {
+            playerStats.Add(stats);    
+        }
 
         public void ShowAll()
         {
@@ -75,14 +74,12 @@ namespace Library
         {
             List<Statistics> sortedAll = getAllSorted();
 
-            //Console.WriteLine($"Tu posición en el ranking global es: {playersList}");
             int i = 1;
-
             foreach (Statistics st in sortedAll)
             {
                 if (user.Id == st.User.Id)
                 {
-                    Console.WriteLine($"Tu ranking es: {i}");
+                    Console.WriteLine($"Tu posición en el ranking global es: {i}");
                     break;
                 }
                 i++;
