@@ -18,8 +18,8 @@ namespace Library
         {
             this.Player1 = player1;
             this.Player2 = player2;
-            BoardPlayer1 = new Board(player1);
-            BoardPlayer2 = new Board(player2);
+            BoardPlayer1 = new Board(this.Player1);
+            BoardPlayer2 = new Board(this.Player2);
         }
         public Challenge(string name) : base(name)
         {
@@ -47,13 +47,13 @@ namespace Library
                     if (recentAttacker == this.Player1)
                     {
                         this.Attack(this.Player2);
-                        ShowBoard(BoardPlayer2);
+                        ShowBoard(this.Player1);
                         recentAttacker = Player2;
                     }
                     else
                     {
                         this.Attack(this.Player1);
-                        ShowBoard(BoardPlayer1);
+                        ShowBoard(this.Player2);
                         recentAttacker = Player1;
                     }
                     if ((HitsPlayer1 == 15 || HitsPlayer2 == 15))

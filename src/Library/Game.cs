@@ -8,19 +8,20 @@ namespace Library
         private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
-        private Board Board;
         private bool OnGoing;
         private bool Hit;
-        private Stadistics stadistics;
+        private Stadistics stadisticsPlayer1;
+        private Stadistics stadisticsPlayer2;
         private int HitsPlayer1;
         private int HitsPlayer2;
         public Game(User player1, User player2, string name) : base(name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
-            BoardPlayer1 = new Board();
-            BoardPlayer2 = new Board();
-            Board = new Board();
+            BoardPlayer1 = new Board(this.Player1);
+            BoardPlayer2 = new Board(this.Player2);
+            stadisticsPlayer1 = new Stadistics(this.Player1);
+            stadisticsPlayer2 = new Stadistics(this.Player2);
         }
         public Game(string name) : base(name)
         {
@@ -37,8 +38,8 @@ namespace Library
         }
         public virtual void StartGame()
         {
-            //BoardPlayer1.Position_Ships();
-            //BoardPlayer2.Position_Ships();
+            BoardPlayer1.Position_Ships();
+            BoardPlayer2.Position_Ships();
             User recentAttacker = this.Player2;
             OnGoing = true;
             while (OnGoing)
@@ -46,13 +47,13 @@ namespace Library
                 if (recentAttacker == this.Player1)
                 {
                     this.Attack(this.Player2);
-                    ShowBoard(BoardPlayer1);
+                    ShowBoard(this.Player1);
                     recentAttacker = Player2;
                 }
                 else
                 {
                     this.Attack(this.Player1);
-                    ShowBoard(BoardPlayer2);
+                    ShowBoard(this.Player2);
                     recentAttacker = Player1;
                 }
                 if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
@@ -60,14 +61,14 @@ namespace Library
                     EndGame();
                     if (HitsPlayer2 == 15)
                     {
-                        stadistics.ModifyStatics(Player1, false);
-                        stadistics.ModifyStatics(Player2, true);
+                        stadisticsPlayer1.ModifyStatics(Player1, false);
+                        stadisticsPlayer2.ModifyStatics(Player2, true);
                         Console.WriteLine($"Gana {Player2.Name}");
                     }
                     if (HitsPlayer1 == 15)
                     {
-                        stadistics.ModifyStatics(Player1, true);
-                        stadistics.ModifyStatics(Player1, false);
+                        stadisticsPlayer1.ModifyStatics(Player1, true);
+                        stadisticsPlayer2.ModifyStatics(Player1, false);
                         Console.WriteLine($"Gana {Player1.Name}");
                     }
                 }
@@ -76,7 +77,7 @@ namespace Library
         public virtual void Attack(User player)
         {
             bool hit = false;
-            bool attack = false;
+            bool outOfBoard = false;
             Console.WriteLine("A donde quiere atacar?");
             Console.WriteLine("Escriba la primer coordenada(A-J)");
             string coord1 = Console.ReadLine();
@@ -87,12 +88,12 @@ namespace Library
                 if (!Board.num.Contains(coord2))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
-                    attack = true;
+                    outOfBoard = true;
                 }
                 else if (!Board.abc.Contains(coord1.ToUpper()))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
-                    attack = true;
+                    outOfBoard = true;
                 }
                         
                 for (int i = 0; i < BoardPlayer1.shots.Count; i+=2)
@@ -104,11 +105,11 @@ namespace Library
                             if (setter2 == coord2)
                             {
                                 Console.WriteLine("Ya ha atacado aqui");
-                                attack = true;
+                                outOfBoard = true;
                             }
                         }
                     }
-                if (attack)
+                if (outOfBoard)
                 {
                     Attack(player);
                 }
@@ -132,12 +133,12 @@ namespace Library
                 if (!Board.num.Contains(coord2))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
-                    attack = true;
+                    outOfBoard = true;
                 }
                 else if (!Board.abc.Contains(coord1.ToUpper()))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
-                    attack = true;
+                    outOfBoard = true;
                 }
                         
                 for (int i = 0; i < BoardPlayer2.shots.Count; i+=2)
@@ -149,11 +150,11 @@ namespace Library
                             if (setter2 == coord2)
                             {
                                 Console.WriteLine("Ya ha atacado aqui");
-                                attack = true;
+                                outOfBoard = true;
                             }
                         }
                     }
-                if (attack)
+                if (outOfBoard)
                 {
                     Attack(player);
                 }
@@ -182,19 +183,19 @@ namespace Library
             string response = Console.ReadLine();
             if (user == this.Player1 && response == "1")
             {
-                this.Board.Print_Board(this.Board.shipPosPlayer1, this.Board.shotsPlayer2, "MyBoard");
+                this.Board.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "MyBoard");
             }
             else if (user == this.Player1 && response == "2")
             {
-                this.Board.Print_Board(this.Board.shipPosPlayer2, this.Board.shotsPlayer1, "EnemyBoard");
+                this.Board.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "EnemyBoard");
             }
             else if (user == this.Player2 && response == "1")
             {
-                this.Board.Print_Board(this.Board.shipPosPlayer2, this.Board.shotsPlayer1, "MyBoard");
+                this.Board.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "MyBoard");
             }
             else if (user == this.Player2 && response == "2")
             {
-                this.Board.Print_Board(this.Board.shipPosPlayer1, this.Board.shotsPlayer2, "EnemyBoard");
+                this.Board.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "EnemyBoard");
             }
             else
             {

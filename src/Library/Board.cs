@@ -29,9 +29,9 @@ namespace Library
         public ArrayList shipPos = new ArrayList();
         public List<string> shots = new List<string>();
 
-        public Board(/*User username*/)
+        public Board(User username)
         {
-            //this.Username = username;
+            this.Username = username;
             Start_Board();
             //this.Start_Board();
         }
