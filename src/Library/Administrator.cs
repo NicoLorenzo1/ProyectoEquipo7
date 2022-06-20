@@ -17,7 +17,7 @@ namespace Library
         {
             foreach (Mode m in modeList)
             {
-                m.MatchPlayers();
+                m.MatchPlayers(m);
             }
         }
 

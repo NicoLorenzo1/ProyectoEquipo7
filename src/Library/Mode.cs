@@ -1,17 +1,20 @@
 namespace Library
 {
-    public class Mode : Game
+    public class Mode : Game 
     {
-        private string name;
+        public string name;
         public List<User> usersWaiting = new List<User>();
-        private bool OnGoing;
+
         private User player1;
         private User player2;
         private Board board1 = new Board();
         private Board board2 = new Board();
         public Mode(string name)
         {
-            this.name = name;
+        }
+
+        public Mode()
+        {
         }
 
         public string Name
@@ -77,12 +80,11 @@ namespace Library
         }
 
         //ver donde se va a llamar este metodo (se debe actualizar a cada rato pq solo agarra los dos primeros lugares)
-        public void MatchPlayers()
+        public void MatchPlayers(Mode m)
         {
             if (usersWaiting.Count >= 2)
             {
-
-                this.StartGame(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1));
+                m.StartGame(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1));
                 //Remuevo los usuarios de la lista de espera de ese modo.
                 this.usersWaiting.Remove(this.usersWaiting.ElementAt(0));
                 this.usersWaiting.Remove(this.usersWaiting.ElementAt(1));

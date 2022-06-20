@@ -13,7 +13,7 @@ namespace Library
         System.Timers.Timer timerCounter = new System.Timers.Timer(180000);
 
 
-        public TimeTrialMode(string name) : base(name)
+        public TimeTrialMode(string name)
         {
 
         }

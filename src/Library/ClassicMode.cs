@@ -4,7 +4,7 @@ namespace Library
 {
     public class ClassicMode : Mode
     {
-        public ClassicMode(string name) : base(name)
+        public ClassicMode(string name)
         {
     
         }

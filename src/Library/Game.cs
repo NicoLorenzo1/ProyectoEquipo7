@@ -2,10 +2,10 @@ using System;
 
 namespace Library
 {
-    public class Game
+    public class Game 
     {
 
- 
+        private bool OnGoing;
 
         public Game()
         {
@@ -49,25 +49,6 @@ namespace Library
         {
 
         }
-        /*
-        public void EndGame()
-        {
-            if (this.Board1.AmmountofBoats == 0 || this.Board2.AmmountofBoats == 0)
-            {
-                OnGoing = false;
-                if (this.Board1.AmmountofBoats == 0)
-                {
-                    Player2.Wins += 1;
-                    Console.WriteLine($"Gana {Player2}");
-                }
-                if (this.Board2.AmmountofBoats == 0)
-                {
-                    Player1.Wins += 1;
-                    Console.WriteLine($"Gana {Player1}");
-                }
-            }
-        }
-            */
 
     }
 }
