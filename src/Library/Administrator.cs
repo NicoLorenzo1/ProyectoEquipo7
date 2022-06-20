@@ -7,7 +7,7 @@ namespace Library
 
         };
         //lista general de modos de juego.
-        public List<Mode> modeList = new List<Mode>()
+        public List<Lobby> modeList = new List<Lobby>()
         {
             new TimeTrialMode("Time Trial"),
             new ClassicMode("Classic")
@@ -15,7 +15,7 @@ namespace Library
 
         private void MatchPlayers()
         {
-            foreach (Mode m in modeList)
+            foreach (Lobby m in modeList)
             {
                 m.MatchPlayers();
             }
