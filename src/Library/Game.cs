@@ -48,8 +48,8 @@ namespace Library
         }
         public virtual void StartGame()
         {
-            BoardPlayer1.Position_Ships();
-            BoardPlayer2.Position_Ships();
+            BoardPlayer1.PositionShips();
+            BoardPlayer2.PositionShips();
             User recentAttacker = this.Player2;
             OnGoing = true;
             while (OnGoing)
@@ -57,14 +57,14 @@ namespace Library
                 if (recentAttacker == this.Player1)
                 {
                     this.Attack(this.Player2);
-                    this.BoardPlayer2.Print_Board(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                    this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                     ShowBoard(this.Player2);
                     recentAttacker = Player2;
                 }
                 else
                 {
                     this.Attack(this.Player1);
-                    this.BoardPlayer1.Print_Board(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                    this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
                     ShowBoard(this.Player1);
                     recentAttacker = Player1;
                 }
@@ -319,19 +319,19 @@ namespace Library
             string response = Console.ReadLine();
             if (user == this.Player1 && response == "1")
             {
-                this.BoardPlayer1.Print_Board(BoardPlayer1.shipPos, BoardPlayer2.shots, "MyBoard");
+                this.BoardPlayer1.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "MyBoard");
             }
             else if (user == this.Player1 && response == "2")
             {
-                this.BoardPlayer1.Print_Board(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
             }
             else if (user == this.Player2 && response == "1")
             {
-                this.BoardPlayer2.Print_Board(BoardPlayer2.shipPos, BoardPlayer1.shots, "MyBoard");
+                this.BoardPlayer2.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "MyBoard");
             }
             else if (user == this.Player2 && response == "2")
             {
-                this.BoardPlayer2.Print_Board(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
             }
             else
             {
