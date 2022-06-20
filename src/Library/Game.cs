@@ -183,19 +183,19 @@ namespace Library
             string response = Console.ReadLine();
             if (user == this.Player1 && response == "1")
             {
-                this.Board.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "MyBoard");
+                this.BoardPlayer1.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "MyBoard");
             }
             else if (user == this.Player1 && response == "2")
             {
-                this.Board.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "EnemyBoard");
+                this.BoardPlayer2.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "EnemyBoard");
             }
             else if (user == this.Player2 && response == "1")
             {
-                this.Board.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "MyBoard");
+                this.BoardPlayer2.Print_Board(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "MyBoard");
             }
             else if (user == this.Player2 && response == "2")
             {
-                this.Board.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "EnemyBoard");
+                this.BoardPlayer1.Print_Board(this.BoardPlayer1.shipPos, this.BoardPlayer2.shots, "EnemyBoard");
             }
             else
             {
