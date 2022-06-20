@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Library;
 
 namespace Program
@@ -20,7 +20,10 @@ namespace Program
             //TimeTrial timeTrial = new TimeTrial();
             //timeTrial.FinishTimeGame();
 
-            Menu.ShowMenu();
+            Menu menu = new Menu();
+            menu.ShowMenu();
+        
+
 
             //Console.WriteLine(Stadistics.playedGames.Count);
 
@@ -32,7 +35,7 @@ namespace Program
 
 
 
+
         }
     }
 }
-

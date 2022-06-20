@@ -2,39 +2,60 @@ namespace Library
 {
     public class Stadistics
     {
-        public static List<Stadistics> stadisticsList = new List<Stadistics>();
-        private int UserId;
-        private int PlayGames;
-        private int Wins;
-        private int WinsPerModdle;
-        public Stadistics()
+
+        private int playedGames;
+        private int wins;
+        private int winRate;
+        private User user;
+
+        public Stadistics(User user)
         {
-            this.UserId = UserId;
-            this.PlayGames = PlayGames;
-            this.Wins = Wins;
-            this.WinsPerModdle = WinsPerModdle;
+            this.user = user;
         }
 
-        public Stadistics ShowStats(int Id)
+        public void ModifyStatics(User user, bool boolean)
         {
-            Stadistics stadisticUser = new Stadistics();
-            stadisticUser.UserId = Id;
-            stadisticUser.Wins = 0;
-            stadisticUser.PlayGames = 0;
-            stadisticUser.WinsPerModdle = 0;
-            
-    
+            user.stadistics.playedGames = +1;
 
-            foreach (var item in stadisticsList)
+            if (boolean == true)
             {
-                if (item.UserId == Id)
-                {
-                    return item;
-                }
+                user.stadistics.wins = +1;
             }
-            return null;
-            
+            user.stadistics.winRate = playedGames / wins * 100;
         }
 
+        public static void ShowStats(User user)
+        {
+            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.stadistics.playedGames}\n Partidas ganadas: {user.stadistics.wins}\n Ratio de victorias: {user.stadistics.winRate}%");
+        }
+
+        public int PlayedGames
+        {
+            get
+            {
+                return this.playedGames;
+            }
+        }
+        public int Wins
+        {
+            get
+            {
+                return this.wins;
+            }
+        }
+        public int WinRate
+        {
+            get
+            {
+                return this.winRate;
+            }
+        }
+        public User User
+        {
+            get
+            {
+                return this.user;
+            }
+        }
     }
 }

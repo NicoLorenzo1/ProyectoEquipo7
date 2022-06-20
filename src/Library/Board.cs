@@ -23,6 +23,8 @@ namespace Library
         //public List<List<string>> board_Rows = new List<List<string>>();
         public ArrayList shipPos = new ArrayList();
         public List<string> shots = new List<string>();
+        private User PlayerUser;
+        public int healthLancha = 1;
 
         public Board(User player1User)
         //public Board()
@@ -44,6 +46,7 @@ namespace Library
 #region ConstructorTablero
         public List<List<string>> Start_Board()
         {   
+            List<List<string>> board_Rows = new List<List<string>>();
             List<string> Row_X = new List<string>();          
             for (int i = 0; i <= 10; i++)
             {
@@ -69,7 +72,7 @@ namespace Library
         public void Print_Board(ArrayList refreshShips, List<string> refreshShots , string printMode)
         {
             List<List<string>> board_Rows = Start_Board();
-            RefreshBoard(refreshShips, refreshShots, printMode);
+            RefreshBoard(refreshShips, refreshShots, printMode, board_Rows);
 
             string Row_I="";
             //Recorro filas
@@ -123,7 +126,7 @@ namespace Library
                 Console.WriteLine(Row_I);
             }
         }
-        public void Edit_Board(string coord1, string coord2, string editor)
+        public void Edit_Board(string coord1, string coord2, string editor, List<List<string>> board_Rows)
         {   
             for (int y = 0; y < 11; y++)
             {
@@ -164,6 +167,7 @@ namespace Library
         }
         public void Position_Ships()
         {
+            List<List<string>> board_Rows = Start_Board();
             for (int s = 1; s <=5; s++)
             {
                 Ship actualShip = new Ship(s);;
@@ -220,7 +224,7 @@ namespace Library
                                         IndexCheck1 = (row_Num.IndexOf(entry2));
                                         if(x==0)
                                         {
-                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1],this.shipPos);
+                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1],this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -230,7 +234,7 @@ namespace Library
                                         {
                                             poscheck1=entry1;
                                             poscheck2=row_Num[IndexCheck1-x];
-                                            shipTest=CheckShip(entry1,poscheck2,this.shipPos);
+                                            shipTest=CheckShip(entry1,poscheck2,this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -257,7 +261,7 @@ namespace Library
                                             Index_K= (row_Num.IndexOf(entry2)+1);
                                             if (i==1)
                                             {
-                                                Edit_Board(entry1,entry2,"S");                                                
+                                                Edit_Board(entry1,entry2,"S", board_Rows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -265,7 +269,7 @@ namespace Library
                                             {
                                                 pos1=entry1;
                                                 pos2=row_Num[Index_K-i];
-                                                Edit_Board(entry1,pos2,"S");
+                                                Edit_Board(entry1,pos2,"S", board_Rows);
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
@@ -297,7 +301,7 @@ namespace Library
                                         IndexCheck1 = (row_Num.IndexOf(entry2));
                                         if(x==0)
                                         {
-                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1],this.shipPos);
+                                            shipTest=CheckShip(entry1,row_Num[IndexCheck1],this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -307,7 +311,7 @@ namespace Library
                                         {
                                             poscheck1=entry1;
                                             poscheck2=row_Num[IndexCheck1+x];
-                                            shipTest=CheckShip(entry1,poscheck2,this.shipPos);
+                                            shipTest=CheckShip(entry1,poscheck2,this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -380,7 +384,7 @@ namespace Library
                                         IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
                                         if (x==0)
                                         {
-                                            shipTest=CheckShip(ABC[IndexCheck2],entry2,this.shipPos);
+                                            shipTest=CheckShip(ABC[IndexCheck2],entry2,this.shipPos,out string shipName);
                                             //System.Console.WriteLine(shipTest);
                                             if (shipTest==true)
                                             {
@@ -391,7 +395,7 @@ namespace Library
                                         {
                                             poscheck1=ABC[IndexCheck2+1];
                                             poscheck2=entry2;
-                                            shipTest=CheckShip(poscheck1,entry2,this.shipPos);
+                                            shipTest=CheckShip(poscheck1,entry2,this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -417,7 +421,7 @@ namespace Library
                                             Index_Z= (ABC.IndexOf(entry1.ToUpper()));
                                             if (i==1)
                                             {
-                                                Edit_Board(entry1,entry2,"S");                                                
+                                                Edit_Board(entry1,entry2,"S", board_Rows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -425,7 +429,7 @@ namespace Library
                                             {
                                                 pos1=ABC[Index_Z+(i-1)];
                                                 pos2=entry2;
-                                                Edit_Board(pos1,entry2,"S");
+                                                Edit_Board(pos1,entry2,"S", board_Rows);
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
@@ -459,7 +463,7 @@ namespace Library
                                         IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
                                         if (x==0)
                                         {
-                                            shipTest=CheckShip(ABC[IndexCheck2],entry2,this.shipPos);
+                                            shipTest=CheckShip(ABC[IndexCheck2],entry2,this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -469,7 +473,7 @@ namespace Library
                                         {
                                             poscheck1=ABC[IndexCheck2-1];
                                             poscheck2=entry2;
-                                            shipTest=CheckShip(poscheck1,entry2,this.shipPos);
+                                            shipTest=CheckShip(poscheck1,entry2,this.shipPos, out string shipName);
                                             if (shipTest==true)
                                             {
                                                 trigger=true;
@@ -495,7 +499,7 @@ namespace Library
                                             Index_Z= (ABC.IndexOf(entry1.ToUpper()));
                                             if (i==1)
                                             {
-                                                Edit_Board(entry1,entry2,"S");                                                
+                                                Edit_Board(entry1,entry2,"S", board_Rows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -503,7 +507,7 @@ namespace Library
                                             {
                                                 pos1=ABC[Index_Z-(i-1)];
                                                 pos2=entry2;
-                                                Edit_Board(pos1,entry2,"S");
+                                                Edit_Board(pos1,entry2,"S", board_Rows);
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
@@ -558,8 +562,8 @@ namespace Library
                 System.Console.WriteLine();
             }
         }
-        public bool CheckShip(string check1, string check2, ArrayList chosenShips)
-        {   
+        public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
+        {
             bool coincidence = false;
             foreach (ArrayList item in chosenShips)
             {
@@ -573,6 +577,7 @@ namespace Library
                         string numCheck = Convert.ToString(item[i+1]);
                         if (check2==numCheck)
                         {
+                            shipName = Convert.ToString(item[0]);
                             coincidence=true;
                             return coincidence;
                         }
@@ -585,9 +590,10 @@ namespace Library
                     }                                       
                 }                    
             }
+            shipName = "";
             return coincidence;
         }
-        public void RefreshBoard(ArrayList refreshShips, List<string> refreshShots , string printMode)
+        public void RefreshBoard(ArrayList refreshShips, List<string> refreshShots , string printMode, List<List<string>> board_Rows)
         {
             if (printMode=="MyBoard")
             {
@@ -597,22 +603,22 @@ namespace Library
                     {
                         string setter1 = Convert.ToString(item[i]);
                         string setter2 = Convert.ToString(item[i+1]);
-                        Edit_Board(setter1,setter2,"S");                                   
+                        Edit_Board(setter1,setter2,"S", board_Rows);                                
                     }                    
                 }
                 for (int i = 0; i < refreshShots.Count; i+=2)
                 {
-                    string setter1 = Convert.ToString(shots[i]);
-                    string setter2 = Convert.ToString(shots[i+1]);
+                    string setter1 = Convert.ToString(refreshShots[i]);
+                    string setter2 = Convert.ToString(refreshShots[i+1]);
 
-                    bool result=CheckShip(setter1,setter2,refreshShips);
+                    bool result=CheckShip(setter1,setter2,refreshShips, out string shipName);
                     if (result == true)
                     {
-                        Edit_Board(setter1,setter2,"X"); 
+                        Edit_Board(setter1,setter2,"X", board_Rows); 
                     }
                     else
                     {
-                        Edit_Board(setter1,setter2,"O"); 
+                        Edit_Board(setter1,setter2,"O", board_Rows); 
                     }  
                 }
             }
@@ -620,20 +626,34 @@ namespace Library
             {
                 for (int i = 0; i < refreshShots.Count; i+=2)
                 {
-                    string setter1 = Convert.ToString(shots[i]);
-                    string setter2 = Convert.ToString(shots[i+1]);
+                    string setter1 = Convert.ToString(refreshShots[i]);
+                    string setter2 = Convert.ToString(refreshShots[i+1]);
 
                     //Hay que agregar parametro de shipPos al checkship porque hay que pasarle en que lista de barcos mirar
-                    bool result=CheckShip(setter1,setter2,refreshShips);
+                    bool result=CheckShip(setter1,setter2,refreshShips, out string shipName);
                     if (result == true)
                     {
-                        Edit_Board(setter1,setter2,"X"); 
+                        Edit_Board(setter1,setter2,"X", board_Rows); 
                     }
                     else
                     {
-                        Edit_Board(setter1,setter2,"O"); 
+                        Edit_Board(setter1,setter2,"O", board_Rows); 
                     }  
                 }
+            }
+        }
+        public static List<string> abc
+        {
+            get
+            {
+                return ABC;
+            }
+        }
+        public static List<string> num
+        {
+            get
+            {
+                return row_Num;
             }
         }
         
@@ -655,7 +675,6 @@ namespace Library
         
     }
 }
-
 
 
 
