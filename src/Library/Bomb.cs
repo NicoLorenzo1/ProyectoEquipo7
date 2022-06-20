@@ -41,11 +41,11 @@ namespace Library
                 string coord2 = Console.ReadLine();
                 if (player == this.Player1)
                 {
-                    this.BoardPlayer2.Edit_Board(coord1,coord2);
+                    this.BoardPlayer2.EditBoard(coord1,coord2);
                 }
                 else if (player == this.Player2)
                 {
-                    this.BoardPlayer1.Edit_Board(coord1, coord2);
+                    this.BoardPlayer1.EditBoard(coord1, coord2);
                 }
                 MissedShots = 0;
             }

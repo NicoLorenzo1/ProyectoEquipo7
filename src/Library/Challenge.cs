@@ -38,8 +38,8 @@ namespace Library
         {
             while (WinsPlayer1<2 || WinsPlayer2<2)
             {
-                BoardPlayer1.Position_Ships();
-                BoardPlayer2.Position_Ships();
+                BoardPlayer1.PositionShips();
+                BoardPlayer2.PositionShips();
                 User recentAttacker = this.Player2;
                 OnGoing = true;
                 while (OnGoing)
