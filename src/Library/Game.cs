@@ -8,6 +8,7 @@ namespace Library
         private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
+        private Board Board;
         private bool OnGoing;
         private bool Hit;
         private Stadistics stadistics;
@@ -17,8 +18,9 @@ namespace Library
         {
             this.Player1 = player1;
             this.Player2 = player2;
-            BoardPlayer1 = new Board(this.Player1);
-            BoardPlayer2 = new Board(this.Player2);
+            BoardPlayer1 = new Board();
+            BoardPlayer2 = new Board();
+            Board = new Board();
         }
         public Game(string name) : base(name)
         {
@@ -127,6 +129,34 @@ namespace Library
             }
             else if (player == this.Player2)
             {
+                if (!Board.num.Contains(coord2))
+                {
+                    Console.WriteLine("No puede atacar en esta ubicacion");
+                    attack = true;
+                }
+                else if (!Board.abc.Contains(coord1.ToUpper()))
+                {
+                    Console.WriteLine("No puede atacar en esta ubicacion");
+                    attack = true;
+                }
+                        
+                for (int i = 0; i < BoardPlayer2.shots.Count; i+=2)
+                    {
+                        string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
+                        string setter2 = Convert.ToString(BoardPlayer1.shots[i+1]);
+                        if (setter1 == coord1.ToUpper())
+                        {
+                            if (setter2 == coord2)
+                            {
+                                Console.WriteLine("Ya ha atacado aqui");
+                                attack = true;
+                            }
+                        }
+                    }
+                if (attack)
+                {
+                    Attack(player);
+                }
                 hit = this.BoardPlayer1.CheckShip(coord1,coord2);
                 if (hit)
                 {
@@ -139,13 +169,37 @@ namespace Library
                     this.BoardPlayer1.Edit_Board(coord1, coord2, "O");
                     Console.WriteLine("Agua");
                 }
+                BoardPlayer1.shots.Add(coord1.ToUpper());
+                BoardPlayer1.shots.Add(coord2);
             }
             Console.WriteLine($"Atacó {player.Name}");
         }
-        public void ShowBoard(Board board)
+        public void ShowBoard(User user)
         {
-            Console.WriteLine($"Tablero de {board.Username.Name}");
-            board.Print_Board();
+            Console.WriteLine("Que tablero quiere mostrar?");
+            Console.WriteLine("1- Mi tablero");
+            Console.WriteLine("2- Tablero enemigo");
+            string response = Console.ReadLine();
+            if (user == this.Player1 && response == "1")
+            {
+                this.Board.Print_Board(this.Board.shipPosPlayer1, this.Board.shotsPlayer2, "MyBoard");
+            }
+            else if (user == this.Player1 && response == "2")
+            {
+                this.Board.Print_Board(this.Board.shipPosPlayer2, this.Board.shotsPlayer1, "EnemyBoard");
+            }
+            else if (user == this.Player2 && response == "1")
+            {
+                this.Board.Print_Board(this.Board.shipPosPlayer2, this.Board.shotsPlayer1, "MyBoard");
+            }
+            else if (user == this.Player2 && response == "2")
+            {
+                this.Board.Print_Board(this.Board.shipPosPlayer1, this.Board.shotsPlayer2, "EnemyBoard");
+            }
+            else
+            {
+                Console.WriteLine("No es una opción válida");
+            }
         }
         public void EndGame()
         {

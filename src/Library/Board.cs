@@ -29,9 +29,9 @@ namespace Library
         public ArrayList shipPos = new ArrayList();
         public List<string> shots = new List<string>();
 
-        public Board(User username)
+        public Board(/*User username*/)
         {
-            this.Username = username;
+            //this.Username = username;
             Start_Board();
             //this.Start_Board();
         }
@@ -327,7 +327,7 @@ namespace Library
                                             {
                                                 //ACORDATE DE SACAR ESTE COMENT
 
-                                                //Edit_Board(entry1,entry2,"S");                                                
+                                                Edit_Board(entry1,entry2,"S");                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -338,7 +338,7 @@ namespace Library
 
                                                 //ACORDATE DE SACAR ESTE COMENT
 
-                                                //Edit_Board(entry1,pos2,"S");
+                                                Edit_Board(entry1,pos2,"S");
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
@@ -609,6 +609,20 @@ namespace Library
                 {
                     Edit_Board(setter1,setter2,"O"); 
                 }  
+            }
+        }
+        public static List<string> abc
+        {
+            get
+            {
+                return ABC;
+            }
+        }
+        public static List<string> num
+        {
+            get
+            {
+                return row_Num;
             }
         }
 
