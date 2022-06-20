@@ -24,6 +24,8 @@ namespace Library
             user.Statistics.winRate = playedGames / wins * 100;
 
             //checkear si entra en la lista nueva de top 10 y sumarla o ignorarla
+
+            
         }
 
         public static void ShowStats(User user)

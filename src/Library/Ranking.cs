@@ -65,8 +65,8 @@ namespace Library
 
             Console.WriteLine("Top 10 jugadores:");
             for (int i = 0; i < sortedAll.Count ; i++)
-            {
-                Console.WriteLine($"{sortedAll[i]}"); //
+            {   
+                Console.WriteLine($"{i+1}-Nombre:{sortedAll[i].User.Name} - Wins={sortedAll[i].Wins} - WinRate={sortedAll[i].WinRate}");
             }
         }
 
