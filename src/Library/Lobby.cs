@@ -3,9 +3,8 @@ namespace Library
     //Clase lobby la cual se va a utilizar con la nueva implementación de los diferentes modos de juego.
     public class Lobby
     {
-        public string name;
+        private string name;
         public List<User> usersWaiting = new List<User>();
-
         public Lobby(string name)
         {
             this.name = name;

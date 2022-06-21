@@ -11,13 +11,13 @@ namespace Library
         private string name;
         private int id;
 
-        public Stadistics stadistics;
+        public Statistics Statistics;
 
         public User(string name)
         {
             this.name = name;
             this.id = count += 1;
-            this.stadistics = new Stadistics(this);
+            this.Statistics = new Statistics(this);
             users.Add(this);
         }
 
@@ -36,5 +36,8 @@ namespace Library
                 return this.id;
             }
         }
+
     }
+
+    
 }

@@ -82,14 +82,22 @@ namespace Library
         /*
         public void SelectMode(User user)
         {
+<<<<<<< HEAD
             //List<Lobby> modes = administrator.modeList;
+=======
+            List<Lobby> modes = administrator.modeList;
+>>>>>>> 8c72e2053a48c200c1be9ad0707e0bccfedb20d7
 
             //Recorre la lista de nombres.
             
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");
             int n = 0;
+<<<<<<< HEAD
             foreach (Lobby lobby in modes)
+=======
+            foreach (Lobby mode in modes)
+>>>>>>> 8c72e2053a48c200c1be9ad0707e0bccfedb20d7
             {
                 n++;
                 Console.WriteLine($"{n}-{lobby.Name}");
