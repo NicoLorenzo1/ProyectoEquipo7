@@ -2,37 +2,22 @@ namespace Library
 {
     public class Administrator
     {
-        public List<User> usersRegistered = new List<User>();
-        public List<Game> currentGame = new List<Game>();
-        public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
-        private static Administrator instance;
-
-        public static Administrator Instance
+        public List<User> usersRegistered = new List<User>()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Administrator();
-                }
 
-                return instance;
-            }
-        }
-
-        public void MatchPlayers(User user, string mode)
+        };
+        //lista general de modos de juego.
+        public List<Lobby> modeList = new List<Lobby>()
         {
-            UsersToPlay.Add(user, mode);
-            foreach (var element in UsersToPlay)
+            new TimeTrialMode("Time Trial"),
+            new ClassicMode("Classic")
+        };
+
+        private void MatchPlayers()
+        {
+            foreach (Lobby m in modeList)
             {
-                for (int i = 0; i < UsersToPlay.Count; i++)
-                {
-                    if (element.Value[0] == element.Value[i])
-                    {
-                        Game game = new Game(UsersToPlay.ElementAt(0).Key, UsersToPlay.ElementAt(i).Key, "Classic");
-                        game.StartGame();
-                    }
-                }
+                m.MatchPlayers();
             }
         }
 
@@ -52,23 +37,5 @@ namespace Library
             Console.WriteLine("\nUsuario registrado exitosamente");
             return user;
         }
-
-        //lista general de modos de juego.
-        /*
-        public List<Lobby> modeList = new List<Lobby>()
-        {
-            new TimeTrialMode("Time Trial"),
-            new Game("Classic")
-        };
-
-
-        //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
-        private void MatchPlayers()
-        {
-            foreach (Lobby m in modeList)
-            {
-                m.MatchPlayers();
-            }
-        }*/
     }
 }
