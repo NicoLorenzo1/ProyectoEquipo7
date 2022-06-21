@@ -3,6 +3,10 @@ using System.Collections;
 
 namespace Library
 {
+    //<summary>
+    //Por Expert se crea ranking que es el encargado de conocer todas las estadisticas de todos los usuarios
+    //y de ordenarlas en base a ciertos criterios
+    //</summary>
     public class Ranking
     {
         public static HashSet<Statistics> playerStats = new HashSet<Statistics>() { };  //Stat

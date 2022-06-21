@@ -1,5 +1,10 @@
 namespace Library
 {
+
+    //<summary>
+    //Por SRP statistics es el encargado de conocer toda la información de las estadísticas del
+    // usuario al que se esta asignada
+    //</summary>
     public class Statistics
     {
         private int playedGames;
