@@ -24,7 +24,11 @@ namespace Library
         public List<string> shots = new List<string>();
         private User PlayerUser;
 
-        //public Board()
+        /// <summary>
+        /// El constructor de la clase Board y donde se detallan los atributos vinculados.
+        /// Aquí se deja guardado el Usuario para el cual fue generado el tablero.
+        /// </summary>
+        /// <param name="player1User"> Es el User para el cual fue generado el tablero</param>
         public Board(User player1User)
         {
            this.PlayerUser = player1User;
@@ -37,6 +41,12 @@ namespace Library
            */
         }
 #region ConstructorTablero
+        /// <summary>
+        /// Este método StartBoard lo que hace es generar un tablero ficticio conformado
+        /// por una Lista de Listas de Strings desde cero. Estos tableros ficticios serán 
+        /// utilizados por los otros métodos de la clase Board para ejecutar sus funciones.
+        /// </summary>
+        /// <returns></returns>
         public List<List<string>> StartBoard()
         {   
             List<List<string>> boardRows = new List<List<string>>();
@@ -62,11 +72,19 @@ namespace Library
             return boardRows;
         }
 #endregion ConstructorTablero
-
-        //<summary>
-        //Por Creator, el responsable de conocer las lineas del tablero es la clase Board
-        //y el responsable de imprimirlas debe ser él
-        //</summary>
+        /// <summary>
+        /// Por Creator, el responsable de conocer las lineas del tablero es la clase Board
+        /// y el responsable de imprimirlas debe ser él.
+        /// </summary>
+        /// <param name="refreshShips"> Este parámetro indica que Arraylist de barcos (propios o enemigos)
+        /// se debe consultar para realizar la impresión que corresponda. Se recorrerá esta lista
+        /// y se actualizará el nuevo tablero ficticio generado por StartBoard() con la posición de
+        /// estos barcos.</param>
+        /// <param name="refreshShots"> Este parámetro indica que lista de tiros (propios o enemigos)
+        /// serán utilizados para la generación del tablero ficticio que será impreso</param>
+        /// <param name="printMode"> Este parámetro indica el tipo de tablero que deberá construir
+        /// lo cual afectará en la construcción del mismo. Este parámetro será utilizado en el
+        /// método RefreshBoard()</param>
         public void PrintBoard(ArrayList refreshShips, List<string> refreshShots , string printMode)
         {
             List<List<string>> boardRows = StartBoard();
@@ -124,10 +142,15 @@ namespace Library
                 Console.WriteLine(RowI);
             }
         }
-        //<summary>
-        //Por Creator, el responsable de conocer las lineas del tablero es la clase Board
-        //y el responsable de editarlas debe ser él
-        //</summary>
+        /// <summary>
+        /// Por Creator, el responsable de conocer las lineas del tablero es la clase Board
+        /// y el responsable de editarlas debe ser él
+        /// </summary>
+        /// <param name="coord1"> Coordenada 1 en donde se modificará el tablero ficticio</param>
+        /// <param name="coord2"> Coordenada 2 en donde se modificará el tablero ficticio</param>
+        /// <param name="editor"> Símbolo que será utilizado para editar el tablero (-,X,O,S)</param>
+        /// <param name="boardRows"> Se le pasa el nuevo tablero ficticio generado antes de la 
+        /// ejecución de este método EditBoard</param>
         public void EditBoard(string coord1, string coord2, string editor, List<List<string>> boardRows)
         {   
             for (int y = 0; y < 11; y++)
@@ -167,10 +190,16 @@ namespace Library
                 }
             }   
         }
-        //<summary>
-        //Por Expert, al Board conocer lo que hay en cada posición del tablero, es el responsable
-        //de colocar los barcos en dicho tablero
-        //</summary>
+        /// <summary>
+        /// Por Expert, al Board conocer lo que hay en cada posición del tablero, es el responsable
+        /// de colocar los barcos en dicho tablero.
+        /// En este método también se encuentra la lógica de ordenamiento y pedido de coordenadas
+        /// y dirección al usuario. Luego verifica si en la posición seleccionada es posible 
+        /// colocar el barco correspondiente teniendo en cuenta la dimensión del tablero 
+        /// y si en esa posición ya hay otro barco posicionado.
+        /// Esto modifica el ArrayList de shipPos que es donde se almacena el barco correspondiente
+        /// y las coordenadas que ocupa de forma individual
+        /// </summary>
         public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
@@ -546,10 +575,17 @@ namespace Library
                 }
             }
         }
-        //<summary>
-        //Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
-        //de conocer si hay un barco en una posición en específica o no
-        //</summary>
+        /// <summary>
+        /// Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
+        /// de conocer si hay un barco en una posición en específica o no.
+        /// Si encuentra una coincidencia en la posición indicada, te retorna un bool llamado
+        /// coincidence, el cual si es true es porque encontró un barco en esas coordenadas.
+        /// </summary>
+        /// <param name="check1"> Primer coordenada a verificar en el listado de barcos y sus posiciones</param>
+        /// <param name="check2"> Segunda coordenada a verificar en el listado de barcos y sus posiciones</param>
+        /// <param name="chosenShips"> Lista de barcos en donde se verificará si hay una coincidencia</param>
+        /// <param name="shipName"> Retorna el nombre del barco en el cual se generó la coincidencia</param>
+        /// <returns>coincidence</returns>
         public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
         {
             bool coincidence = false;
@@ -581,12 +617,18 @@ namespace Library
             shipName = "";
             return coincidence;
         }
-        
-        //<summary>
-        //Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
-        //del tablero, es el encargado de crear uno nuevo a partir de la posición de los barcos y
-        //de los ataques
-        //</summary>
+        /// <summary>
+        /// Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
+        /// del tablero, es el encargado de crear uno nuevo a partir de la posición de los barcos y
+        /// de los ataques
+        /// Este método esta encargado de actualizar el tablero ficticio nuevo generado e incluir
+        /// los barcos que se le pasan por parámetro o no dependiendo el caso y posicionar las coordenadas
+        ///  de ataques de la lista shots recibida por parámetro
+        /// </summary>
+        /// <param name="refreshShips"> Lista de Barcos que será utilizada para realizar la actualización</param>
+        /// <param name="refreshShots"> Lista de disparos que será utilizada para realizar la actualización</param>
+        /// <param name="printMode"> Tipo de tablero deseado</param>
+        /// <param name="boardRows"> Tablero ficticio nuevo generado previamente</param>
         public void RefreshBoard(ArrayList refreshShips, List<string> refreshShots , string printMode, List<List<string>> boardRows)
         {
             if (printMode=="MyBoard")
@@ -636,6 +678,10 @@ namespace Library
                 }
             }
         }
+        /// <summary>
+        /// Getter del listado ABC, que es utilizado para verificar indices desde fuera de Board
+        /// </summary>
+        /// <value></value>
         public static List<string> abc
         {
             get
@@ -643,6 +689,10 @@ namespace Library
                 return ABC;
             }
         }
+        /// <summary>
+        /// Getter del listado rowNum, que es utilizado para verificar indices desde fuera de Board
+        /// </summary>
+        /// <value></value>
         public static List<string> num
         {
             get

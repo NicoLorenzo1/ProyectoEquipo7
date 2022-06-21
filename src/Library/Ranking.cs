@@ -3,11 +3,21 @@ using System.Collections;
 
 namespace Library
 {
+<<<<<<< HEAD
     /// <summary>
     /// Por Expert se crea ranking que es el encargado de conocer todas las estadisticas de todos los usuarios
     /// y de ordenarlas en base a ciertos criterios.
     /// Singleton. Mantiene una lista estática y única con los stats de todos los usuarios.
     /// </summary>
+=======
+
+    /// <summary>
+    /// Singleton. Mantiene una lista estática con los stats de todos los usuarios.
+    /// Por Expert se crea ranking que es el encargado de conocer todas las estadisticas de todos los usuarios
+    /// y de ordenarlas en base a ciertos criterios
+    /// </summary>
+
+>>>>>>> main
     public class Ranking
     {
         /// <summary>
