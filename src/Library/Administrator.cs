@@ -22,19 +22,36 @@ namespace Library
 
         public void MatchPlayers(User user, string mode)
         {
+
+            int counter = 0;
             UsersToPlay.Add(user, mode);
-            foreach (var element in UsersToPlay)
-            {
-                for (int i = 0; i < UsersToPlay.Count; i++)
-                {   
-                    //string mode = element;
-                    //System.Console.WriteLine(element.Value);
-                    // UserToPlay = { (jose,classic), (juan, classic)  }
-                    if (element.Value[0] == element.Value[i])
+            KeyValuePair<User, string> match1;
+
+            
+            for (int i = 0; i < UsersToPlay.Count; i++)
+            {   
+                if (counter==0)
+                {
+                    match1 = UsersToPlay.ElementAt(i);
+                    counter =+1;
+                    for (int x = i; x < UsersToPlay.Count; x++)
                     {
-                        Game game = new Game(UsersToPlay.ElementAt(0).Key, UsersToPlay.ElementAt(i).Key, "Classic");
-                        game.StartGame();
+                        if (!(UsersToPlay.ElementAt(x).Key==match1.Key))
+                        {   
+                            if (UsersToPlay.ElementAt(x).Value==match1.Value)
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                Game game = new Game(match1.Key, match2.Key, "Classic");
+                                game.StartGame(); 
+                            }
+                        }
+                        else
+                        {
+                        }
                     }
+                }
+                else
+                {                   
                 }
             }
         }
@@ -63,8 +80,6 @@ namespace Library
             new TimeTrialMode("Time Trial"),
             new Game("Classic")
         };
-
-
         //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
         private void MatchPlayers()
         {
