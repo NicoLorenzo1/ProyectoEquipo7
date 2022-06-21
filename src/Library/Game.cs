@@ -10,6 +10,7 @@ namespace Library
         private Board BoardPlayer2;
         private bool OnGoing;
         private bool Hit;
+
         private int HitsPlayer1;
         private int HitsPlayer2;
         //<summary>
@@ -41,7 +42,6 @@ namespace Library
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
-            //administrator.currentGame.Add(this);
         }
         public Game(string name) : base(name)
         {
