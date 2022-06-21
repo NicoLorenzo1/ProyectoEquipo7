@@ -168,7 +168,7 @@ namespace Library
                 while (true)
                 {   
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
-                    Console.WriteLine("Ingrese la cordenada 1(A-J): ");
+                    Console.Write("Ingrese la cordenada 1(A-J): ");
                     string entry1;
                     entry1=Console.ReadLine();
                     if (ABC.Contains(entry1.ToUpper()))
@@ -177,7 +177,7 @@ namespace Library
                         IndexX= ABC.IndexOf(entry1.ToUpper());
         
                         string entry2;
-                        Console.WriteLine("Ingrese la cordenada 2(1-10): ");
+                        Console.Write("Ingrese la cordenada 2(1-10): ");
                         entry2=Console.ReadLine();
                         if (rowNum.Contains(entry2))
                         {
@@ -192,7 +192,7 @@ namespace Library
                             System.Console.WriteLine("3-Derecha");
                             System.Console.WriteLine("4-Izquierda");
                             System.Console.WriteLine();
-                            System.Console.WriteLine("Ingrese la dirección escogida (1-4): ");
+                            System.Console.Write("Ingrese la dirección escogida (1-4): ");
                             dir = Console.ReadLine();
                             System.Console.WriteLine();
                             if(dir=="1")
@@ -254,7 +254,7 @@ namespace Library
                                             IndexK= (rowNum.IndexOf(entry2)+1);
                                             if (i==1)
                                             {
-                                                EditBoard(entry1,entry2,"S", boardRows);                                                
+                                                //EditBoard(entry1,entry2,"S", boardRows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -262,12 +262,13 @@ namespace Library
                                             {
                                                 pos1=entry1;
                                                 pos2=rowNum[IndexK-i];
-                                                EditBoard(entry1,pos2,"S", boardRows);
+                                                //EditBoard(entry1,pos2,"S", boardRows);
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
                                         }
                                         shipPos.Add(posList);
+                                        PrintBoard(this.shipPos, this.shots, "MyBoard");
                                         break;
                                     }
                                 }
@@ -330,8 +331,6 @@ namespace Library
                                             IndexK= (rowNum.IndexOf(entry2)+1);
                                             if (i==1)
                                             {
-                                                //ACORDATE DE SACAR ESTE COMENT
-
                                                 //EditBoard(entry1,entry2,"S");                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
@@ -349,6 +348,7 @@ namespace Library
                                             }                                           
                                         }
                                         shipPos.Add(posList);
+                                        PrintBoard(this.shipPos, this.shots, "MyBoard");
                                         break;
                                     }
                                 }
@@ -386,7 +386,7 @@ namespace Library
                                         }
                                         else
                                         {
-                                            poscheck1=ABC[IndexCheck2+1];
+                                            poscheck1=ABC[IndexCheck2+(x)];
                                             poscheck2=entry2;
                                             shipTest=CheckShip(poscheck1,entry2,this.shipPos, out string shipName);
                                             if (shipTest==true)
@@ -414,7 +414,7 @@ namespace Library
                                             IndexZ= (ABC.IndexOf(entry1.ToUpper()));
                                             if (i==1)
                                             {
-                                                EditBoard(entry1,entry2,"S", boardRows);                                                
+                                                //EditBoard(entry1,entry2,"S", boardRows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -422,19 +422,20 @@ namespace Library
                                             {
                                                 pos1=ABC[IndexZ+(i-1)];
                                                 pos2=entry2;
-                                                EditBoard(pos1,entry2,"S", boardRows);
-                                                posList.Add(entry1.ToUpper());
+                                                //EditBoard(pos1,entry2,"S", boardRows);
+                                                posList.Add(pos1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
                                         }
                                         shipPos.Add(posList);
+                                        PrintBoard(this.shipPos, this.shots, "MyBoard");
                                         break;
                                     }    
                                 }
                             }
                             else if(dir=="4")
                             {
-                                if (IndexX-actualShip.ShipDim<1)
+                                if (IndexX-actualShip.ShipDim<0)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
@@ -464,7 +465,7 @@ namespace Library
                                         }
                                         else
                                         {
-                                            poscheck1=ABC[IndexCheck2-1];
+                                            poscheck1=ABC[IndexCheck2-x];
                                             poscheck2=entry2;
                                             shipTest=CheckShip(poscheck1,entry2,this.shipPos, out string shipName);
                                             if (shipTest==true)
@@ -492,7 +493,7 @@ namespace Library
                                             IndexZ= (ABC.IndexOf(entry1.ToUpper()));
                                             if (i==1)
                                             {
-                                                EditBoard(entry1,entry2,"S", boardRows);                                                
+                                                //EditBoard(entry1,entry2,"S", boardRows);                                                
                                                 posList.Add(entry1.ToUpper());
                                                 posList.Add(entry2);
                                             }
@@ -500,12 +501,13 @@ namespace Library
                                             {
                                                 pos1=ABC[IndexZ-(i-1)];
                                                 pos2=entry2;
-                                                EditBoard(pos1,entry2,"S", boardRows);
-                                                posList.Add(entry1.ToUpper());
+                                                //EditBoard(pos1,entry2,"S", boardRows);
+                                                posList.Add(pos1.ToUpper());
                                                 posList.Add(pos2);
                                             }                                           
                                         }
                                         shipPos.Add(posList);
+                                        PrintBoard(this.shipPos, this.shots, "MyBoard");
                                         break;                  
                                     }
                                 }
@@ -532,7 +534,7 @@ namespace Library
             }
         }
 
-        /*
+     /*   
         public void showList()
         {
             foreach (ArrayList item in shipPos)
@@ -557,7 +559,8 @@ namespace Library
                 System.Console.WriteLine();
             }
         }
-        */
+    */
+
         public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
         {
             bool coincidence = false;

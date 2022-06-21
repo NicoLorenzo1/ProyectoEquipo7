@@ -21,9 +21,15 @@ namespace Library
             {
                 user.Statistics.wins = +1;
             }
-            user.Statistics.winRate = playedGames / wins * 100;
-
-            //checkear si entra en la lista nueva de top 10 y sumarla o ignorarla
+            if (wins==0)
+            {
+                user.stadistics.winRate=0;
+            }
+            else
+            {
+                user.stadistics.winRate = playedGames / wins * 100; 
+            }
+            
         }
 
         public static void ShowStats(User user)
