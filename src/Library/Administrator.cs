@@ -29,7 +29,7 @@ namespace Library
                 {   
                     //string mode = element;
                     //System.Console.WriteLine(element.Value);
-                    // UserToPlay = { (jose,classic), (juan, classic)  }
+                    // UserToPlay = { (jose,classic), (juan, classic) . }
                     if (element.Value[0] == element.Value[i])
                     {
                         Game game = new Game(UsersToPlay.ElementAt(0).Key, UsersToPlay.ElementAt(i).Key, "Classic");
