@@ -1,5 +1,6 @@
 namespace Library
 {
+    //Clase lobby la cual se va a utilizar con la nueva implementación de los diferentes modos de juego.
     public class Lobby
     {
         private string name;
@@ -20,7 +21,6 @@ namespace Library
                 this.name = value;
             }
         }
-        
 
         //Todos los modos tienen su lista de espera
         public void AddUserToWaitList(User user)
@@ -28,16 +28,14 @@ namespace Library
             usersWaiting.Add(user);
         }
 
-        //ver donde se va a llamar este metodo (se debe actualizar a cada rato pq solo agarra los dos primeros lugares)
         public virtual void MatchPlayers()
         {
             if (usersWaiting.Count >= 2)
             {
-                Game game = new Game(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), "Classic Mode");
-                game.StartGame(/*this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1)*/);
                 //Remuevo los usuarios de la lista de espera de ese modo.
                 this.usersWaiting.Remove(this.usersWaiting.ElementAt(0));
-                this.usersWaiting.Remove(this.usersWaiting.ElementAt(0));
+                this.usersWaiting.Remove(this.usersWaiting.ElementAt(1));
+                Console.WriteLine($"Comenzará una nueva partida de {this.Name} con los jugadores {this.usersWaiting.ElementAt(0)} , {this.usersWaiting.ElementAt(1)}.");
             }
         }
     }
