@@ -1,5 +1,10 @@
-using System;
+/*using System;
 
+        //<summary>
+        //Aplica lo mismo que para la clase Commands, QuickChat es una clase directamente
+        //relacionada con el funcionamiento del bot, el cual no esta implementado, por lo que
+        //esta clase queda sin efecto
+        //</summary>
 namespace Library
 {
     public class QuickChat
@@ -36,4 +41,4 @@ namespace Library
         }
 
     }
-}
+}*/

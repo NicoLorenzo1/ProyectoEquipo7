@@ -10,10 +10,13 @@ namespace Library
         private Board BoardPlayer2;
         private bool OnGoing;
         private bool Hit;
-        private Statistics statisticsPlayer1;
-        private Statistics statisticsPlayer2;
+
         private int HitsPlayer1;
         private int HitsPlayer2;
+        //<summary>
+        //Por Expert la clase Game es la encargada de conocer la cantidad de veces que se le
+        //pegó a un barco
+        //</summary>
         private int Lancha1Health = 1;
         private int Crucero1Health = 2;
         private int Submarino1Health = 3;
@@ -24,14 +27,21 @@ namespace Library
         private int Submarino2Health = 3;
         private int Buque2Health = 4;
         private int Portaaviones2Health = 5;
+
+        /// <summary>
+        /// Por OCP todos los modos de juego heredan de la clase Game, que posee la lógica base del juego
+        /// y es abierta a extensiones, pero no recibe ningun cambio
+        /// </summary>
+        /// <param name="player1">Primer User que proviene de la lista UsersToPlay para el modo de juego seleccionado</param>
+        /// <param name="player2">Segundo User que proviene de la lista UsersToPlay para el modo de juego seleccionado</param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public Game(User player1, User player2, string name) : base(name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
-            statisticsPlayer1 = new Statistics(this.Player1);
-            statisticsPlayer2 = new Statistics(this.Player2);
         }
         public Game(string name) : base(name)
         {
@@ -46,17 +56,30 @@ namespace Library
                 Console.WriteLine("Modo incorrecto");
             }
         }
+
+        /// <summary>
+        /// StartGame inicializa la lógica central del juego, en la cual le solicita a ambos usuarios que posicionen sus barcos y luego
+        /// comenzará la ronda de ataques por turnos.
+        /// </summary>
         public virtual void StartGame()
         {
+            System.Console.WriteLine("Comienza la batalla naval!!");
+            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            System.Console.WriteLine();
+
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
             BoardPlayer1.PositionShips();
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
             BoardPlayer2.PositionShips();
             User recentAttacker = this.Player2;
+
             OnGoing = true;
             while (OnGoing)
             {
                 if (recentAttacker == this.Player1)
                 {
                     this.Attack(this.Player2);
+                    System.Console.WriteLine();
                     this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                     ShowBoard(this.Player2);
                     recentAttacker = Player2;
@@ -73,38 +96,51 @@ namespace Library
                     EndGame();
                     if (HitsPlayer2 == 15)
                     {
-                        statisticsPlayer1.ModifyStatics(Player1, false);
-                        statisticsPlayer2.ModifyStatics(Player2, true);
-                        Console.WriteLine($"Gana {Player2.Name}");
+                        Player1.statistics.ModifyStatics(Player1, false);
+                        Player2.statistics.ModifyStatics(Player2, true);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player2.Name}!!");
                     }
                     if (HitsPlayer1 == 15)
                     {
-                        statisticsPlayer1.ModifyStatics(Player1, true);
-                        statisticsPlayer2.ModifyStatics(Player1, false);
-                        Console.WriteLine($"Gana {Player1.Name}");
+                        Player1.statistics.ModifyStatics(Player1, true);
+                        Player2.statistics.ModifyStatics(Player1, false);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player1.Name}!!");
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
+        /// es el encargado de conocer que ataques se realizan en cada momento
+        /// </summary>
+        /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
         public virtual void Attack(User player)
         {
             bool hit = false;
             bool outOfBoard = false;
+            System.Console.WriteLine();
+            System.Console.WriteLine($"Ataca {player.Name}:");
             Console.WriteLine("A donde quiere atacar?");
-            Console.WriteLine("Escriba la primer coordenada(A-J)");
+            Console.Write("Escriba la primer coordenada(A-J): ");
             string coord1 = Console.ReadLine();
-            Console.WriteLine("Escriba la segunda coordenada(1-10)");
+            Console.Write("Escriba la segunda coordenada(1-10): ");
             string coord2 = Console.ReadLine();
             if (player == this.Player1)
             {
                 if (!Board.num.Contains(coord2))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
+                    System.Console.WriteLine("Esta fuera del tablero");
+
                     outOfBoard = true;
                 }
                 else if (!Board.abc.Contains(coord1.ToUpper()))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
+                    System.Console.WriteLine("Esta fuera del tablero");
                     outOfBoard = true;
                 }
                         
@@ -116,7 +152,9 @@ namespace Library
                         {
                             if (setter2 == coord2)
                             {
+                                System.Console.WriteLine();
                                 Console.WriteLine("Ya ha atacado aqui");
+                                System.Console.WriteLine("Intente denuevo");
                                 outOfBoard = true;
                             }
                         }
@@ -135,7 +173,7 @@ namespace Library
                             Lancha2Health -=1;
                             if (Lancha2Health == 0)
                             {
-                                Console.WriteLine($"Hundido {shipName}");
+                                Console.WriteLine($"{shipName} Hundido!");
                             }
                             else
                             {
@@ -147,7 +185,7 @@ namespace Library
                             Crucero2Health -=1;
                             if (Crucero2Health == 0)
                             {
-                                Console.WriteLine($"Hundido {shipName}");
+                                Console.WriteLine($"{shipName} Hundido!");
                             }
                             else
                             {
@@ -159,7 +197,7 @@ namespace Library
                             Submarino2Health -=1;
                             if (Submarino2Health == 0)
                             {
-                                Console.WriteLine($"Hundido {shipName}");
+                                Console.WriteLine($"{shipName} Hundido!");
                             }
                             else
                             {
@@ -171,7 +209,7 @@ namespace Library
                             Buque2Health -=1;
                             if (Buque2Health == 0)
                             {
-                                Console.WriteLine($"Hundido {shipName}");
+                                Console.WriteLine($"{shipName} Hundido!");
                             }
                             else
                             {
@@ -183,7 +221,7 @@ namespace Library
                             Portaaviones2Health -=1;
                             if (Portaaviones2Health == 0)
                             {
-                                Console.WriteLine($"Hundido {shipName}");
+                                Console.WriteLine($"{shipName} Hundido!");
                             }
                             else
                             {
@@ -206,11 +244,13 @@ namespace Library
                 if (!Board.num.Contains(coord2))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
+                    System.Console.WriteLine("Esta fuera del tablero");
                     outOfBoard = true;
                 }
                 else if (!Board.abc.Contains(coord1.ToUpper()))
                 {
                     Console.WriteLine("No puede atacar en esta ubicacion");
+                    System.Console.WriteLine("Esta fuera del tablero");
                     outOfBoard = true;
                 }
                         
@@ -223,6 +263,7 @@ namespace Library
                             if (setter2 == coord2)
                             {
                                 Console.WriteLine("Ya ha atacado aqui");
+                                System.Console.WriteLine("Intente denuevo");
                                 outOfBoard = true;
                             }
                         }
@@ -311,36 +352,55 @@ namespace Library
                 }
             }
         }
+        /// <summary>
+        /// Por creator el responsable de saber la información de cómo estan compuestos los tableros
+        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
+        /// </summary>
+        /// <param name="user"> Al igual que en Attack, se indica que usuario está ingresando
+        /// la solicitud del tablero que seleccione</param>
         public void ShowBoard(User user)
         {
+            System.Console.WriteLine();
             Console.WriteLine("Que tablero quiere mostrar?");
             Console.WriteLine("1- Mi tablero");
             Console.WriteLine("2- Tablero enemigo");
+            System.Console.WriteLine();
+            System.Console.Write("Selección: ");
             string response = Console.ReadLine();
             if (user == this.Player1 && response == "1")
             {
+                System.Console.WriteLine();
                 this.BoardPlayer1.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "MyBoard");
             }
             else if (user == this.Player1 && response == "2")
             {
+                System.Console.WriteLine();
                 this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
             }
             else if (user == this.Player2 && response == "1")
             {
+                System.Console.WriteLine();
                 this.BoardPlayer2.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "MyBoard");
             }
             else if (user == this.Player2 && response == "2")
             {
+                System.Console.WriteLine();
                 this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
             }
             else
             {
                 Console.WriteLine("No es una opción válida");
+                System.Console.WriteLine("Intente denuevo");
             }
         }
+        /// <summary>
+        /// Por Expert, el encargado de terminar un juego en curso es Game mediante el
+        /// método EndGame()
+        /// </summary>
         public void EndGame()
         {
-            OnGoing = false;            
+            OnGoing = false;
+            //administrator.currentGame.Remove(this);            
         }
     }
 }

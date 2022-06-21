@@ -1,6 +1,11 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 
+
+        //<summary>
+        //La clase commands esta directamente vinculada al tema de los handlers, que en esta entrega
+        //no los tenemos implementados, por lo que queda sin efecto la clase
+        //</summary>
 namespace Library
 {
     public class Commands            
@@ -37,3 +42,4 @@ namespace Library
         }        
     }
 }
+*/

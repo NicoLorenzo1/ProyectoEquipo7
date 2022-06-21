@@ -2,7 +2,10 @@ namespace Library
 {
     /// <summary>
     /// Almacena información de un usuario que cambia según los resultados de sus partidas.
+    /// Por SRP statistics es el encargado de conocer toda la información de las estadísticas del
+    /// usuario al que se esta asignada
     /// </summary>
+
     public class Statistics
     {
         private int playedGames;
@@ -30,26 +33,21 @@ namespace Library
         /// victoria al usuario.</param>
         public void ModifyStatics(User user, bool boolean)
         {
-            user.Statistics.playedGames = +1;
+            user.statistics.playedGames = +1;
 
             if (boolean == true)
             {
-                user.Statistics.wins = +1;
+                user.statistics.wins = +1;
             }
 
-            if (user.Statistics.wins == 0)
+            if (wins==0)
             {
-                user.Statistics.winRate = 0;
+                user.statistics.winRate=0;
             }
             else
             {
-                user.Statistics.winRate = playedGames / wins * 100;
+                user.statistics.winRate = playedGames / wins * 100; 
             }
-            
-            Ranking.checkTop10Status(this);
-
-            //checkear si entra en la lista nueva de top 10 y sumarla o ignorarla
-
             
         }
 
@@ -59,7 +57,7 @@ namespace Library
         /// <param name="user">Usuario del cual se imprimirán las estadísticas.</param>
         public static void ShowStats(User user)
         {
-            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.Statistics.playedGames}\n Partidas ganadas: {user.Statistics.wins}\n Ratio de victorias: {user.Statistics.winRate}%");
+            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%");
         }
 
         /// <summary>
