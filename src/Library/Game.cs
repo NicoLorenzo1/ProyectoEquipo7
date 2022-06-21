@@ -10,8 +10,8 @@ namespace Library
         private Board BoardPlayer2;
         private bool OnGoing;
         private bool Hit;
-        private Stadistics stadisticsPlayer1;
-        private Stadistics stadisticsPlayer2;
+        private Statistics statisticsPlayer1;
+        private Statistics statisticsPlayer2;
         private int HitsPlayer1;
         private int HitsPlayer2;
         private int Lancha1Health = 1;
@@ -30,8 +30,8 @@ namespace Library
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
-            stadisticsPlayer1 = new Stadistics(this.Player1);
-            stadisticsPlayer2 = new Stadistics(this.Player2);
+            statisticsPlayer1 = new Statistics(this.Player1);
+            statisticsPlayer2 = new Statistics(this.Player2);
         }
         public Game(string name) : base(name)
         {
@@ -73,14 +73,14 @@ namespace Library
                     EndGame();
                     if (HitsPlayer2 == 15)
                     {
-                        stadisticsPlayer1.ModifyStatics(Player1, false);
-                        stadisticsPlayer2.ModifyStatics(Player2, true);
+                        statisticsPlayer1.ModifyStatics(Player1, false);
+                        statisticsPlayer2.ModifyStatics(Player2, true);
                         Console.WriteLine($"Gana {Player2.Name}");
                     }
                     if (HitsPlayer1 == 15)
                     {
-                        stadisticsPlayer1.ModifyStatics(Player1, true);
-                        stadisticsPlayer2.ModifyStatics(Player1, false);
+                        statisticsPlayer1.ModifyStatics(Player1, true);
+                        statisticsPlayer2.ModifyStatics(Player1, false);
                         Console.WriteLine($"Gana {Player1.Name}");
                     }
                 }

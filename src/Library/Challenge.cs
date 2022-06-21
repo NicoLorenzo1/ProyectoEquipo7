@@ -9,7 +9,7 @@ namespace Library
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private bool OnGoing;
-        private Stadistics stadistics;
+        private Statistics statistics;
         private int HitsPlayer1;
         private int HitsPlayer2;
         private int WinsPlayer1 = 0;
@@ -74,14 +74,14 @@ namespace Library
             }
             if (WinsPlayer1 == 2)
             {
-                stadistics.ModifyStatics(Player1, true);
-                stadistics.ModifyStatics(Player2, false);
+                statistics.ModifyStatics(Player1, true);
+                statistics.ModifyStatics(Player2, false);
                 Console.WriteLine($"{Player1.Name} gana el torneo");
             }
             else if (WinsPlayer2 == 2)
             {
-                stadistics.ModifyStatics(Player1, false);
-                stadistics.ModifyStatics(Player2, true);
+                statistics.ModifyStatics(Player1, false);
+                statistics.ModifyStatics(Player2, true);
                 Console.WriteLine($"{Player2.Name} gana el torneo");
             }
         }
