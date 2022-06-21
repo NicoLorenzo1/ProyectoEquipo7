@@ -7,10 +7,32 @@ namespace Program
     {
         static void Main(string[] args)
         {
+            User jose = new User("jose");
+
+            Administrator administrator = Administrator.Instance;
+            administrator.UsersToPlay.Add(jose, "Classic");
+
+            //Game game = new Game("classic");
+            //game.AddUserToWaitList(user1);
+            //game.AddUserToWaitList(user2);
+
+            Menu menu = new Menu();
+            menu.ShowMenu();
+
+            /* Esto es lo que tenia yo
+
             User user = new User("user");
             User user2 = new User("user2");
             Game game = new Game(user,user2,"classic");
             game.StartGame();
+            */
+
+
+
+
+
+
+
 
             //User user2 = new User("user1");
             //User user4 = new User("user4");

@@ -533,34 +533,6 @@ namespace Library
                 }
             }
         }
-
-     /*   
-        public void showList()
-        {
-            foreach (ArrayList item in shipPos)
-            {
-                System.Console.WriteLine($"{item[0]} está ubicado en: ");
-
-                for (int i = 1; i < (item.Count-1); i+=2)
-                {
-                    for (int j = i; j <= (i+1); j++)
-                    {
-                     System.Console.Write($"[{item[j]}] ");                           
-                    }
-                    if (i==(item.Count-2))
-                    {
-                        System.Console.WriteLine();
-                    }
-                    else
-                    {
-                        System.Console.Write(",");
-                    }
-                }
-                System.Console.WriteLine();
-            }
-        }
-    */
-
         public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
         {
             bool coincidence = false;
@@ -655,6 +627,32 @@ namespace Library
                 return rowNum;
             }
         }
+    /*   
+        public void showList()
+        {
+            foreach (ArrayList item in shipPos)
+            {
+                System.Console.WriteLine($"{item[0]} está ubicado en: ");
+
+                for (int i = 1; i < (item.Count-1); i+=2)
+                {
+                    for (int j = i; j <= (i+1); j++)
+                    {
+                     System.Console.Write($"[{item[j]}] ");                           
+                    }
+                    if (i==(item.Count-2))
+                    {
+                        System.Console.WriteLine();
+                    }
+                    else
+                    {
+                        System.Console.Write(",");
+                    }
+                }
+                System.Console.WriteLine();
+            }
+        }
+    */
     }
 }
 

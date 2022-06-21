@@ -15,26 +15,26 @@ namespace Library
 
         public void ModifyStatics(User user, bool boolean)
         {
-            user.Statistics.playedGames = +1;
+            user.statistics.playedGames = +1;
 
             if (boolean == true)
             {
-                user.Statistics.wins = +1;
+                user.statistics.wins = +1;
             }
             if (wins==0)
             {
-                user.stadistics.winRate=0;
+                user.statistics.winRate=0;
             }
             else
             {
-                user.stadistics.winRate = playedGames / wins * 100; 
+                user.statistics.winRate = playedGames / wins * 100; 
             }
             
         }
 
         public static void ShowStats(User user)
         {
-            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.Statistics.playedGames}\n Partidas ganadas: {user.Statistics.wins}\n Ratio de victorias: {user.Statistics.winRate}%");
+            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%");
         }
 
         public int PlayedGames
