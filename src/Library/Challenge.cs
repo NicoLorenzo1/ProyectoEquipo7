@@ -1,4 +1,11 @@
+/*
 using System;
+        
+        //<summary>
+        //Por motivos de tiempo, no fuimos capaces de realizar los tests necesarios para
+        //la clase Challenge, por lo que, al ser una modalidad agregada por nosotros,
+        //decidimos dejarla sin funcionamiento para esta entrega
+        //</summary>
 
 namespace Library
 {
@@ -92,3 +99,4 @@ namespace Library
         }
     }
 }
+*/

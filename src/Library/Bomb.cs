@@ -1,4 +1,12 @@
+/*
 using System;
+
+        //<summary>
+        //La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
+        //no funciona como debería de hacerlo, ya que no hemos logrado implementar una
+        //manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
+        //que se le pasan
+        //</summary>
 
 namespace Library
 {
@@ -65,3 +73,4 @@ namespace Library
         }
     }
 }
+*/

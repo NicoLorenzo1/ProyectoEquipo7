@@ -15,7 +15,7 @@ namespace Library
         private string name;
         private int id;
 
-        public Statistics Statistics;
+        public Statistics statistics;
 
         /// <summary>
         /// Constructor de User.
@@ -25,7 +25,7 @@ namespace Library
         {
             this.name = name;
             this.id = count += 1;
-            this.Statistics = new Statistics(this);
+            this.statistics = new Statistics(this);
             users.Add(this);
         }
 

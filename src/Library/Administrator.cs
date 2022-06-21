@@ -2,22 +2,57 @@ namespace Library
 {
     public class Administrator
     {
-        public List<User> usersRegistered = new List<User>()
-        {
+        public List<User> usersRegistered = new List<User>();
+        public List<Game> currentGame = new List<Game>();
+        public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
+        private static Administrator instance;
 
-        };
-        //lista general de modos de juego.
-        public List<Lobby> modeList = new List<Lobby>()
+        public static Administrator Instance
         {
-            new TimeTrialMode("Time Trial"),
-            new ClassicMode("Classic")
-        };
-
-        private void MatchPlayers()
-        {
-            foreach (Lobby m in modeList)
+            get
             {
-                m.MatchPlayers();
+                if (instance == null)
+                {
+                    instance = new Administrator();
+                }
+
+                return instance;
+            }
+        }
+
+        public void MatchPlayers(User user, string mode)
+        {
+
+            int counter = 0;
+            UsersToPlay.Add(user, mode);
+            KeyValuePair<User, string> match1;
+
+            
+            for (int i = 0; i < UsersToPlay.Count; i++)
+            {   
+                if (counter==0)
+                {
+                    match1 = UsersToPlay.ElementAt(i);
+                    counter =+1;
+                    for (int x = i; x < UsersToPlay.Count; x++)
+                    {
+                        if (!(UsersToPlay.ElementAt(x).Key==match1.Key))
+                        {   
+                            if (UsersToPlay.ElementAt(x).Value==match1.Value)
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                Game game = new Game(match1.Key, match2.Key, "Classic");
+                                game.StartGame(); 
+                            }
+                        }
+                        else
+                        {
+                        }
+                    }
+                }
+                else
+                {                   
+                }
             }
         }
 
@@ -34,8 +69,24 @@ namespace Library
 
             User user = new User(name);
             usersRegistered.Add(user);
-            Console.WriteLine("\nUsuario registrado exitosamente");
+            Console.WriteLine("\nUsuario registrado exitosamente\n");
             return user;
         }
+
+        //lista general de modos de juego.
+        /*
+        public List<Lobby> modeList = new List<Lobby>()
+        {
+            new TimeTrialMode("Time Trial"),
+            new Game("Classic")
+        };
+        //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
+        private void MatchPlayers()
+        {
+            foreach (Lobby m in modeList)
+            {
+                m.MatchPlayers();
+            }
+        }*/
     }
 }
