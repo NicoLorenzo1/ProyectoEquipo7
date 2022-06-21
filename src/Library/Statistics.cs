@@ -1,25 +1,25 @@
 namespace Library
 {
-    public class Stadistics
+    public class Statistics
     {
-
         private int playedGames;
         private int wins;
         private int winRate;
         private User user;
 
-        public Stadistics(User user)
+        public Statistics(User user)
         {
             this.user = user;
+            Ranking.AddToRankList(this);     //siempre que se crea una stat, lo agrego al ranking global
         }
 
         public void ModifyStatics(User user, bool boolean)
         {
-            user.stadistics.playedGames = +1;
+            user.Statistics.playedGames = +1;
 
             if (boolean == true)
             {
-                user.stadistics.wins = +1;
+                user.Statistics.wins = +1;
             }
             if (wins==0)
             {
@@ -34,7 +34,7 @@ namespace Library
 
         public static void ShowStats(User user)
         {
-            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.stadistics.playedGames}\n Partidas ganadas: {user.stadistics.wins}\n Ratio de victorias: {user.stadistics.winRate}%");
+            Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.Statistics.playedGames}\n Partidas ganadas: {user.Statistics.wins}\n Ratio de victorias: {user.Statistics.winRate}%");
         }
 
         public int PlayedGames
@@ -58,12 +58,29 @@ namespace Library
                 return this.winRate;
             }
         }
+
         public User User
         {
             get
             {
                 return this.user;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            Statistics input = (Statistics)obj;
+
+            return this.user.Id == input.user.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.user.Id;
         }
     }
 }
