@@ -1,3 +1,4 @@
+/*
 using System;
 
 namespace Library
@@ -9,7 +10,7 @@ namespace Library
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private bool OnGoing;
-        private Stadistics stadistics;
+        private Statistics statistics;
         private int HitsPlayer1;
         private int HitsPlayer2;
         private int WinsPlayer1 = 0;
@@ -92,3 +93,4 @@ namespace Library
         }
     }
 }
+*/

@@ -28,6 +28,7 @@ namespace Library
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
+            //administrator.currentGame.Add(this);
         }
         public Game(string name) : base(name)
         {
@@ -44,9 +45,16 @@ namespace Library
         }
         public virtual void StartGame()
         {
+            System.Console.WriteLine("Comienza la batalla naval!!");
+            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            System.Console.WriteLine();
+
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
             BoardPlayer1.PositionShips();
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
             BoardPlayer2.PositionShips();
             User recentAttacker = this.Player2;
+
             OnGoing = true;
             while (OnGoing)
             {
@@ -70,15 +78,15 @@ namespace Library
                     EndGame();
                     if (HitsPlayer2 == 15)
                     {
-                        Player1.stadistics.ModifyStatics(Player1, false);
-                        Player2.stadistics.ModifyStatics(Player2, true);
+                        Player1.statistics.ModifyStatics(Player1, false);
+                        Player2.statistics.ModifyStatics(Player2, true);
                         System.Console.WriteLine();
                         Console.WriteLine($"Ha ganado {Player2.Name}!!");
                     }
                     if (HitsPlayer1 == 15)
                     {
-                        Player1.stadistics.ModifyStatics(Player1, true);
-                        Player2.stadistics.ModifyStatics(Player1, false);
+                        Player1.statistics.ModifyStatics(Player1, true);
+                        Player2.statistics.ModifyStatics(Player1, false);
                         System.Console.WriteLine();
                         Console.WriteLine($"Ha ganado {Player1.Name}!!");
                     }
@@ -357,7 +365,8 @@ namespace Library
         }
         public void EndGame()
         {
-            OnGoing = false;            
+            OnGoing = false;
+            //administrator.currentGame.Remove(this);            
         }
     }
 }
