@@ -8,6 +8,9 @@ namespace Program
         static void Main(string[] args)
         {
             User user = new User("user");
+            User user2 = new User("user2");
+            Game game = new Game(user,user2,"classic");
+            game.StartGame();
 
             //User user2 = new User("user1");
             //User user4 = new User("user4");
@@ -20,8 +23,8 @@ namespace Program
             //TimeTrial timeTrial = new TimeTrial();
             //timeTrial.FinishTimeGame();
 
-            Menu menu = new Menu();
-            menu.ShowMenu();
+            //Menu menu = new Menu();
+            //menu.ShowMenu();
         
 
 
