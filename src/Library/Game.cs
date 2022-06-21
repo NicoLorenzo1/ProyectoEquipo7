@@ -12,6 +12,10 @@ namespace Library
         private bool Hit;
         private int HitsPlayer1;
         private int HitsPlayer2;
+        //<summary>
+        //Por Expert la clase Game es la encargada de conocer la cantidad de veces que se le
+        //pegó a un barco
+        //</summary>
         private int Lancha1Health = 1;
         private int Crucero1Health = 2;
         private int Submarino1Health = 3;
@@ -22,6 +26,11 @@ namespace Library
         private int Submarino2Health = 3;
         private int Buque2Health = 4;
         private int Portaaviones2Health = 5;
+
+        //<summary>
+        //Por OCP todos los modos de juego heredan de la clase Game, que posee la lógica base del juego
+        //y es abierta a extensiones, pero no recibe ningun cambio
+        //</summary>
         public Game(User player1, User player2, string name) : base(name)
         {
             this.Player1 = player1;
@@ -93,6 +102,10 @@ namespace Library
                 }
             }
         }
+        //<summary>
+        //Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
+        //es el encargado de conocer que ataques se realizan en cada momento
+        //</summary>
         public virtual void Attack(User player)
         {
             bool hit = false;
@@ -328,6 +341,11 @@ namespace Library
                 }
             }
         }
+        //<summary>
+        //Por creator el responsable de saber la información de cómo estan compuestos los tableros
+        //es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
+        //imprimir
+        //</summary>
         public void ShowBoard(User user)
         {
             System.Console.WriteLine();
@@ -363,6 +381,9 @@ namespace Library
                 System.Console.WriteLine("Intente denuevo");
             }
         }
+        //<summary>
+        //Por Expert, el encargado de terminar un juego en curso es Game
+        //</summary>
         public void EndGame()
         {
             OnGoing = false;

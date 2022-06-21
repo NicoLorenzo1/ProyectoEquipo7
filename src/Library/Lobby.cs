@@ -1,6 +1,9 @@
 namespace Library
 {
-    //Clase lobby la cual se va a utilizar con la nueva implementación de los diferentes modos de juego.
+    //<summary>
+    //Por DIP se crea la clase lobby, que es la que tiene los metodos y atributos
+    //para que cada modo de juego posea su propia lista de espera
+    //</summary>
     public class Lobby
     {
         private string name;

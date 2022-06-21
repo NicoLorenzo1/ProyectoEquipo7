@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Library
 {
+
+    //<summary>
+    //Por SRP, se crea la clase ship que es la única encargada de conocer la información de cada barco
+    //</summary>
     public class Ship
     {
         private string shipName;

@@ -62,6 +62,11 @@ namespace Library
             return boardRows;
         }
 #endregion ConstructorTablero
+
+        //<summary>
+        //Por Creator, el responsable de conocer las lineas del tablero es la clase Board
+        //y el responsable de imprimirlas debe ser él
+        //</summary>
         public void PrintBoard(ArrayList refreshShips, List<string> refreshShots , string printMode)
         {
             List<List<string>> boardRows = StartBoard();
@@ -119,6 +124,10 @@ namespace Library
                 Console.WriteLine(RowI);
             }
         }
+        //<summary>
+        //Por Creator, el responsable de conocer las lineas del tablero es la clase Board
+        //y el responsable de editarlas debe ser él
+        //</summary>
         public void EditBoard(string coord1, string coord2, string editor, List<List<string>> boardRows)
         {   
             for (int y = 0; y < 11; y++)
@@ -158,6 +167,10 @@ namespace Library
                 }
             }   
         }
+        //<summary>
+        //Por Expert, al Board conocer lo que hay en cada posición del tablero, es el responsable
+        //de colocar los barcos en dicho tablero
+        //</summary>
         public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
@@ -533,6 +546,10 @@ namespace Library
                 }
             }
         }
+        //<summary>
+        //Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
+        //de conocer si hay un barco en una posición en específica o no
+        //</summary>
         public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
         {
             bool coincidence = false;
@@ -564,6 +581,12 @@ namespace Library
             shipName = "";
             return coincidence;
         }
+        
+        //<summary>
+        //Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
+        //del tablero, es el encargado de crear uno nuevo a partir de la posición de los barcos y
+        //de los ataques
+        //</summary>
         public void RefreshBoard(ArrayList refreshShips, List<string> refreshShots , string printMode, List<List<string>> boardRows)
         {
             if (printMode=="MyBoard")
