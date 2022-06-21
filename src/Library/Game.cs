@@ -27,10 +27,14 @@ namespace Library
         private int Buque2Health = 4;
         private int Portaaviones2Health = 5;
 
-        //<summary>
-        //Por OCP todos los modos de juego heredan de la clase Game, que posee la lógica base del juego
-        //y es abierta a extensiones, pero no recibe ningun cambio
-        //</summary>
+        /// <summary>
+        /// Por OCP todos los modos de juego heredan de la clase Game, que posee la lógica base del juego
+        /// y es abierta a extensiones, pero no recibe ningun cambio
+        /// </summary>
+        /// <param name="player1">Primer User que proviene de la lista UsersToPlay para el modo de juego seleccionado</param>
+        /// <param name="player2">Segundo User que proviene de la lista UsersToPlay para el modo de juego seleccionado</param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public Game(User player1, User player2, string name) : base(name)
         {
             this.Player1 = player1;
@@ -52,6 +56,11 @@ namespace Library
                 Console.WriteLine("Modo incorrecto");
             }
         }
+
+        /// <summary>
+        /// StartGame inicializa la lógica central del juego, en la cual le solicita a ambos usuarios que posicionen sus barcos y luego
+        /// comenzará la ronda de ataques por turnos.
+        /// </summary>
         public virtual void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
@@ -102,10 +111,12 @@ namespace Library
                 }
             }
         }
-        //<summary>
-        //Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
-        //es el encargado de conocer que ataques se realizan en cada momento
-        //</summary>
+
+        /// <summary>
+        /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
+        /// es el encargado de conocer que ataques se realizan en cada momento
+        /// </summary>
+        /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
         public virtual void Attack(User player)
         {
             bool hit = false;
@@ -341,11 +352,12 @@ namespace Library
                 }
             }
         }
-        //<summary>
-        //Por creator el responsable de saber la información de cómo estan compuestos los tableros
-        //es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
-        //imprimir
-        //</summary>
+        /// <summary>
+        /// Por creator el responsable de saber la información de cómo estan compuestos los tableros
+        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
+        /// </summary>
+        /// <param name="user"> Al igual que en Attack, se indica que usuario está ingresando
+        /// la solicitud del tablero que seleccione</param>
         public void ShowBoard(User user)
         {
             System.Console.WriteLine();
@@ -381,9 +393,10 @@ namespace Library
                 System.Console.WriteLine("Intente denuevo");
             }
         }
-        //<summary>
-        //Por Expert, el encargado de terminar un juego en curso es Game
-        //</summary>
+        /// <summary>
+        /// Por Expert, el encargado de terminar un juego en curso es Game mediante el
+        /// método EndGame()
+        /// </summary>
         public void EndGame()
         {
             OnGoing = false;
