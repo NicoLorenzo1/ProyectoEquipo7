@@ -21,7 +21,14 @@ namespace Library
             {
                 user.stadistics.wins = +1;
             }
-            user.stadistics.winRate = playedGames / wins * 100;
+            if (user.stadistics.wins == 0)
+            {
+                user.stadistics.winRate = 0;
+            }
+            else
+            {
+                user.stadistics.winRate = playedGames / wins * 100;
+            }
         }
 
         public static void ShowStats(User user)
