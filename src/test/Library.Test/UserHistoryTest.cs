@@ -86,5 +86,44 @@ namespace Test.Library
             Assert.AreEqual(boardRows[1],test);
             
         }
+
+        [Test]
+        public void VerifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            //player1.statistics.ModifyStatics(player1, true);
+            
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void ModifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            player1.statistics.ModifyStatics(player1, true);
+            player2.statistics.ModifyStatics(player2, true);
+            
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void VerifyShipSize()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.ShipDim, 5);
+        }
+
+        [Test]
+        public void VerifyShipName()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.Shipname, "Portaaviones");
+        }
     }
 }

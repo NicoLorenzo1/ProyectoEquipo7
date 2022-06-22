@@ -1,17 +1,11 @@
 namespace Library
 {
     /// <summary>
-<<<<<<< HEAD
-    /// Por SRP statistics es el encargado de conocer toda la información de las estadísticas del
-    /// usuario al que se esta asignada
-    /// </summary>
-=======
     /// Almacena información de un usuario que cambia según los resultados de sus partidas.
     /// Por SRP statistics es el encargado de conocer toda la información de las estadísticas del
     /// usuario al que se esta asignada
     /// </summary>
 
->>>>>>> main
     public class Statistics
     {
         private int playedGames;
@@ -21,13 +15,13 @@ namespace Library
 
         /// <summary>
         /// Constructor de la clase Statistics. Siempre que se crea una estadística,
-        /// se agrega al ranking global.
+        /// se agrega al ranking global (para la 3er entrega).
         /// </summary>
         /// <param name="user">Usuario al cual pertenecen estas estadísticas.</param>
         public Statistics(User user)
         {
             this.user = user;
-            Ranking.AddToRankList(this);
+            //Ranking.AddToRankList(this);
         }
 
         /// <summary>
@@ -46,11 +40,7 @@ namespace Library
                 user.statistics.wins = +1;
             }
 
-<<<<<<< HEAD
-            if (user.statistics.wins == 0)
-=======
             if (wins==0)
->>>>>>> main
             {
                 user.statistics.winRate = 0;
             }
@@ -59,10 +49,6 @@ namespace Library
                 user.statistics.winRate = playedGames / wins * 100;
             }
             
-<<<<<<< HEAD
-            //checkear si entra en la lista nueva de top 10 y sumarla o ignorarla
-=======
->>>>>>> main
         }
 
         /// <summary>
