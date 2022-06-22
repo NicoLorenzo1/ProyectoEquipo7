@@ -1,5 +1,8 @@
 namespace Library
 {
+    /// <summary>
+    /// Se encarga de manejar a los usuarios dentro del juego.
+    /// </summary>
     public class Administrator
     {
         public List<User> usersRegistered = new List<User>();
@@ -7,6 +10,9 @@ namespace Library
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
         private static Administrator instance;
 
+        /// <summary>
+        /// Se crea una única instancia de la clase Administrator.
+        /// </summary>
         public static Administrator Instance
         {
             get
@@ -20,6 +26,11 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Empareja dos jugadores según el modo de juego que seleccionaron y comienza su partida.
+        /// </summary>
+        /// <param name="user">Usuario a emparejar.</param>
+        /// <param name="mode">Modo de juego seleccionado.</param>
         public void MatchPlayers(User user, string mode)
         {
 
@@ -56,6 +67,11 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Crea un objeto User en caso de que el jugador no esté ya registrado.
+        /// </summary>
+        /// <param name="name">Nombre del usuario.</param>
+        /// <returns>Devuelve un objeto de clase User.</returns>
         public User CheckUser(string name)
         {
             foreach (User u in usersRegistered)

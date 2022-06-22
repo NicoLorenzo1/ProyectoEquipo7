@@ -10,7 +10,6 @@ namespace Library
         private Board BoardPlayer2;
         private bool OnGoing;
         private bool Hit;
-
         private int HitsPlayer1;
         private int HitsPlayer2;
         //<summary>
