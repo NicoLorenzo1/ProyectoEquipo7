@@ -1,23 +1,17 @@
+/*
+//Funcionalidad extra. Será correctamente implementada para la 3er entrega.
+
 using System;
 using System.Collections;
 
 namespace Library
 {
-<<<<<<< HEAD
-    /// <summary>
-    /// Por Expert se crea ranking que es el encargado de conocer todas las estadisticas de todos los usuarios
-    /// y de ordenarlas en base a ciertos criterios.
-    /// Singleton. Mantiene una lista estática y única con los stats de todos los usuarios.
-    /// </summary>
-=======
-
     /// <summary>
     /// Singleton. Mantiene una lista estática con los stats de todos los usuarios.
     /// Por Expert se crea ranking que es el encargado de conocer todas las estadisticas de todos los usuarios
     /// y de ordenarlas en base a ciertos criterios
     /// </summary>
 
->>>>>>> main
     public class Ranking
     {
         /// <summary>
@@ -120,6 +114,20 @@ namespace Library
         }
 
         /// <summary>
+        /// El método ShowAll muestra el ranking global de jugadores.
+        /// </summary>
+        public void ShowTop10()
+        {
+            List<Statistics> sortedAll = getAllSorted();
+
+            Console.WriteLine("Ranking de jugadores:");
+            for (int i = 0; i < sortedAll.Count ; i++)
+            {   
+                Console.WriteLine($"{i+1}-Nombre:{sortedAll[i].User.Name} - Wins={sortedAll[i].Wins} - WinRate={sortedAll[i].WinRate}");
+            }
+        }
+
+        /// <summary>
         /// El método ShowMyRank recive a un objeto de clase Usuario, y le permite 
         /// al jugador ver su posición en el ranking sin tener que buscarse entre 
         /// todos los jugadores del ranking.
@@ -142,3 +150,4 @@ namespace Library
         }
     }
 }
+*/

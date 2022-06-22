@@ -41,10 +41,6 @@ namespace Library
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
-<<<<<<< HEAD
-            //administrator.currentGame.Add(this);
-=======
->>>>>>> main
         }
         public Game(string name) : base(name)
         {
