@@ -42,6 +42,7 @@ namespace Library
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
+            Administrator.Instance.currentGame.Add(this);
         }
         public Game(string name) : base(name)
         {
@@ -400,6 +401,7 @@ namespace Library
         public void EndGame()
         {
             OnGoing = false;
+            Administrator.Instance.currentGame.Remove(this);
             //administrator.currentGame.Remove(this);            
         }
     }

@@ -68,6 +68,9 @@ namespace Test.Library
             Assert.AreEqual(boardRows.Count,boardRows2.Count);
             Assert.AreEqual(boardRows,boardRows2);
         }
+        /// <summary>
+        /// Test que verifica la edición de tableros. Se le pasa 2 coordenadas y se verifica si la fila correspondiente se ve afectada
+        /// </summary>
         [Test]
         public void EditBoardTest()
         {
@@ -82,9 +85,7 @@ namespace Test.Library
             {
                 "1","X","-","-","-","-","-","-","-","-","-"
             };
-
             Assert.AreEqual(boardRows[1],test);
-            
         }
     }
 }

@@ -39,6 +39,8 @@ namespace Library
            this.PlayerShots = shots;
            this.player2Shots;
            */
+
+
         }
 #region ConstructorTablero
         /// <summary>
