@@ -1,5 +1,6 @@
 ﻿using System;
 using Library;
+using Telegram.Bot.Types;
 
 namespace Program
 {
@@ -7,56 +8,41 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            User jose = new User("jose");
-
-            Administrator administrator = Administrator.Instance;
-            administrator.UsersToPlay.Add(jose, "Classic");
-
-            //Game game = new Game("classic");
-            //game.AddUserToWaitList(user1);
-            //game.AddUserToWaitList(user2);
-
-            Menu menu = new Menu();
-            menu.ShowMenu();
-
-            /* Esto es lo que tenia yo
-
-            User user = new User("user");
-            User user2 = new User("user2");
-            Game game = new Game(user,user2,"classic");
-            game.StartGame();
-            */
 
 
+            IHandler handler =
+                            new HelloHandler(
+                            new GoodByeHandler(
+                            new PhotoHandler(null, null)
+                        ));
+            Message message = new Message();
+            string response;
 
+            Console.WriteLine("Escribí un comando o 'salir':");
+            Console.Write("> ");
 
+            while (true)
+            {
+                message.Text = Console.ReadLine();
+                if (message.Text.Equals("salir", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Console.WriteLine("Salimos");
+                    return;
+                }
 
+                IHandler result = handler.Handle(message, out response);
 
-
-
-            //User user2 = new User("user1");
-            //User user4 = new User("user4");
-
-            //Console.WriteLine(User.users["user"]);
-            //Console.WriteLine(user.Id);
-            // Console.WriteLine(user2.Id);
-            // Console.WriteLine(user4.Id);
-
-            //TimeTrial timeTrial = new TimeTrial();
-            //timeTrial.FinishTimeGame();
-
-            //Menu menu = new Menu();
-            //menu.ShowMenu();
-        
-
-
-            //Console.WriteLine(Stadistics.playedGames.Count);
-
-
-
-            //QuickChat.SendPredefinedChat(1);
-            //QuickChat.AllMessages();
-            //Stadistics.ShowStats(user);
+                if (result == null)
+                {
+                    Console.WriteLine("No entiendo");
+                    Console.Write("> ");
+                }
+                else
+                {
+                    Console.WriteLine(response);
+                    Console.Write("> ");
+                }
+            }
 
 
 
