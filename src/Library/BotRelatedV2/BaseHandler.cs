@@ -39,23 +39,19 @@ namespace Library
         /// </summary>
         /// <param name="keywords">La lista de comandos.</param>
         /// <param name="next">El próximo "handler".</param>
-        public BaseHandler(string[] keywords, IHandler next)
+        public BaseHandler(string[] keywords, BaseHandler next)
         {
             this.Keywords = keywords;
             this.Next = next;
         }
 
         /// <summary>
-        /// Este método debe ser sobreescrito por las clases sucesores. La clase sucesora procesa el mensaje y retorna
+        /// Este método debe ser sobreescrito por las clases sucesores. La clase sucesora procesa el mensaje y asigna
         /// la respuesta al mensaje.
         /// </summary>
         /// <param name="message">El mensaje a procesar.</param>
         /// <param name="response">La respuesta al mensaje procesado.</param>
-        /// <returns>true si el mensaje fue procesado; false en caso contrario</returns>
-        protected virtual void InternalHandle(Message message, out string responder)
-        {
-            throw new InvalidOperationException("Este método debe ser sobrescrito");
-        }
+        protected abstract void InternalHandle(Message message, out string response);
 
         /// <summary>
         /// Este método puede ser sobreescrito en las clases sucesores que procesan varios mensajes cambiando de estado
@@ -87,7 +83,7 @@ namespace Library
         }
 
         /// <summary>
-        /// Procesa el mensaje o la pasa al siguiente "handler" si existe.
+        /// Procesa el mensaje o lo pasa al siguiente "handler" si existe.
         /// </summary>
         /// <param name="message">El mensaje a procesar.</param>
         /// <param name="response">La respuesta al mensaje procesado.</param>

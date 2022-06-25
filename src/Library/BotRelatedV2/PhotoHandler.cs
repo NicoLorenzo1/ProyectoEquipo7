@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,8 +35,8 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            AsyncContext.Run(() => this.SendProfileImage(message));
-             response = String.Empty;
+            AsyncContext.Run(() => SendProfileImage(message));
+            response = string.Empty;
         }
 
         /// <summary>
@@ -46,18 +45,19 @@ namespace Library
         private async Task SendProfileImage(Message message)
         {
             // Can be null during testing
-            if (this.bot != null)
+            if (bot != null)
             {
-                await this.bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
+                await bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
                 const string filePath = @"profile.jpeg";
                 using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
 
-                await this.bot.SendPhotoAsync(
+                await bot.SendPhotoAsync(
                     chatId: message.Chat.Id,
                     photo: new InputOnlineFile(fileStream, fileName),
-                    caption: "Te ves bien!");
+                    caption: "Te ves bien!"
+                );
             }
         }
     }
