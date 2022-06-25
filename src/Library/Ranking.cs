@@ -1,7 +1,4 @@
-/*
-//Funcionalidad extra. Será correctamente implementada para la 3er entrega.
-
-using System;
+using System; 
 using System.Collections;
 
 namespace Library
@@ -150,4 +147,3 @@ namespace Library
         }
     }
 }
-*/

@@ -92,8 +92,6 @@ namespace Test.Library
         {
             User player1 = new User("Manuel");
             User player2 = new User("Jose");
-
-            //player1.statistics.ModifyStatics(player1, true);
             
             Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
         }
@@ -104,8 +102,8 @@ namespace Test.Library
             User player1 = new User("Manuel");
             User player2 = new User("Jose");
 
-            player1.statistics.ModifyStatics(player1, true);
-            player2.statistics.ModifyStatics(player2, true);
+            player1.statistics.ModifyStatics(true);
+            player2.statistics.ModifyStatics(true);
             
             Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
         }

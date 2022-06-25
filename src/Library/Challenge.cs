@@ -81,14 +81,14 @@ namespace Library
             }
             if (WinsPlayer1 == 2)
             {
-                statistics.ModifyStatics(Player1, true);
-                statistics.ModifyStatics(Player2, false);
+                statistics.ModifyStatics(true);
+                statistics.ModifyStatics(false);
                 Console.WriteLine($"{Player1.Name} gana el torneo");
             }
             else if (WinsPlayer2 == 2)
             {
-                statistics.ModifyStatics(Player1, false);
-                statistics.ModifyStatics(Player2, true);
+                statistics.ModifyStatics(false);
+                statistics.ModifyStatics(true);
                 Console.WriteLine($"{Player2.Name} gana el torneo");
             }
         }

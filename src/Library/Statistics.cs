@@ -1,4 +1,4 @@
-namespace Library
+namespace Library 
 {
     /// <summary>
     /// Almacena información de un usuario que cambia según los resultados de sus partidas.
@@ -21,7 +21,7 @@ namespace Library
         public Statistics(User user)
         {
             this.user = user;
-            //Ranking.AddToRankList(this);
+            Ranking.AddToRankList(this);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Library
         /// <param name="user">Usuario al cual se le modifican las estadísticas.</param>
         /// <param name="boolean">Variable booleana que determina si se le agrega una
         /// victoria al usuario.</param>
-        public void ModifyStatics(User user, bool boolean)
+        public void ModifyStatics(bool boolean)
         {
             user.statistics.playedGames = +1;
 
