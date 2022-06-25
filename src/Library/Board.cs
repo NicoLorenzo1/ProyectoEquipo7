@@ -680,6 +680,69 @@ namespace Library
                 }
             }
         }
+        //private List<string> surroundCoords = new List<string>();
+        public List<string> coordSurround(string alphaCoord, string numCoord)
+        {
+            List<string> surroundCoords = new List<string>();
+            if (ABC.Contains(alphaCoord.ToUpper()))
+            {
+                int IndexX = ABC.IndexOf(alphaCoord.ToUpper());
+                if (rowNum.Contains(numCoord))
+                {
+                    int IndexY = rowNum.IndexOf(numCoord)+1;
+                    int rowPosOne= IndexY-2;
+                    int rowPosTwo= IndexY-1;
+                    int rowPosThree= IndexY;
+                    if (rowPosOne >= 0)
+                    {
+                        System.Console.WriteLine("Entro a rowPosOne");
+                        for (int i = IndexX-1; i <= IndexX+1; i++)
+                        {
+                            if (i>=1 && i<=11)
+                            {
+                                string stringCollector1 = ABC[i];
+                                string stringCollector2 = rowNum[rowPosOne];
+                                surroundCoords.Add(stringCollector1);
+                                surroundCoords.Add(stringCollector2);
+                            } 
+                        }
+                    }
+                    for (int i = IndexX-1; i <= IndexX+1; i++)
+                    {
+                        if (i>=1 && i<=11)
+                        {
+                            string stringCollector1 = ABC[i];
+                            string stringCollector2 = rowNum[rowPosTwo];
+                            surroundCoords.Add(stringCollector1);
+                            surroundCoords.Add(stringCollector2);
+                        }
+                    }
+                    if (!(rowPosThree > 11))
+                    {
+                        for (int i = IndexX-1; i <= IndexX+1; i++)
+                        {
+                            if (i>=1 && i<=11)
+                            {
+                                string stringCollector1 = ABC[i];
+                                string stringCollector2 = rowNum[rowPosThree];
+                                surroundCoords.Add(stringCollector1);
+                                surroundCoords.Add(stringCollector2);
+                            } 
+                        }
+                    }
+                    return surroundCoords;
+                }
+            }
+            else
+            {
+                System.Console.WriteLine("No es una coordenada válida");
+                return surroundCoords;
+            }
+            return surroundCoords;
+
+
+        }
+
         /// <summary>
         /// Getter del listado ABC, que es utilizado para verificar indices desde fuera de Board
         /// </summary>
