@@ -10,7 +10,6 @@ namespace Library
         private Board BoardPlayer2;
         private bool OnGoing;
         private bool Hit;
-
         private int HitsPlayer1;
         private int HitsPlayer2;
         //<summary>
@@ -96,15 +95,15 @@ namespace Library
                     EndGame();
                     if (HitsPlayer2 == 15)
                     {
-                        Player1.statistics.ModifyStatics(Player1, false);
-                        Player2.statistics.ModifyStatics(Player2, true);
+                        Player1.statistics.ModifyStatics(false);
+                        Player2.statistics.ModifyStatics(true);
                         System.Console.WriteLine();
                         Console.WriteLine($"Ha ganado {Player2.Name}!!");
                     }
                     if (HitsPlayer1 == 15)
                     {
-                        Player1.statistics.ModifyStatics(Player1, true);
-                        Player2.statistics.ModifyStatics(Player1, false);
+                        Player1.statistics.ModifyStatics(true);
+                        Player2.statistics.ModifyStatics(false);
                         System.Console.WriteLine();
                         Console.WriteLine($"Ha ganado {Player1.Name}!!");
                     }
