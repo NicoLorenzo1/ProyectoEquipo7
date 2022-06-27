@@ -15,13 +15,13 @@ namespace Library
 
         /// <summary>
         /// Constructor de la clase Statistics. Siempre que se crea una estadística,
-        /// se agrega al ranking global.
+        /// se agrega al ranking global (para la 3er entrega).
         /// </summary>
         /// <param name="user">Usuario al cual pertenecen estas estadísticas.</param>
         public Statistics(User user)
         {
             this.user = user;
-            Ranking.AddToRankList(this);
+            //Ranking.AddToRankList(this);
         }
 
         /// <summary>
@@ -42,11 +42,11 @@ namespace Library
 
             if (wins==0)
             {
-                user.statistics.winRate=0;
+                user.statistics.winRate = 0;
             }
             else
             {
-                user.statistics.winRate = playedGames / wins * 100; 
+                user.statistics.winRate = playedGames / wins * 100;
             }
             
         }

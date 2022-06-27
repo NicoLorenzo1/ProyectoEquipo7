@@ -14,4 +14,5 @@ Esto nos retrasó bastante en el avance del proyecto y nos generó inconsistenci
 Para la próxima entrega tenemos pensando terminar de hacer la implementación del Singleton para que identifique todos los modos de juego posibles y no sea necesario modificar las clases Administrator y Menu cuando suceda.
 Otra problemática resuelta fue la de tener dos instancias de Board dentro de Board, cambiamos esto y ahora Board está vinculada a un usuario. Por lo que en Game se inicializan dos instancias de Board.
 Por último, nos dimos cuenta que debido a la forma en la que realizamos el código era muy difícil realizar correctamente los tests. Por lo que fue otra complicación en la recta final de la segunda entrega.
+Finalmente logramos realizar el juego el cual tiene todo lo necesario para su funcionamiento en esta instancia.
 

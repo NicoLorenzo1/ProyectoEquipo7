@@ -68,6 +68,9 @@ namespace Test.Library
             Assert.AreEqual(boardRows.Count,boardRows2.Count);
             Assert.AreEqual(boardRows,boardRows2);
         }
+        /// <summary>
+        /// Test que verifica la edición de tableros. Se le pasa 2 coordenadas y se verifica si la fila correspondiente se ve afectada
+        /// </summary>
         [Test]
         public void EditBoardTest()
         {
@@ -82,9 +85,46 @@ namespace Test.Library
             {
                 "1","X","-","-","-","-","-","-","-","-","-"
             };
-
             Assert.AreEqual(boardRows[1],test);
+        }
+
+        [Test]
+        public void VerifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            //player1.statistics.ModifyStatics(player1, true);
             
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void ModifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            player1.statistics.ModifyStatics(player1, true);
+            player2.statistics.ModifyStatics(player2, true);
+            
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void VerifyShipSize()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.ShipDim, 5);
+        }
+
+        [Test]
+        public void VerifyShipName()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.Shipname, "Portaaviones");
         }
     }
 }
