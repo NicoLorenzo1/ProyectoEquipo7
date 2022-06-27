@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <UserSecretsId>ProyectoEquipo7</UserSecretsId>
+    <!--<UserSecretsId>PII_TelegramBot_Demo</UserSecretsId>-->
   </PropertyGroup>
   <ItemGroup>
     <None Update="appsettings.json">
