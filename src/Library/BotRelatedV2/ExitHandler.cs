@@ -2,26 +2,20 @@ using Telegram.Bot.Types;
 
 namespace Library
 {
-    /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "hola".
-    /// </summary>
-    public class MenuHandler : BaseHandler
+    public class ExitHandler : BaseHandler
     {
-        public MenuState State { get; set; }
-        /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "hola".
-        /// </summary>
-        /// <param name="next">El próximo "handler".</param>
-        public MenuHandler(BaseHandler next) : base(next)
+        public ExitHandlerState State { get; set; }
+
+        public ExitHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "start" };
-            this.State = MenuState.Start;
+            this.Keywords = new string[] { "Salir" };
+            this.State = ExitHandlerState.Start;
         }
 
 
         protected override bool CanHandle(Message message)
         {
-            if (this.State == MenuState.Start)
+            if (this.State == ExitHandlerState.Start)
             {
                 return base.CanHandle(message);
             }
@@ -39,12 +33,12 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Elige una opción \n 1- Registrarse \n 2- Salir";
+            response = "Nos vemos la próxima!";
 
         }
 
 
-        public enum MenuState
+        public enum ExitHandlerState
         {
             Start,
         }

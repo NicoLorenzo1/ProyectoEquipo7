@@ -3,26 +3,26 @@ using Telegram.Bot.Types;
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "hola".
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "registrarse".
     /// </summary>
     public class RegisterHandler : BaseHandler
     {
         public RegisterState State { get; set; }
         /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "hola".
+        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "registrarse".
         /// </summary>
         /// <param name="next">El próximo "handler".</param>
         public RegisterHandler(BaseHandler next) : base(next)
         {
-            Keywords = new string[] { "1" };
+            Keywords = new string[] { "registrarse" };
             State = RegisterState.Start;
-        }
 
+        }
 
         protected override bool CanHandle(Message message)
         {
 
-            if (this.State == RegisterState.Finish)
+            if (this.State == RegisterState.Start)
             {
                 return base.CanHandle(message);
             }
@@ -33,7 +33,7 @@ namespace Library
         }
 
         /// <summary>
-        /// Procesa el mensaje "hola" y retorna true; retorna false en caso contrario.
+        /// Procesa el mensaje "registrarse" y retorna true; retorna false en caso contrario.
         /// </summary>
         /// <param name="message">El mensaje a procesar.</param>
         /// <param name="response">La respuesta al mensaje procesado.</param>
@@ -48,51 +48,39 @@ namespace Library
             else if (State == RegisterState.Register)
             {
                 Administrator.Instance.CheckUser(message.Text);
-                response = "Registrando al usuario";
-                this.State = RegisterState.SelectMode;
-            }
-            else if (State == RegisterState.SelectMode)
-            {
-                response = "Elige una opción \n 1- Modo Classic \n 2- Modo TimeTrial \n 3- Modo Challenge \n 4- Modo Bomb";
-                State = RegisterState.Finish;
 
+                //Le asigno al user la id de telegram
+                foreach (var user in User.users)
+                {
+                    if (user.Name == message.Text)
+                    {
+                        user.Id = message.From.Id;
+
+                    }
+                }
+                response = "Usuario registrado\n Elige una opción \n 1- Jugar \n 2- Salir";
+                State = RegisterState.Start;
             }
+
             else
             {
                 response = string.Empty;
             }
-
-
-            /*
-
-            if (Administrator.Instance.CheckUser(message.Text) == true)
-            {
-                response = "Usuario registrado exitosamente.";
-
-            }
-            else if (Administrator.Instance.CheckUser(message.Text) == false)
-            {
-                response = "Usuario ya registrado";
-
-            }
-            */
         }
+
 
         protected override void InternalCancel()
         {
             this.State = RegisterState.Start;
         }
-
     }
-
 
 
     public enum RegisterState
     {
         Start,
-        SelectMode,
-        Finish,
-        Register
+        Register,
+
     }
 
 }

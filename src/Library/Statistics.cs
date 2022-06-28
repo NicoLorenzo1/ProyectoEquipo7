@@ -40,7 +40,7 @@ namespace Library
                 user.statistics.wins = +1;
             }
 
-            if (wins==0)
+            if (wins == 0)
             {
                 user.statistics.winRate = 0;
             }
@@ -48,7 +48,7 @@ namespace Library
             {
                 user.statistics.winRate = playedGames / wins * 100;
             }
-            
+
         }
 
         /// <summary>
@@ -120,13 +120,17 @@ namespace Library
             return this.user.Id == input.user.Id;
         }
 
-        /// <summary>
-        /// GetHashCode consigue el HashCode del Id del usuario.
-        /// </summary>
-        /// <returns>Devuelve el Id del usuario.</returns>
-        public override int GetHashCode()
-        {
-            return this.user.Id;
-        }
+
+        /*
+                /// <summary>
+                /// GetHashCode consigue el HashCode del Id del usuario.
+                /// </summary>
+                /// <returns>Devuelve el Id del usuario.</returns>
+                public override long GetHashCode()
+                {
+                    return this.user.Id;
+                }
+                
+                */
     }
 }

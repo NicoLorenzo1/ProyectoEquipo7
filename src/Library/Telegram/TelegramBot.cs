@@ -19,8 +19,13 @@ namespace Library
                 new GoodByeHandler(
                 new MenuHandler(
                 new RegisterHandler(
-                new PhotoHandler(telegramClient, null)
-            ))));
+                new SelectModeHandler(
+                new ClassicModeHandler(
+                new TimeTrialModeHandler(
+                new ChallengeModeHandler(
+                new BombModeHandler(
+                new ExitHandler(null)
+            )))))))));
 
             var cts = new CancellationTokenSource();
 

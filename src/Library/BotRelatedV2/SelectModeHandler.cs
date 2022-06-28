@@ -11,7 +11,7 @@ namespace Library
 
         public SelectModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Classic", "Bomb", "Challenge", "TimeTrial" };
+            this.Keywords = new string[] { "jugar" };
             this.State = SelectModeState.Start;
         }
 
@@ -30,26 +30,7 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
-            if (message.ToString() == "Classic")
-            {
-                response = "Estas en la lista de espera para jugar al modo Classic";
-            }
-            else if (message.ToString() == "Bomb")
-            {
-                response = "Estas en la lista de espera para jugar al modo Bomb";
-            }
-            else if (message.ToString() == "Challenge")
-            {
-                response = "Estas en la lista de espera para jugar al modo Bomb";
-            }
-            else if (message.ToString() == "TimeTrial")
-            {
-                response = "Estas en la lista de espera para jugar al modo TimeTrial";
-            }
-            else
-            {
-                response = string.Empty;
-            }
+            response = "Elige una opción \n 1- Modo Classic \n 2- Modo TimeTrial \n 3- Modo Challenge \n 4- Modo Bomb";
         }
 
 
