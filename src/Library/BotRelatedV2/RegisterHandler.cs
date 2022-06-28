@@ -55,6 +55,7 @@ namespace Library
                     if (user.Name == message.Text)
                     {
                         user.Id = message.From.Id;
+                        Console.WriteLine(user.Id);
 
                     }
                 }

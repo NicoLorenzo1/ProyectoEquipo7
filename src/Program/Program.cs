@@ -18,7 +18,7 @@ namespace Library
         /// </summary>
         public static void Main()
         {
-            Bot.Setup();
+            Bot.Instance.Setup();
             TelegramBot.Start();
             Console.WriteLine($"Bot ended!");
 

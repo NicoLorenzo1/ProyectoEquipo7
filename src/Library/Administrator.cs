@@ -40,22 +40,22 @@ namespace Library
             UsersToPlay.Add(user, mode);
             KeyValuePair<User, string> match1;
 
-            
+
             for (int i = 0; i < UsersToPlay.Count; i++)
-            {   
-                if (counter==0)
+            {
+                if (counter == 0)
                 {
                     match1 = UsersToPlay.ElementAt(i);
-                    counter =+1;
+                    counter = +1;
                     for (int x = i; x < UsersToPlay.Count; x++)
                     {
-                        if (!(UsersToPlay.ElementAt(x).Key==match1.Key))
-                        {   
-                            if (UsersToPlay.ElementAt(x).Value==match1.Value)
+                        if (!(UsersToPlay.ElementAt(x).Key == match1.Key))
+                        {
+                            if (UsersToPlay.ElementAt(x).Value == match1.Value)
                             {
                                 KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                 Game game = new Game(match1.Key, match2.Key, "Classic");
-                                game.StartGame(); 
+                                game.StartGame();
                             }
                         }
                         else
@@ -64,7 +64,7 @@ namespace Library
                     }
                 }
                 else
-                {                   
+                {
                 }
             }
         }

@@ -122,16 +122,5 @@ namespace Library
         }
 
 
-        /*
-                /// <summary>
-                /// GetHashCode consigue el HashCode del Id del usuario.
-                /// </summary>
-                /// <returns>Devuelve el Id del usuario.</returns>
-                public override long GetHashCode()
-                {
-                    return this.user.Id;
-                }
-                
-                */
     }
 }
