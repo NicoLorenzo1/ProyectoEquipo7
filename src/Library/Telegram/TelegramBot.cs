@@ -3,34 +3,39 @@ using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
-namespace Library{
-    public abstract class TelegramBot{
+namespace Library
+{
+    public abstract class TelegramBot
+    {
         private static TelegramBotClient telegramClient;
         private static IHandler firstHandler;
 
-        public static async void Start(){
-                telegramClient = new TelegramBotClient(Bot.token);
+        public static async void Start()
+        {
+            telegramClient = new TelegramBotClient(Bot.token);
 
-                firstHandler =
-                    new HelloHandler(
-                    new GoodByeHandler(
-                    new PhotoHandler(telegramClient, null)
-                ));
+            firstHandler =
+                new HelloHandler(
+                new GoodByeHandler(
+                new MenuHandler(
+                new RegisterHandler(
+                new PhotoHandler(telegramClient, null)
+            ))));
 
-                var cts = new CancellationTokenSource();
+            var cts = new CancellationTokenSource();
 
-                // Comenzamos a escuchar mensajes. Esto se hace en otro hilo (en background). El primer método
-                // HandleUpdateAsync es invocado por el bot cuando se recibe un mensaje. El segundo método HandleErrorAsync
-                // es invocado cuando ocurre un error.
-                telegramClient.StartReceiving(
-                    HandleUpdateAsync,
-                    HandleErrorAsync,
-                    new ReceiverOptions()
-                    {
-                        AllowedUpdates = Array.Empty<UpdateType>()
-                    },
-                    cts.Token
-                );
+            // Comenzamos a escuchar mensajes. Esto se hace en otro hilo (en background). El primer método
+            // HandleUpdateAsync es invocado por el bot cuando se recibe un mensaje. El segundo método HandleErrorAsync
+            // es invocado cuando ocurre un error.
+            telegramClient.StartReceiving(
+                HandleUpdateAsync,
+                HandleErrorAsync,
+                new ReceiverOptions()
+                {
+                    AllowedUpdates = Array.Empty<UpdateType>()
+                },
+                cts.Token
+            );
             Console.WriteLine($"Bot is up!");
 
             Console.ReadLine();
@@ -39,7 +44,7 @@ namespace Library{
             cts.Cancel();
         }
 
-     
+
         /// <summary>
         /// Maneja las actualizaciones del bot (todo lo que llega), incluyendo mensajes, ediciones de mensajes,
         /// respuestas a botones, etc. En este ejemplo sólo manejamos mensajes de texto.
@@ -86,6 +91,6 @@ namespace Library{
         {
             Console.WriteLine(exception.Message);
             return Task.CompletedTask;
-        }   
+        }
     }
 }
