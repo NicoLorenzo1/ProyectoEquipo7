@@ -61,7 +61,6 @@ namespace Library
                 response = "Usuario registrado\n Elige una opción \n 1- Jugar \n 2- Salir";
                 State = RegisterState.Start;
             }
-
             else
             {
                 response = string.Empty;

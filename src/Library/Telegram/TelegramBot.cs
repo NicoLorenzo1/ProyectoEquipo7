@@ -24,8 +24,10 @@ namespace Library
                 new TimeTrialModeHandler(
                 new ChallengeModeHandler(
                 new BombModeHandler(
+                new StaticsHandler(
+                new CommandsHandler(
                 new ExitHandler(null)
-            )))))))));
+            )))))))))));
 
             var cts = new CancellationTokenSource();
 

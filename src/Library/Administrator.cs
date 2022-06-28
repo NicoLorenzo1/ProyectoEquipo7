@@ -1,3 +1,5 @@
+using Telegram.Bot.Types;
+
 namespace Library
 {
     /// <summary>

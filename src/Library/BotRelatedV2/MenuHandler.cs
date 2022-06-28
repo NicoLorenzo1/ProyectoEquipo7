@@ -9,12 +9,12 @@ namespace Library
     {
         public MenuState State { get; set; }
         /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "hola".
+        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "Iniciar".
         /// </summary>
         /// <param name="next">El próximo "handler".</param>
         public MenuHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "start" };
+            this.Keywords = new string[] { "Iniciar" };
             this.State = MenuState.Start;
         }
 
@@ -32,7 +32,7 @@ namespace Library
         }
 
         /// <summary>
-        /// Procesa el mensaje "hola" y retorna true; retorna false en caso contrario.
+        /// Procesa el mensaje "Iniciar" y retorna true; retorna false en caso contrario.
         /// </summary>
         /// <param name="message">El mensaje a procesar.</param>
         /// <param name="response">La respuesta al mensaje procesado.</param>
