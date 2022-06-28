@@ -15,13 +15,13 @@ namespace Library
 
         /// <summary>
         /// Constructor de la clase Statistics. Siempre que se crea una estadística,
-        /// se agrega al ranking global.
+        /// se agrega al ranking global (para la 3er entrega).
         /// </summary>
         /// <param name="user">Usuario al cual pertenecen estas estadísticas.</param>
         public Statistics(User user)
         {
             this.user = user;
-            Ranking.AddToRankList(this);
+            //Ranking.AddToRankList(this);
         }
 
         /// <summary>
@@ -40,24 +40,25 @@ namespace Library
                 user.statistics.wins = +1;
             }
 
-            if (wins==0)
+            if (wins == 0)
             {
-                user.statistics.winRate=0;
+                user.statistics.winRate = 0;
             }
             else
             {
-                user.statistics.winRate = playedGames / wins * 100; 
+                user.statistics.winRate = playedGames / wins * 100;
             }
-            
+
         }
 
         /// <summary>
         /// El método ShowStats imprime las estadísticas del usuario.
         /// </summary>
         /// <param name="user">Usuario del cual se imprimirán las estadísticas.</param>
-        public static void ShowStats(User user)
+        public static string ShowStats(User user)
         {
             Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%");
+            return $"Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%";
         }
 
         /// <summary>
@@ -120,13 +121,6 @@ namespace Library
             return this.user.Id == input.user.Id;
         }
 
-        /// <summary>
-        /// GetHashCode consigue el HashCode del Id del usuario.
-        /// </summary>
-        /// <returns>Devuelve el Id del usuario.</returns>
-        public override int GetHashCode()
-        {
-            return this.user.Id;
-        }
+
     }
 }

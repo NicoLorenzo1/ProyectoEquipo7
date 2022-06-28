@@ -4,6 +4,10 @@ using System.Timers;
 
 namespace Library
 {
+    /// <summary>
+    /// Nuevo modo de juego el cual se va a implementar para la entrega final, se basa en el modo de juego base pero se le suma la cualidad de que va a tener un
+    /// tiempo limitado, logrando de esta forma una modalidad de juego mas rapida.
+    /// </summary>
     public class TimeTrialMode : Game
     {
         private User Player1;
