@@ -119,14 +119,5 @@ namespace Library
 
             return this.user.Id == input.user.Id;
         }
-
-        /// <summary>
-        /// GetHashCode consigue el HashCode del Id del usuario.
-        /// </summary>
-        /// <returns>Devuelve el Id del usuario.</returns>
-        public override int GetHashCode()
-        {
-            return this.user.Id;
-        }
     }
 }

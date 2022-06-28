@@ -89,7 +89,7 @@ namespace Library
         {
             new TimeTrial("Time Trial"),
             new Game("Classic"),
-            new BombMode("")
+            new Bomb("Bomb")
         };
         //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
         private void MatchPlayers()

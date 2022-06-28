@@ -79,7 +79,7 @@ namespace Library
             Administrator.Instance.UsersToPlay.Add(user, "classic");
 
         }
-        /*
+        
         public void SelectMode(User user)
         {
             //List<Lobby> modes = administrator.modeList;
@@ -89,17 +89,17 @@ namespace Library
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");
             int n = 0;
-            foreach (Lobby lobby in modes)
+            foreach (Lobby lobby in administrator.modeList)
             {
                 n++;
                 Console.WriteLine($"{n}-{lobby.Name}");
             }
             int num = int.Parse(Console.ReadLine());
 
-            if (modes.Contains(modes.ElementAt(num - 1)))
+            if (administrator.modeList.Contains(administrator.modeList.ElementAt(num - 1)))
             {
-                modes.ElementAt(num - 1).AddUserToWaitList(user);
-                Console.WriteLine($"\nEstas en la lista de espera para jugar al modo {modes.ElementAt(num - 1).Name}");
+                administrator.modeList.ElementAt(num - 1).AddUserToWaitList(user);
+                Console.WriteLine($"\nEstas en la lista de espera para jugar al modo {administrator.modeList.ElementAt(num - 1).Name}");
                 //Console.WriteLine(administrator.modeList.ElementAt(0).usersWaiting.Count);
             }
             else
@@ -108,6 +108,5 @@ namespace Library
             }
             return;
         }
-        */
     }
 }
