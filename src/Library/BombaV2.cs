@@ -1,7 +1,7 @@
 using System;
 
         //<summary>
-        //La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
+        //La clase BombaV2 es una de las modalidades que decidimos agregar, que a día de hoy
         //no funciona como debería de hacerlo, ya que no hemos logrado implementar una
         //manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
         //que se le pasan
@@ -9,7 +9,7 @@ using System;
 
 namespace Library
 {
-    public class Bomb : Game
+    public class BombaV2 : Game
     {
         private User Player1;
         private User Player2;
@@ -17,19 +17,20 @@ namespace Library
         private Board BoardPlayer2;
         private bool Hit;
         private int MissedShots = 0;
-        public Bomb(User player1, User player2, string name) : base(player1, player2, name)
+        public BombaV2(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(player1);
             BoardPlayer2 = new Board(player2); 
         }
-        public Bomb(string name) : base(name)
+//------------------------------
+        public BombaV2(string name) : base(name)
         {
-            if (name.ToLower() == "bomb mode")
+            if (name.ToLower() == "BombaV2 mode")
             {
                 this.Name = name;
-                Bomb game = new Bomb(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
+                //BombaV2 game = new BombaV2(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
                 this.StartGame();   
             }
             else
@@ -37,14 +38,15 @@ namespace Library
                 Console.WriteLine("Modo incorrecto");
             }
         }
+//-------------------------------
         public override void Attack(User player)
         {
             if (MissedShots == 3)
             {
                 //Falta ver como hacer un ataque 3x3
-                Console.WriteLine("Escriba la primer coordenada del centro de la bomba(A-J)");
+                Console.WriteLine("Escriba la primer coordenada del centro de la BombaV2a(A-J)");
                 string coord1 = Console.ReadLine();
-                Console.WriteLine("Escriba la segunda coordenada del centro de la bomba(1-10)");
+                Console.WriteLine("Escriba la segunda coordenada del centro de la BombaV2a(1-10)");
                 string coord2 = Console.ReadLine();
                 if (player == this.Player1)
                 {
@@ -67,7 +69,7 @@ namespace Library
         }
         public override void MatchPlayers()
         {
-            Bomb game = new Bomb("Bomb Mode");
+            BombaV2 game = new BombaV2("BombaV2 Mode");
             base.MatchPlayers();
         }
     }

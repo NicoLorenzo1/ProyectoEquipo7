@@ -56,13 +56,7 @@ namespace Library
                                 game.StartGame(); 
                             }
                         }
-                        else
-                        {
-                        }
                     }
-                }
-                else
-                {                   
                 }
             }
         }
@@ -90,11 +84,12 @@ namespace Library
         }
 
         //lista general de modos de juego.
-        /*
+        
         public List<Lobby> modeList = new List<Lobby>()
         {
-            new TimeTrialMode("Time Trial"),
-            new Game("Classic")
+            new TimeTrial("Time Trial"),
+            new Game("Classic"),
+            new BombMode("")
         };
         //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
         private void MatchPlayers()
@@ -103,6 +98,6 @@ namespace Library
             {
                 m.MatchPlayers();
             }
-        }*/
+        }
     }
 }
