@@ -36,7 +36,11 @@ namespace Library
             {
                 if (user.Id == message.From.Id)
                 {
+                    response = "Estas en la lista de espera para jugar al modo Classic.";
+
+                    //response = "Comenzara la batalla";
                     Administrator.Instance.UsersToPlay.Add(user, "classic");
+                    Administrator.Instance.MatchPlayers();
                 }
             }
         }

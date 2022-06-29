@@ -55,12 +55,14 @@ namespace Library
                     if (user.Name == message.Text)
                     {
                         user.Id = message.From.Id;
+                        user.IdChat = message.Chat.Id;
                         Console.WriteLine(user.Id);
 
                     }
                 }
                 response = "Usuario registrado\n Elige una opción \n 1- Jugar \n 2- Salir";
                 State = RegisterState.Start;
+
             }
             else
             {

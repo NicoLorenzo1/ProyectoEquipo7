@@ -1,5 +1,5 @@
 using Telegram.Bot.Types;
-
+using Telegram.Bot;
 namespace Library
 {
     /// <summary>
@@ -7,6 +7,8 @@ namespace Library
     /// </summary>
     public class Administrator
     {
+        private static IHandler firstHandler;
+        private static TelegramBotClient telegramClient;
         public List<User> usersRegistered = new List<User>();
         public List<Game> currentGame = new List<Game>();
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
@@ -33,13 +35,11 @@ namespace Library
         /// </summary>
         /// <param name="user">Usuario a emparejar.</param>
         /// <param name="mode">Modo de juego seleccionado.</param>
-        public void MatchPlayers(User user, string mode)
+        public async void MatchPlayers()
         {
-
             int counter = 0;
-            UsersToPlay.Add(user, mode);
+            //UsersToPlay.Add(user, mode);
             KeyValuePair<User, string> match1;
-
 
             for (int i = 0; i < UsersToPlay.Count; i++)
             {
@@ -54,8 +54,12 @@ namespace Library
                             if (UsersToPlay.ElementAt(x).Value == match1.Value)
                             {
                                 KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+
+                                await TelegramBot.telegramClient.SendTextMessageAsync(match1.Key.IdChat, $"Comenzara la batalla contra{match2.Key.Name}");
+                                await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
+
                                 Game game = new Game(match1.Key, match2.Key, "Classic");
-                                game.StartGame();
+                                //game.StartGame();
                             }
                         }
                         else

@@ -65,7 +65,7 @@ namespace Library
             if (UserName != string.Empty)
             {
                 //SelectMode(administrator.CheckUser());
-                administrator.MatchPlayers(administrator.CheckUser(UserName), "Classic");
+               // administrator.MatchPlayers(administrator.CheckUser(UserName), "Classic");
             }
 
             else

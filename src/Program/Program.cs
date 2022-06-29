@@ -18,6 +18,8 @@ namespace Library
         /// </summary>
         public static void Main()
         {
+            //User user = new User("user1");
+            //Administrator.Instance.UsersToPlay.Add(user, "classic");
             Bot.Instance.Setup();
             TelegramBot.Start();
             Console.WriteLine($"Bot ended!");

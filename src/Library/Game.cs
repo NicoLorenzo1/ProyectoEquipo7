@@ -354,7 +354,7 @@ namespace Library
         }
         /// <summary>
         /// Por creator el responsable de saber la información de cómo estan compuestos los tableros
-        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
+        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de mostrar
         /// </summary>
         /// <param name="user"> Al igual que en Attack, se indica que usuario está ingresando
         /// la solicitud del tablero que seleccione</param>
