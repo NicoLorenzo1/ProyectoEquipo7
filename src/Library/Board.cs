@@ -205,7 +205,7 @@ namespace Library
         public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
-            for (int s = 1; s <=5; s++)
+            for (int s = 1; s <=1; s++)
             {
                 Ship actualShip = new Ship(s);;
                 

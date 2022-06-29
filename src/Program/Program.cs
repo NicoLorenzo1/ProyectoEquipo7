@@ -7,10 +7,17 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            User jose = new User("jose");
+            User jose = new User("Jose");
+            User juan = new User("Juan");
 
             Administrator administrator = Administrator.Instance;
-            administrator.UsersToPlay.Add(jose, "Classic");
+            //administrator.usersRegistered.Add(jose);
+
+            //administrator.UsersToPlay.Add(jose, "Classic");
+            administrator.usersRegistered.Add(juan);
+            administrator.UsersToPlay.Add(juan, "Challenge");
+            
+            
 
             //Game game = new Game("classic");
             //game.AddUserToWaitList(user1);
@@ -18,6 +25,8 @@ namespace Program
 
             Menu menu = new Menu();
             menu.ShowMenu();
+            administrator.MatchPlayers(jose,"Classic");
+            //menu.SelectMode(jose);
 
             /* Esto es lo que tenia yo
 
