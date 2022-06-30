@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando para seleccionar modo de juego.
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "Classic" para seleccionar modo de juego.
     /// </summary>
     public class ClassicModeHandler : BaseHandler
     {
@@ -29,14 +29,16 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Estas en la lista de espera para jugar al modo Classic.";
+            response = string.Empty;
 
             //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
             foreach (var user in User.users)
             {
                 if (user.Id == message.From.Id)
                 {
+                    response = "Estas en la lista de espera para jugar al modo Classic.";
                     Administrator.Instance.UsersToPlay.Add(user, "classic");
+                    Administrator.Instance.MatchPlayers();
                 }
             }
         }

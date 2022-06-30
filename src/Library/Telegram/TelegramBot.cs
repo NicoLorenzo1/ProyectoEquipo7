@@ -7,7 +7,7 @@ namespace Library
 {
     public abstract class TelegramBot
     {
-        private static TelegramBotClient telegramClient;
+        public static TelegramBotClient telegramClient;
         private static IHandler firstHandler;
 
         public static async void Start()
@@ -26,8 +26,10 @@ namespace Library
                 new BombModeHandler(
                 new StaticsHandler(
                 new CommandsHandler(
+                new QuickChatHandler(
+                new PositionShipHandler(
                 new ExitHandler(null)
-            )))))))))));
+            )))))))))))));
 
             var cts = new CancellationTokenSource();
 
