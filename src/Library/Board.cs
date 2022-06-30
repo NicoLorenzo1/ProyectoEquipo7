@@ -256,8 +256,10 @@ namespace Library
             }
         }
 
-        public void Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
+        public (bool,bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
         {
+            bool overShip = false;
+            bool overBoard = false;
             int IndexX;
             IndexX = ABC.IndexOf(entry1.ToUpper());
             int IndexY;
@@ -270,6 +272,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
+                    overBoard=true;
                 }
                 else
                 {
@@ -307,6 +310,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
+                        overShip=true;
 
                     }
                     else
@@ -348,6 +352,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
+                    overBoard=true;
                 }
                 else
                 {
@@ -385,6 +390,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
+                        overShip=true;
                     }
                     else
                     {
@@ -428,6 +434,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
+                    overBoard=true;
                 }
                 else
                 {
@@ -468,6 +475,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
+                        overShip=true;
                     }
                     else
                     {
@@ -508,6 +516,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
+                    overBoard=true;
                 }
                 else
                 {
@@ -547,6 +556,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
+                        overShip=true;
                     }
                     else
                     {
@@ -586,6 +596,7 @@ namespace Library
                 System.Console.WriteLine("No es una dirección válida");
                 System.Console.WriteLine();
             }
+            return (overBoard, overShip);
         }
 
         /// <summary>
