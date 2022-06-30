@@ -1,12 +1,10 @@
-using System;
-using System.IO;
-
-namespace Library
+[System.Serializable]
+public class AToJExceptionException : System.Exception
 {
-    public class AToJException : Exception
-    {
-        public AToJException() : base("No se ingresó solamente una letra de la A a la J")
-        {            
-        }
-    }
+    public AToJExceptionException() { }
+    public AToJExceptionException(string message) : base(message) { }
+    public AToJExceptionException(string message, System.Exception inner) : base(message, inner) { }
+    protected AToJExceptionException(
+        System.Runtime.Serialization.SerializationInfo info,
+        System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 }

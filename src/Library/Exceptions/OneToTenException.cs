@@ -1,12 +1,10 @@
-using System;
-using System.IO;
-
-namespace Library
+[System.Serializable]
+public class OneToTenExceptionException : System.Exception
 {
-    public class OneToTenException : Exception
-    {
-        public OneToTenException() : base("No se ingresó solamente un número entero del 1 al 10")
-        {            
-        }
-    }
+    public OneToTenExceptionException() { }
+    public OneToTenExceptionException(string message) : base(message) { }
+    public OneToTenExceptionException(string message, System.Exception inner) : base(message, inner) { }
+    protected OneToTenExceptionException(
+        System.Runtime.Serialization.SerializationInfo info,
+        System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
 }

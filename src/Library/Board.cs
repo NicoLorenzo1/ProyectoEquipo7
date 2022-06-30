@@ -225,8 +225,6 @@ namespace Library
                         entry2 = Console.ReadLine();
                         if (rowNum.Contains(entry2))
                         {
-                            int IndexY;
-                            IndexY = rowNum.IndexOf(entry2) + 1;
                             string dir;
                             System.Console.WriteLine();
                             System.Console.WriteLine("Dirección:");
@@ -239,9 +237,34 @@ namespace Library
                             System.Console.Write("Ingrese la dirección escogida (1-4): ");
                             dir = Console.ReadLine();
                             System.Console.WriteLine();
-                            if (dir == "1")
+                            Positioner(entry1,entry2,dir,actualShip.Shipname, actualShip.ShipDim);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("No es una coordenada posible");
+                            System.Console.WriteLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No es una coordenada posible");
+                        System.Console.WriteLine();
+                    }
+                }
+            }
+        }
+
+        public void Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
+        {
+            int IndexX;
+            IndexX = ABC.IndexOf(entry1.ToUpper());
+            int IndexY;
+            IndexY = rowNum.IndexOf(entry2) + 1;
+
+            if (dir == "1")
                             {
-                                if (IndexY - actualShip.ShipDim < 0)
+                                if (IndexY - actualShipDim < 0)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
@@ -250,7 +273,7 @@ namespace Library
                                 else
                                 {
                                     bool trigger = false;
-                                    for (int x = 0; x < actualShip.ShipDim; x++)
+                                    for (int x = 0; x < actualShipDim; x++)
                                     {
                                         string poscheck1;
                                         string poscheck2;
@@ -288,8 +311,8 @@ namespace Library
                                     else
                                     {
                                         ArrayList posList = new ArrayList();
-                                        posList.Add(actualShip.Shipname);
-                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        posList.Add(actualShipName);
+                                        for (int i = 1; i <= actualShipDim; i++)
                                         {
                                             string pos1;
                                             string pos2;
@@ -313,13 +336,13 @@ namespace Library
                                         }
                                         shipPos.Add(posList);
                                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                                        break;
+                                        return;
                                     }
                                 }
                             }
                             else if (dir == "2")
                             {
-                                if (IndexY + actualShip.ShipDim > 11)
+                                if (IndexY + actualShipDim > 11)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
@@ -328,7 +351,7 @@ namespace Library
                                 else
                                 {
                                     bool trigger = false;
-                                    for (int x = 0; x < actualShip.ShipDim; x++)
+                                    for (int x = 0; x < actualShipDim; x++)
                                     {
                                         string poscheck1;
                                         string poscheck2;
@@ -365,8 +388,8 @@ namespace Library
                                     else
                                     {
                                         ArrayList posList = new ArrayList();
-                                        posList.Add(actualShip.Shipname);
-                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        posList.Add(actualShipName);
+                                        for (int i = 1; i <= actualShipDim; i++)
                                         {
                                             string pos1;
                                             string pos2;
@@ -393,13 +416,13 @@ namespace Library
                                         }
                                         shipPos.Add(posList);
                                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                                        break;
+                                        return;
                                     }
                                 }
                             }
                             else if (dir == "3")
                             {
-                                if (IndexX + actualShip.ShipDim > 11)
+                                if (IndexX + actualShipDim > 11)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
@@ -409,7 +432,7 @@ namespace Library
                                 {
                                     bool trigger = false;
 
-                                    for (int x = 0; x < actualShip.ShipDim; x++)
+                                    for (int x = 0; x < actualShipDim; x++)
                                     {
                                         string poscheck1;
                                         string poscheck2;
@@ -448,8 +471,8 @@ namespace Library
                                     else
                                     {
                                         ArrayList posList = new ArrayList();
-                                        posList.Add(actualShip.Shipname);
-                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        posList.Add(actualShipName);
+                                        for (int i = 1; i <= actualShipDim; i++)
                                         {
                                             string pos1;
                                             string pos2;
@@ -473,13 +496,13 @@ namespace Library
                                         }
                                         shipPos.Add(posList);
                                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                                        break;
+                                        return;
                                     }
                                 }
                             }
                             else if (dir == "4")
                             {
-                                if (IndexX - actualShip.ShipDim < 0)
+                                if (IndexX - actualShipDim < 0)
                                 {
                                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
@@ -489,7 +512,7 @@ namespace Library
                                 {
                                     bool trigger = false;
 
-                                    for (int x = 0; x < actualShip.ShipDim; x++)
+                                    for (int x = 0; x < actualShipDim; x++)
                                     {
                                         string poscheck1;
                                         string poscheck2;
@@ -527,8 +550,8 @@ namespace Library
                                     else
                                     {
                                         ArrayList posList = new ArrayList();
-                                        posList.Add(actualShip.Shipname);
-                                        for (int i = 1; i <= actualShip.ShipDim; i++)
+                                        posList.Add(actualShipName);
+                                        for (int i = 1; i <= actualShipDim; i++)
                                         {
                                             string pos1;
                                             string pos2;
@@ -552,7 +575,7 @@ namespace Library
                                         }
                                         shipPos.Add(posList);
                                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                                        break;
+                                        return;
                                     }
                                 }
                             }
@@ -562,21 +585,8 @@ namespace Library
                                 System.Console.WriteLine("No es una dirección válida");
                                 System.Console.WriteLine();
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No es una coordenada posible");
-                            System.Console.WriteLine();
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No es una coordenada posible");
-                        System.Console.WriteLine();
-                    }
-                }
-            }
         }
+
         /// <summary>
         /// Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
         /// de conocer si hay un barco en una posición en específica o no.
