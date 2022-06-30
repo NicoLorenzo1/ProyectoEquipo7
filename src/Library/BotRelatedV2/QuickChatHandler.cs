@@ -1,9 +1,11 @@
 using Telegram.Bot.Types;
+using Telegram.Bot;
+
 
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando para seleccionar modo de juego.
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando Mensajes para enviar mensajes predefinidos a los demas usuarios.
     /// </summary>
     public class QuickChatHandler : BaseHandler
     {
@@ -37,17 +39,50 @@ namespace Library
             }
             else if (QuickChatState.SendMessage == State)
             {
-                if (message.Text == "1")
+                SendMessage(message);
+            }
+
+        }
+
+        /// <summary>
+        /// Metodo para seleccionar a que jugador enviar el mensaje predefinido.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        private static async void SendMessage(Message message)
+        {
+            foreach (var game in Administrator.Instance.currentGame)
+            {
+                if (game.player2.IdChat == message.Chat.Id)
                 {
-                    response = "Horrible!";
+                    if (message.Text == "1")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Horrible!");
+                    }
+                    if (message.Text == "2")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Buen disparo!");
+
+                    }
+                    if (message.Text == "3")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Muy cerca!");
+                    }
                 }
-                if (message.Text == "2")
+                else if (game.player1.IdChat == message.Chat.Id)
                 {
-                    response = "Buen disparo!";
-                }
-                if (message.Text == "3")
-                {
-                    response = "Muy cerca!";
+                    if (message.Text == "1")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Horrible!");
+                    }
+                    if (message.Text == "2")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Buen disparo!");
+                    }
+                    if (message.Text == "3")
+                    {
+                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Muy cerca!");
+                    }
                 }
             }
 

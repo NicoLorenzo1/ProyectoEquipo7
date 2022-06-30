@@ -29,14 +29,16 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Estas en la lista de espera para jugar al modo Bomb.";
+            response = string.Empty;
 
             //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
             foreach (var user in User.users)
             {
                 if (user.Id == message.From.Id)
                 {
-                    Administrator.Instance.UsersToPlay.Add(user, "Bomb");
+                    response = "Estas en la lista de espera para jugar al modo Bomb.";
+                    Administrator.Instance.UsersToPlay.Add(user, "bomb");
+                    Administrator.Instance.MatchPlayers();
                 }
             }
         }

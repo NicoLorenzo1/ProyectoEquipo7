@@ -27,8 +27,9 @@ namespace Library
                 new StaticsHandler(
                 new CommandsHandler(
                 new QuickChatHandler(
+                new PositionShipHandler(
                 new ExitHandler(null)
-            ))))))))))));
+            )))))))))))));
 
             var cts = new CancellationTokenSource();
 
