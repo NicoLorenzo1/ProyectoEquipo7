@@ -341,7 +341,7 @@ namespace Library
                         }
                         shipPos.Add(posList);
                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                        return;
+                        return (overBoard, overShip);
                     }
                 }
             }
@@ -423,7 +423,7 @@ namespace Library
                         }
                         shipPos.Add(posList);
                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                        return;
+                        return (overBoard, overShip);
                     }
                 }
             }
@@ -505,7 +505,7 @@ namespace Library
                         }
                         shipPos.Add(posList);
                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                        return;
+                        return (overBoard, overShip);
                     }
                 }
             }
@@ -586,7 +586,7 @@ namespace Library
                         }
                         shipPos.Add(posList);
                         PrintBoard(this.shipPos, this.shots, "MyBoard");
-                        return;
+                        return (overBoard, overShip);
                     }
                 }
             }
