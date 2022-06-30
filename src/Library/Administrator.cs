@@ -53,41 +53,36 @@ namespace Library
                         {
                             if (UsersToPlay.ElementAt(x).Value == match1.Value)
                             {
-<<<<<<< HEAD
-                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
 
                                 //await TelegramBot.telegramClient.SendTextMessageAsync(match1.Key.IdChat, $"Comenzara la batalla contra {match2.Key.Name}");
-                                await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
+                                //await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
 
-                                Game game = new Game(match1.Key, match2.Key, "Classic");
                                 //game.StartGame();
-=======
-                                if(match1.Value=="Classic")
+                                if (match1.Value == "Classic")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Game game = new Game(match1.Key, match2.Key, "Classic");
-                                    game.StartGame(); 
+                                    game.StartGame();
                                 }
-                                else if (match1.Value=="Bomb")
+                                else if (match1.Value == "Bomb")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Bomb");
-                                    game.StartGame(); 
+                                    game.StartGame();
                                 }
-                                else if (match1.Value=="Challenge")
+                                else if (match1.Value == "Challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
-                                    game.StartGame(); 
+                                    game.StartGame();
                                 }
-                                else if (match1.Value=="Challenge")
+                                else if (match1.Value == "Challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
-                                    game.StartGame(); 
+                                    game.StartGame();
                                 }
-                                
->>>>>>> 93fe6c4ced54a2095444318ba134d64c8f1392be
+
                             }
                         }
                         else

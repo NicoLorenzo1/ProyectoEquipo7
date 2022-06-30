@@ -18,7 +18,6 @@ namespace Library
         /// </summary>
         public static void Main()
         {
-<<<<<<< HEAD
             User user = new User("user1");
             Administrator.Instance.UsersToPlay.Add(user, "classic");
             //Bot.Instance.Setup();
@@ -26,7 +25,6 @@ namespace Library
             bot.Setup();
             TelegramBot.Start();
             Console.WriteLine($"Bot ended!");
-=======
             User jose = new User("Jose");
             User juan = new User("Juan");
 
@@ -45,7 +43,7 @@ namespace Library
 
             Menu menu = new Menu();
             menu.ShowMenu();
-            administrator.MatchPlayers(jose,"Classic");
+            administrator.MatchPlayers();
             //menu.SelectMode(jose);
 
             /* Esto es lo que tenia yo
@@ -88,7 +86,6 @@ namespace Library
             //Stadistics.ShowStats(user);
 
 
->>>>>>> 93fe6c4ced54a2095444318ba134d64c8f1392be
 
             // Esperamos a que el usuario aprete Enter en la consola para terminar el bot.
 
