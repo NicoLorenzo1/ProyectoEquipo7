@@ -36,6 +36,7 @@ namespace Library
         {
             response = "No hay mas barcos disponibles para colocar.";
 
+
             if (State == PositionShipState.Start)
             {
                 response = "Posiciona el lugar de la Lancha (A-J)";
