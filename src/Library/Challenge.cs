@@ -1,4 +1,3 @@
-/*
 using System;
         
         //<summary>
@@ -43,6 +42,7 @@ namespace Library
         }
         public override void StartGame()
         {
+            System.Console.WriteLine("Ingresaste a Challenge");
             while (WinsPlayer1<2 || WinsPlayer2<2)
             {
                 BoardPlayer1.PositionShips();
@@ -99,4 +99,3 @@ namespace Library
         }
     }
 }
-*/
