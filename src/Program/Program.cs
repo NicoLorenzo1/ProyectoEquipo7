@@ -18,6 +18,13 @@ namespace Library
         /// </summary>
         public static void Main()
         {
+            User user = new User("user1");
+            Administrator.Instance.UsersToPlay.Add(user, "classic");
+            //Bot.Instance.Setup();
+            Bot bot = new Bot();
+            bot.Setup();
+            TelegramBot.Start();
+            Console.WriteLine($"Bot ended!");
             User jose = new User("Jose");
             User juan = new User("Juan");
 
@@ -36,7 +43,7 @@ namespace Library
 
             Menu menu = new Menu();
             menu.ShowMenu();
-            administrator.MatchPlayers(jose,"Classic");
+            administrator.MatchPlayers();
             //menu.SelectMode(jose);
 
             /* Esto es lo que tenia yo

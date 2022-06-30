@@ -50,7 +50,7 @@ namespace Library
             {
                 this.Name = name;
                 Game game = new Game(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
+                this.StartGame();
             }
             else
             {
@@ -144,34 +144,34 @@ namespace Library
                     System.Console.WriteLine("Esta fuera del tablero");
                     outOfBoard = true;
                 }
-                        
-                for (int i = 0; i < BoardPlayer1.shots.Count; i+=2)
+
+                for (int i = 0; i < BoardPlayer1.shots.Count; i += 2)
+                {
+                    string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
+                    string setter2 = Convert.ToString(BoardPlayer1.shots[i + 1]);
+                    if (setter1 == coord1.ToUpper())
                     {
-                        string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
-                        string setter2 = Convert.ToString(BoardPlayer1.shots[i+1]);
-                        if (setter1 == coord1.ToUpper())
+                        if (setter2 == coord2)
                         {
-                            if (setter2 == coord2)
-                            {
-                                System.Console.WriteLine();
-                                Console.WriteLine("Ya ha atacado aqui");
-                                System.Console.WriteLine("Intente denuevo");
-                                outOfBoard = true;
-                            }
+                            System.Console.WriteLine();
+                            Console.WriteLine("Ya ha atacado aqui");
+                            System.Console.WriteLine("Intente denuevo");
+                            outOfBoard = true;
                         }
                     }
+                }
                 if (outOfBoard)
                 {
                     Attack(player);
                 }
                 else
                 {
-                    hit = this.BoardPlayer2.CheckShip(coord1,coord2, BoardPlayer2.shipPos,out string shipName);
+                    hit = this.BoardPlayer2.CheckShip(coord1, coord2, BoardPlayer2.shipPos, out string shipName);
                     if (hit)
                     {
                         if (shipName.ToLower() == "lancha")
                         {
-                            Lancha2Health -=1;
+                            Lancha2Health -= 1;
                             if (Lancha2Health == 0)
                             {
                                 Console.WriteLine($"{shipName} Hundido!");
@@ -183,7 +183,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "crucero")
                         {
-                            Crucero2Health -=1;
+                            Crucero2Health -= 1;
                             if (Crucero2Health == 0)
                             {
                                 Console.WriteLine($"{shipName} Hundido!");
@@ -195,7 +195,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "submarino")
                         {
-                            Submarino2Health -=1;
+                            Submarino2Health -= 1;
                             if (Submarino2Health == 0)
                             {
                                 Console.WriteLine($"{shipName} Hundido!");
@@ -207,7 +207,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "buque")
                         {
-                            Buque2Health -=1;
+                            Buque2Health -= 1;
                             if (Buque2Health == 0)
                             {
                                 Console.WriteLine($"{shipName} Hundido!");
@@ -219,7 +219,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "portaaviones")
                         {
-                            Portaaviones2Health -=1;
+                            Portaaviones2Health -= 1;
                             if (Portaaviones2Health == 0)
                             {
                                 Console.WriteLine($"{shipName} Hundido!");
@@ -229,7 +229,7 @@ namespace Library
                                 Console.WriteLine("Tocado");
                             }
                         }
-                        HitsPlayer1 += 1;                    
+                        HitsPlayer1 += 1;
                     }
                     else
                     {
@@ -238,7 +238,7 @@ namespace Library
                     BoardPlayer1.shots.Add(coord1.ToUpper());
                     BoardPlayer1.shots.Add(coord2);
                     Console.WriteLine($"Atacó {player.Name}");
-                }            
+                }
             }
             else if (player == this.Player2)
             {
@@ -254,33 +254,33 @@ namespace Library
                     System.Console.WriteLine("Esta fuera del tablero");
                     outOfBoard = true;
                 }
-                        
-                for (int i = 0; i < BoardPlayer2.shots.Count; i+=2)
+
+                for (int i = 0; i < BoardPlayer2.shots.Count; i += 2)
+                {
+                    string setter1 = Convert.ToString(BoardPlayer2.shots[i]);
+                    string setter2 = Convert.ToString(BoardPlayer2.shots[i + 1]);
+                    if (setter1 == coord1.ToUpper())
                     {
-                        string setter1 = Convert.ToString(BoardPlayer2.shots[i]);
-                        string setter2 = Convert.ToString(BoardPlayer2.shots[i+1]);
-                        if (setter1 == coord1.ToUpper())
+                        if (setter2 == coord2)
                         {
-                            if (setter2 == coord2)
-                            {
-                                Console.WriteLine("Ya ha atacado aqui");
-                                System.Console.WriteLine("Intente denuevo");
-                                outOfBoard = true;
-                            }
+                            Console.WriteLine("Ya ha atacado aqui");
+                            System.Console.WriteLine("Intente denuevo");
+                            outOfBoard = true;
                         }
                     }
+                }
                 if (outOfBoard)
                 {
                     Attack(player);
                 }
                 else
                 {
-                    hit = this.BoardPlayer1.CheckShip(coord1,coord2, BoardPlayer1.shipPos, out string shipName);
+                    hit = this.BoardPlayer1.CheckShip(coord1, coord2, BoardPlayer1.shipPos, out string shipName);
                     if (hit)
                     {
                         if (shipName.ToLower() == "lancha")
                         {
-                            Lancha1Health -=1;
+                            Lancha1Health -= 1;
                             if (Lancha1Health == 0)
                             {
                                 Console.WriteLine($"Hundido {shipName}");
@@ -292,7 +292,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "crucero")
                         {
-                            Crucero1Health -=1;
+                            Crucero1Health -= 1;
                             if (Crucero1Health == 0)
                             {
                                 Console.WriteLine($"Hundido {shipName}");
@@ -304,7 +304,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "submarino")
                         {
-                            Submarino1Health -=1;
+                            Submarino1Health -= 1;
                             if (Submarino1Health == 0)
                             {
                                 Console.WriteLine($"Hundido {shipName}");
@@ -316,7 +316,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "buque")
                         {
-                            Buque1Health -=1;
+                            Buque1Health -= 1;
                             if (Buque1Health == 0)
                             {
                                 Console.WriteLine($"Hundido {shipName}");
@@ -328,7 +328,7 @@ namespace Library
                         }
                         else if (shipName.ToLower() == "portaaviones")
                         {
-                            Portaaviones1Health -=1;
+                            Portaaviones1Health -= 1;
                             if (Portaaviones1Health == 0)
                             {
                                 Console.WriteLine($"Hundido {shipName}");
@@ -355,7 +355,7 @@ namespace Library
         }
         /// <summary>
         /// Por creator el responsable de saber la información de cómo estan compuestos los tableros
-        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de
+        /// es la clase Board, por ende el método ShowBoard le dice a Board la información que debe de mostrar
         /// </summary>
         /// <param name="user"> Al igual que en Attack, se indica que usuario está ingresando
         /// la solicitud del tablero que seleccione</param>
@@ -403,6 +403,38 @@ namespace Library
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
             //administrator.currentGame.Remove(this);            
+        }
+
+        public User player1
+        {
+            get
+            {
+                return this.Player1;
+            }
+        }
+
+        public User player2
+        {
+            get
+            {
+                return this.Player2;
+            }
+        }
+
+        public Board boardPlayer1
+        {
+            get
+            {
+                return this.BoardPlayer1;
+            }
+        }
+
+        public Board boardPlayer2
+        {
+            get
+            {
+                return this.BoardPlayer1;
+            }
         }
     }
 }

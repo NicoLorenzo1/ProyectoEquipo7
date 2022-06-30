@@ -5,19 +5,21 @@ namespace Library
 {
     public class Bot
     {
+        /*
         private static Bot instance;
         public static Bot Instance
         {
             get
             {
-                if (instance == null)
-                {
+               // if (instance == null)
+                //{
                     instance = new Bot();
-                }
+               // }
 
                 return instance;
             }
         }
+        */
         // El token provisto por Telegram al crear el bot. Mira el archivo README.md en la raíz de este repo para
         // obtener indicaciones sobre cómo configurarlo.
         public static string token;

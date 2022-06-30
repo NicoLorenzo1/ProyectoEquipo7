@@ -14,6 +14,7 @@ namespace Library
         private static int count = 0;
         private string name;
         private long id;
+        private long idChat;
 
         public Statistics statistics;
 
@@ -56,6 +57,18 @@ namespace Library
             set
             {
                 id = value;
+            }
+        }
+
+        public long IdChat
+        {
+            get
+            {
+                return this.idChat;
+            }
+            set
+            {
+                idChat = value;
             }
         }
 
