@@ -1,5 +1,10 @@
+using Telegram.Bot.Types;
+
 namespace Library
 {
+    /// <summary>
+    /// Se encarga de manejar a los usuarios dentro del juego.
+    /// </summary>
     public class Administrator
     {
         public List<User> usersRegistered = new List<User>();
@@ -7,6 +12,9 @@ namespace Library
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
         private static Administrator instance;
 
+        /// <summary>
+        /// Se crea una única instancia de la clase Administrator.
+        /// </summary>
         public static Administrator Instance
         {
             get
@@ -20,6 +28,11 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Empareja dos jugadores según el modo de juego que seleccionaron y comienza su partida.
+        /// </summary>
+        /// <param name="user">Usuario a emparejar.</param>
+        /// <param name="mode">Modo de juego seleccionado.</param>
         public void MatchPlayers(User user, string mode)
         {
 
@@ -27,23 +40,35 @@ namespace Library
             UsersToPlay.Add(user, mode);
             KeyValuePair<User, string> match1;
 
-            
+
             for (int i = 0; i < UsersToPlay.Count; i++)
-            {   
-                if (counter==0)
+            {
+                if (counter == 0)
                 {
                     match1 = UsersToPlay.ElementAt(i);
-                    counter =+1;
+                    counter = +1;
                     for (int x = i; x < UsersToPlay.Count; x++)
                     {
-                        if (!(UsersToPlay.ElementAt(x).Key==match1.Key))
-                        {   
-                            if (UsersToPlay.ElementAt(x).Value==match1.Value)
+                        if (!(UsersToPlay.ElementAt(x).Key == match1.Key))
+                        {
+                            if (UsersToPlay.ElementAt(x).Value == match1.Value)
                             {
                                 if(match1.Value=="Classic")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Game game = new Game(match1.Key, match2.Key, "Classic");
+                                    game.StartGame(); 
+                                }
+                                else if (match1.Value=="Bomb")
+                                {
+                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                    Challenge game = new Challenge(match1.Key, match2.Key, "Bomb");
+                                    game.StartGame(); 
+                                }
+                                else if (match1.Value=="Challenge")
+                                {
+                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                    Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
                                     game.StartGame(); 
                                 }
                                 else if (match1.Value=="Challenge")
@@ -61,11 +86,16 @@ namespace Library
                     }
                 }
                 else
-                {                   
+                {
                 }
             }
         }
 
+        /// <summary>
+        /// Crea un objeto User en caso de que el jugador no esté ya registrado.
+        /// </summary>
+        /// <param name="name">Nombre del usuario.</param>
+        /// <returns>Devuelve un objeto de clase User.</returns>
         public User CheckUser(string name)
         {
             foreach (User u in usersRegistered)

@@ -109,10 +109,9 @@ namespace Library
             }
             */
             int num = int.Parse(Console.ReadLine());
-            
+
             /*
             if (modes.Contains(modes.ElementAt(num - 1)))
-            {
                 modes.ElementAt(num - 1).AddUserToWaitList(user);
                 Console.WriteLine($"\nEstas en la lista de espera para jugar al modo {modes.ElementAt(num - 1).Name}");
                 //Console.WriteLine(administrator.modeList.ElementAt(0).usersWaiting.Count);

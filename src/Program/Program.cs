@@ -1,11 +1,22 @@
 ﻿using System;
-using Library;
-
-namespace Program
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+namespace Library
 {
-    class Program
+    /// <summary>
+    /// Un programa que implementa un bot de Telegram.
+    /// </summary>
+    public abstract class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Punto de entrada al programa.
+        /// </summary>
+        public static void Main()
         {
             User jose = new User("Jose");
             User juan = new User("Juan");
@@ -69,7 +80,9 @@ namespace Program
 
 
 
+            // Esperamos a que el usuario aprete Enter en la consola para terminar el bot.
 
         }
+
     }
 }
