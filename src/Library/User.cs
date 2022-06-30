@@ -13,7 +13,7 @@ namespace Library
 
         private static int count = 0;
         private string name;
-        private int id;
+        private long id;
 
         public Statistics statistics;
 
@@ -24,7 +24,7 @@ namespace Library
         public User(string name)
         {
             this.name = name;
-            this.id = count += 1;
+            //this.id = count += 1;
             this.statistics = new Statistics(this);
             users.Add(this);
         }
@@ -38,20 +38,28 @@ namespace Library
             {
                 return this.name;
             }
+            set
+            {
+                this.name = value;
+            }
         }
 
         /// <summary>
         /// Get del nombre del usuario.
         /// </summary>
-        public int Id
+        public long Id
         {
             get
             {
                 return this.id;
             }
+            set
+            {
+                id = value;
+            }
         }
 
     }
 
-    
+
 }

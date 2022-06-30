@@ -40,7 +40,7 @@ namespace Library
                 user.statistics.wins = +1;
             }
 
-            if (wins==0)
+            if (wins == 0)
             {
                 user.statistics.winRate = 0;
             }
@@ -48,16 +48,17 @@ namespace Library
             {
                 user.statistics.winRate = playedGames / wins * 100;
             }
-            
+
         }
 
         /// <summary>
         /// El método ShowStats imprime las estadísticas del usuario.
         /// </summary>
         /// <param name="user">Usuario del cual se imprimirán las estadísticas.</param>
-        public static void ShowStats(User user)
+        public static string ShowStats(User user)
         {
             Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%");
+            return $"Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%";
         }
 
         /// <summary>
