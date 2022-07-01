@@ -58,7 +58,7 @@ namespace Library
                                 //await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
 
                                 //game.StartGame();
-                                if (match1.Value == "Classic")
+                                if (match1.Value == "classic")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Game game = new Game(match1.Key, match2.Key, "Classic");

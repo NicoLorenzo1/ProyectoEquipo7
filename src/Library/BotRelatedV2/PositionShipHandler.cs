@@ -15,7 +15,7 @@ namespace Library
 
         public PositionShipHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "prueba" };
+            this.Keywords = new string[] { "posicionar", "Posicionar" };
             State = PositionShipState.Start;
         }
 
@@ -54,9 +54,7 @@ namespace Library
                 else
                 {
                     response = "Debes ingresar una letra valida";
-
                 }
-
             }
             else if (State == PositionShipState.PositionShips1Check2)
             {
@@ -69,467 +67,347 @@ namespace Library
                 else
                 {
                     response = "debes ingresar un numero valido";
-
                 }
-
             }
             else if (State == PositionShipState.direction1)
             {
                 if (directions.Contains(message.Text.ToLower()))
                 {
-                    direction1 = message.Text;
+                    direction1 = "3";
+
                     foreach (var game in Administrator.Instance.currentGame)
                     {
+                        bool overBoard;
+                        bool overShip;
+
                         if (game.player1.IdChat == message.Chat.Id)
                         {
-                            game.boardPlayer1.Positioner(check1, check2, direction1, "Lancha", 1);
+                            (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                            if (overBoard == true)
+                            {
+                                response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                State = PositionShipState.Start;
+                            }
+                            else if (overShip == true)
+                            {
+                                response = "No se puede porque ya hay un barco en esa ubicación";
+                                State = PositionShipState.Start;
+                            }
+                            else
+                            {
+                                game.boardPlayer1.Positioner(check1, check2, direction1, "Lancha", 1);
+                                State = PositionShipState.StartCrucero;
+                            }
                         }
                         else
                         {
-                            game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
-                            response = $"{check1}, {check2}, {direction1}";
+                            //overBoard = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1).Item1;
+                            // overShip = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1).Item2;
+                            (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                            if (overBoard == true)
+                            {
+                                response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                State = PositionShipState.Start;
+                            }
+                            else if (overShip == true)
+                            {
+                                response = "No se puede porque ya hay un barco en esa ubicación";
+                                State = PositionShipState.Start;
+                            }
+                            else
+                            {
+                                game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+                                State = PositionShipState.StartCrucero;
+                            }
                         }
                     }
-                    State = PositionShipState.StartCrucero;
+
+                    //Posicionamiento del crucero
+                    if (State == PositionShipState.StartCrucero)
+                    {
+                        response = "Posiciona el lugar de Crucero (A-J)";
+                        State = PositionShipState.PositionShipsCruceroCheck1;
+                    }
+                    else if (State == PositionShipState.PositionShipsCruceroCheck1)
+                    {
+                        check1 = message.Text;
+                        response = "Posiciona el lugar de la Crucero(1-9)";
+                        State = PositionShipState.PositionShipsCruceroCheck2;
+                    }
+                    else if (State == PositionShipState.PositionShipsCruceroCheck2)
+                    {
+                        check2 = message.Text;
+                        response = "Elige una direccion para crucero";
+                        State = PositionShipState.directionCrucero;
+                    }
+                    else if (State == PositionShipState.directionCrucero)
+                    {
+                        foreach (var game in Administrator.Instance.currentGame)
+                        {
+                            bool overBoard;
+                            bool overShip;
+
+                            if (game.player1.IdChat == message.Chat.Id)
+                            {
+                                (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                if (overBoard)
+                                {
+                                    response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                    State = PositionShipState.StartCrucero;
+
+                                }
+                                else if (overShip)
+                                {
+                                    response = "No se puede porque ya hay un barco en esa ubicación";
+                                    State = PositionShipState.StartCrucero;
+                                }
+                                else
+                                {
+                                    game.boardPlayer1.Positioner(check1, check2, direction1, "Crucero", 3);
+                                    State = PositionShipState.StartSubmarino;
+                                }
+                            }
+                            else
+                            {
+                                (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                if (overBoard)
+                                {
+                                    response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                    State = PositionShipState.StartCrucero;
+                                }
+                                else if (overShip)
+                                {
+                                    response = "No se puede porque ya hay un barco en esa ubicación";
+                                    State = PositionShipState.StartCrucero;
+                                }
+                                else
+                                {
+                                    game.boardPlayer2.Positioner(check1, check2, direction1, "Crucero", 2);
+                                    State = PositionShipState.StartSubmarino;
+                                }
+                            }
+                        }
+
+                        //Posicionamiento del Submarino
+                        if (State == PositionShipState.StartSubmarino)
+                        {
+                            response = "Posiciona el lugar de Submarino (A-J)";
+                            State = PositionShipState.PositionShipsSubmarinoCheck1;
+                        }
+
+                        else if (State == PositionShipState.PositionShipsSubmarinoCheck1)
+                        {
+                            check1 = message.Text;
+                            response = "Posiciona el lugar de la Submarino(1-9)";
+                            State = PositionShipState.PositionShipsSubmarinoCheck2;
+                        }
+                        else if (State == PositionShipState.PositionShipsSubmarinoCheck2)
+                        {
+                            check2 = message.Text;
+                            response = "Elige una direccion para Submarino";
+                            State = PositionShipState.directionSubmarino;
+                        }
+                        else if (State == PositionShipState.directionSubmarino)
+                        {
+                            foreach (var game in Administrator.Instance.currentGame)
+                            {
+                                bool overBoard;
+                                bool overShip;
+                                if (game.player1.IdChat == message.Chat.Id)
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartSubmarino;
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartSubmarino;
+
+                                    }
+                                    else
+                                    {
+                                        game.boardPlayer1.Positioner(check1, check2, direction1, "Submarino", 3);
+                                        State = PositionShipState.StartBuque;
+                                    }
+                                }
+                                else
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartSubmarino;
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartSubmarino;
+
+                                    }
+                                    else
+                                    {
+                                        State = PositionShipState.StartBuque;
+                                        game.boardPlayer2.Positioner(check1, check2, direction1, "Submarino", 3);
+                                    }
+                                }
+                            }
+                        }
+
+                        //Posicionamiento del Buque
+
+                        if (State == PositionShipState.StartBuque)
+                        {
+                            response = "Posiciona el lugar de Buque (A-J)";
+                            State = PositionShipState.PositionShipsBuqueCheck1;
+                        }
+                        else if (State == PositionShipState.PositionShipsBuqueCheck1)
+                        {
+                            check1 = message.Text;
+                            response = "Posiciona el lugar de la Buque(1-9)";
+                            State = PositionShipState.PositionShipsBuqueCheck2;
+                        }
+                        else if (State == PositionShipState.PositionShipsBuqueCheck2)
+                        {
+                            check2 = message.Text;
+                            response = "Elige una direccion para Buque";
+                            State = PositionShipState.directionBuque;
+                        }
+                        else if (State == PositionShipState.directionBuque)
+                        {
+                            foreach (var game in Administrator.Instance.currentGame)
+                            {
+                                bool overBoard;
+                                bool overShip;
+                                if (game.player1.IdChat == message.Chat.Id)
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartBuque;
+
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartBuque;
+
+                                    }
+                                    else
+                                    {
+                                        game.boardPlayer1.Positioner(check1, check2, direction1, "Buque", 4);
+                                        State = PositionShipState.StartPortaaviones;
+                                    }
+                                }
+                                else
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartBuque;
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartBuque;
+                                    }
+                                    else
+                                    {
+                                        State = PositionShipState.StartPortaaviones;
+                                        game.boardPlayer2.Positioner(check1, check2, direction1, "Buque", 4);
+                                    }
+                                }
+                            }
+                        }
+
+                        //Posicionamiento del Portaaviones
+                        if (State == PositionShipState.StartPortaaviones)
+                        {
+                            response = "Posiciona el lugar de Portaaviones (A-J)";
+                            State = PositionShipState.PositionShipsPortaavionesCheck1;
+                        }
+                        else if (State == PositionShipState.PositionShipsPortaavionesCheck1)
+                        {
+                            check1 = message.Text;
+                            response = "Posiciona el lugar de la Portaaviones (1-9)";
+                            State = PositionShipState.PositionShipsPortaavionesCheck1;
+                        }
+                        else if (State == PositionShipState.PositionShipsPortaavionesCheck2)
+                        {
+                            check2 = message.Text;
+                            response = "Elige una direccion para Portaaviones";
+                            State = PositionShipState.directionPortaaviones;
+                        }
+                        else if (State == PositionShipState.directionPortaaviones)
+                        {
+                            foreach (var game in Administrator.Instance.currentGame)
+                            {
+                                bool overBoard;
+                                bool overShip;
+                                if (game.player1.IdChat == message.Chat.Id)
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartPortaaviones;
+
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartPortaaviones;
+                                    }
+                                    else
+                                    {
+                                        game.boardPlayer1.Positioner(check1, check2, direction1, "Portaaviones", 5);
+                                        State = PositionShipState.End;
+                                    }
+                                }
+                                else
+                                {
+                                    (overBoard, overShip) = game.boardPlayer2.Positioner(check1, check2, direction1, "Lancha", 1);
+
+                                    if (overBoard)
+                                    {
+                                        response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero";
+                                        State = PositionShipState.StartPortaaviones;
+                                    }
+                                    else if (overShip)
+                                    {
+                                        response = "No se puede porque ya hay un barco en esa ubicación";
+                                        State = PositionShipState.StartPortaaviones;
+                                    }
+                                    else
+                                    {
+                                        game.boardPlayer2.Positioner(check1, check2, direction1, "Portaaviones", 5);
+                                        State = PositionShipState.End;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    response = "Debes ingresar una dirección valida";
-                }
-            }
-
-            //Posicionamiento del crucero
-
-            if (State == PositionShipState.StartCrucero)
-            {
-                response = "Posiciona el lugar de Crucero (A-J)";
-                State = PositionShipState.PositionShipsCruceroCheck1;
-            }
-
-            else if (State == PositionShipState.PositionShipsCruceroCheck1)
-            {
-                check1 = message.Text;
-                //metodo(posicion de lancha)
-                response = "Posiciona el lugar de la Crucero(1-9)";
-                State = PositionShipState.PositionShipsCruceroCheck2;
-            }
-            else if (State == PositionShipState.PositionShipsCruceroCheck2)
-            {
-                check2 = message.Text;
-                //metodo(posicion de lancha)
-                response = "Elige una direccion para crucero";
-                State = PositionShipState.directionCrucero;
-            }
-            else if (State == PositionShipState.directionCrucero)
-            {
-                foreach (var game in Administrator.Instance.currentGame)
-                {
-                    if (game.player1.IdChat == message.Chat.Id)
-                    {
-                        game.boardPlayer1.Positioner(check1, check2, direction1, "Crucero", 1);
-                    }
-                    else
-                    {
-                        game.boardPlayer2.Positioner(check1, check2, direction1, "Crucero", 1);
-                        response = $"{check1}, {check2}, {direction1}";
-
-                    }
-                }
-                State = PositionShipState.StartSubmarino;
-            }
-
-            //Posicionamiento del Submarino
-
-            if (State == PositionShipState.StartSubmarino)
-            {
-                response = "Posiciona el lugar de Submarino (A-J)";
-                State = PositionShipState.PositionShipsSubmarinoCheck1;
-            }
-
-            else if (State == PositionShipState.PositionShipsSubmarinoCheck1)
-            {
-                check1 = message.Text;
-                response = "Posiciona el lugar de la Submarino(1-9)";
-                State = PositionShipState.PositionShipsSubmarinoCheck2;
-            }
-            else if (State == PositionShipState.PositionShipsSubmarinoCheck2)
-            {
-                check2 = message.Text;
-                response = "Elige una direccion para Submarino";
-                State = PositionShipState.directionSubmarino;
-            }
-            else if (State == PositionShipState.directionSubmarino)
-            {
-                foreach (var game in Administrator.Instance.currentGame)
-                {
-                    if (game.player1.IdChat == message.Chat.Id)
-                    {
-                        game.boardPlayer1.Positioner(check1, check2, direction1, "Submarino", 1);
-                    }
-                    else
-                    {
-                        game.boardPlayer2.Positioner(check1, check2, direction1, "Submarino", 1);
-                        response = $"{check1}, {check2}, {direction1}";
-
-                    }
-                }
-                State = PositionShipState.StartBuque;
-            }
-
-            //Posicionamiento del Buque
-
-            if (State == PositionShipState.StartBuque)
-            {
-                response = "Posiciona el lugar de Buque (A-J)";
-                State = PositionShipState.PositionShipsBuqueCheck1;
-            }
-
-            else if (State == PositionShipState.PositionShipsBuqueCheck1)
-            {
-                check1 = message.Text;
-                response = "Posiciona el lugar de la Buque(1-9)";
-                State = PositionShipState.PositionShipsBuqueCheck1;
-            }
-            else if (State == PositionShipState.PositionShipsBuqueCheck2)
-            {
-                check2 = message.Text;
-                response = "Elige una direccion para Buque";
-                State = PositionShipState.directionBuque;
-            }
-            else if (State == PositionShipState.directionBuque)
-            {
-                foreach (var game in Administrator.Instance.currentGame)
-                {
-                    if (game.player1.IdChat == message.Chat.Id)
-                    {
-                        game.boardPlayer1.Positioner(check1, check2, direction1, "Buque", 1);
-                    }
-                    else
-                    {
-                        game.boardPlayer2.Positioner(check1, check2, direction1, "Buque", 1);
-                        response = $"{check1}, {check2}, {direction1}";
-
-                    }
-                }
-                State = PositionShipState.StartPortaaviones;
-            }
-
-            //Posicionamiento del Portaaviones
-
-            if (State == PositionShipState.StartPortaaviones)
-            {
-                response = "Posiciona el lugar de Portaaviones (A-J)";
-                State = PositionShipState.PositionShipsPortaavionesCheck1;
-            }
-
-            else if (State == PositionShipState.PositionShipsPortaavionesCheck1)
-            {
-                check1 = message.Text;
-                response = "Posiciona el lugar de la Portaaviones (1-9)";
-                State = PositionShipState.PositionShipsPortaavionesCheck1;
-            }
-            else if (State == PositionShipState.PositionShipsPortaavionesCheck2)
-            {
-                check2 = message.Text;
-                response = "Elige una direccion para Portaaviones";
-                State = PositionShipState.directionPortaaviones;
-            }
-            else if (State == PositionShipState.directionPortaaviones)
-            {
-                foreach (var game in Administrator.Instance.currentGame)
-                {
-                    if (game.player1.IdChat == message.Chat.Id)
-                    {
-                        game.boardPlayer1.Positioner(check1, check2, direction1, "Portaaviones", 1);
-                    }
-                    else
-                    {
-                        game.boardPlayer2.Positioner(check1, check2, direction1, "Portaaviones", 1);
-                        response = $"{check1}, {check2}, {direction1}";
-
-                    }
-                }
-                State = PositionShipState.End;
             }
         }
-
-
-
-
-        /*
-
-                    int s = 1;
-                    // while (s < 5)
-                    // {
-                    Ship actualShip;
-                    switch (State)
-                    {
-
-                        case PositionShipState.Start:
-                            Console.WriteLine("start");
-
-                            actualShip = new Ship(1);
-                            State = PositionShipState.PositionShips1Check1;
-                            response = $"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)";
-                            //Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)");
-
-
-                            break;
-
-                        case PositionShipState.PositionShips1Check1:
-
-                            if (Board.abc.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.PositionShips1Check2;
-                                response = $"Ingrese la cordenada 2(1-10)";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una coordenada valida";
-                            }
-                            break;
-
-                        case PositionShipState.PositionShips1Check2:
-                            if (Board.num.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.direction1;
-                                response = $"Ingrese la direccion('Izquierda', 'Derecha', 'Arriba', 'Abajo')";
-
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        case PositionShipState.direction1:
-
-                            if (directions.Contains(message.Text.ToLower()))
-                            {
-                                direction1 = message.Text;
-                                State = PositionShipState.StartCrucero;
-                                response = "Barco creado correctamente";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        //Crucero
-                        case PositionShipState.StartCrucero:
-                            actualShip = new Ship(2);
-                            State = PositionShipState.PositionShipsCruceroCheck1;
-                            response = $"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)";
-                            break;
-
-                        case PositionShipState.PositionShipsCruceroCheck1:
-
-                            if (Board.abc.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.PositionShipsCruceroCheck2;
-                                response = $"Ingrese la cordenada 2(1-10)";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una coordenada valida";
-                            }
-                            break;
-
-                        case PositionShipState.PositionShipsCruceroCheck2:
-                            if (Board.num.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.directionCrucero;
-                                response = $"Ingrese la direccion('Izquierda', 'Derecha', 'Arriba', 'Abajo')";
-
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        case PositionShipState.directionCrucero:
-
-                            if (directions.Contains(message.Text.ToLower()))
-                            {
-                                direction1 = message.Text;
-                                State = PositionShipState.StartSubmarino;
-                                response = "Nave creada correctamente";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-                        //Submarino
-                        case PositionShipState.StartSubmarino:
-                            actualShip = new Ship(3);
-                            State = PositionShipState.PositionShipsSubmarinoCheck1;
-                            response = $"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)";
-                            break;
-
-                        case PositionShipState.PositionShipsSubmarinoCheck1:
-
-                            if (Board.abc.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.PositionShipsSubmarinoCheck2;
-                                response = $"Ingrese la cordenada 2(1-10)";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una coordenada valida";
-                            }
-                            break;
-
-                        case PositionShipState.PositionShipsSubmarinoCheck2:
-                            if (Board.num.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.directionSubmarino;
-                                response = $"Ingrese la direccion('Izquierda', 'Derecha', 'Arriba', 'Abajo')";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        case PositionShipState.directionSubmarino:
-
-                            if (directions.Contains(message.Text.ToLower()))
-                            {
-                                direction1 = message.Text;
-                                State = PositionShipState.StartBuque;
-                                response = "Nave creada correctamente";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        //Buque
-                        case PositionShipState.StartBuque:
-                            actualShip = new Ship(4);
-                            State = PositionShipState.PositionShipsBuqueCheck1;
-                            response = $"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)";
-                            break;
-
-                        case PositionShipState.PositionShipsBuqueCheck1:
-
-                            if (Board.abc.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.PositionShipsBuqueCheck2;
-                                response = $"Ingrese la cordenada 2(1-10)";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una coordenada valida";
-                            }
-                            break;
-
-                        case PositionShipState.PositionShipsBuqueCheck2:
-                            if (Board.num.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.directionBuque;
-                                response = $"Ingrese la direccion('Izquierda', 'Derecha', 'Arriba', 'Abajo')";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        case PositionShipState.directionBuque:
-
-                            if (directions.Contains(message.Text.ToLower()))
-                            {
-                                direction1 = message.Text;
-                                State = PositionShipState.StartPortaaviones;
-                                response = "Nave creada correctamente";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        //Portaaviones
-                        case PositionShipState.StartPortaaviones:
-                            actualShip = new Ship(5);
-                            State = PositionShipState.PositionShipsPortaavionesCheck1;
-                            response = $"Ingrese la posición inicial de {actualShip.Shipname} \n Ingrese la cordenada 1(A - J)";
-                            break;
-
-                        case PositionShipState.PositionShipsPortaavionesCheck1:
-
-                            if (Board.abc.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.PositionShipsPortaavionesCheck2;
-                                response = $"Ingrese la cordenada 2(1-10)";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una coordenada valida";
-                            }
-                            break;
-
-                        case PositionShipState.PositionShipsPortaavionesCheck2:
-                            if (Board.num.Contains(message.Text.ToUpper()))
-                            {
-                                check2 = message.Text;
-                                State = PositionShipState.directionPortaaviones;
-                                response = $"Ingrese la direccion('Izquierda', 'Derecha', 'Arriba', 'Abajo')";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                        case PositionShipState.directionPortaaviones:
-
-                            if (directions.Contains(message.Text.ToLower()))
-                            {
-                                direction1 = message.Text;
-                                State = PositionShipState.End;
-                                response = "Nave creada correctamente";
-                            }
-                            else
-                            {
-                                response = "Debes ingresar una direccion valida";
-                            }
-                            break;
-
-                    }
-                }
-                */
-
-
-
-
-
-
-
-
-
 
         protected override void InternalCancel()
         {
             this.State = PositionShipState.End;
         }
-
-
-
 
         public enum PositionShipState
         {

@@ -1,4 +1,5 @@
 using Telegram.Bot.Types;
+using Telegram.Bot;
 
 namespace Library
 {
@@ -36,13 +37,19 @@ namespace Library
             {
                 if (user.Id == message.From.Id)
                 {
-                    response = "Estas en la lista de espera para jugar al modo Classic.";
+                    sendTelegramMessage(user);
+                    //response = "Estas en la lista de espera para jugar al modo Classic.";
                     Administrator.Instance.UsersToPlay.Add(user, "classic");
                     Administrator.Instance.MatchPlayers();
                 }
             }
         }
 
+        private async void sendTelegramMessage(User user)
+        {
+            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, "Estas en la lista de espera para jugar al modo Classic.");
+
+        }
         public enum ClassicModeState
         {
             Start,

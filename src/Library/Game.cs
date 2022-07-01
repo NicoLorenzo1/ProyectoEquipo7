@@ -1,4 +1,5 @@
 using System;
+using Telegram.Bot;
 
 namespace Library
 {
@@ -63,53 +64,68 @@ namespace Library
         /// </summary>
         public virtual void StartGame()
         {
-            System.Console.WriteLine("Comienza la batalla naval!!");
-            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
-            System.Console.WriteLine();
+            //System.Console.WriteLine("Comienza la batalla naval!!");
+            sendTelegramMessage(Player1, "Comienza la batalla naval!!");
+            sendTelegramMessage(Player2, "Comienza la batalla naval!!");
 
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
-            BoardPlayer1.PositionShips();
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
-            BoardPlayer2.PositionShips();
+            sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
+            sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
+
+            //System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            //System.Console.WriteLine();
+
+            sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            //BoardPlayer1.PositionShips();
+            //BoardPlayer2.PositionShips();
+
+            /*
+                System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
+                BoardPlayer1.PositionShips();
+                System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
+                BoardPlayer2.PositionShips();
+                */
             User recentAttacker = this.Player2;
 
-            OnGoing = true;
-            while (OnGoing)
-            {
-                if (recentAttacker == this.Player1)
-                {
-                    this.Attack(this.Player2);
-                    System.Console.WriteLine();
-                    this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
-                    ShowBoard(this.Player2);
-                    recentAttacker = Player2;
-                }
-                else
-                {
-                    this.Attack(this.Player1);
-                    this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
-                    ShowBoard(this.Player1);
-                    recentAttacker = Player1;
-                }
-                if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
-                {
-                    EndGame();
-                    if (HitsPlayer2 == 15)
-                    {
-                        Player1.statistics.ModifyStatics(Player1, false);
-                        Player2.statistics.ModifyStatics(Player2, true);
-                        System.Console.WriteLine();
-                        Console.WriteLine($"Ha ganado {Player2.Name}!!");
-                    }
-                    if (HitsPlayer1 == 15)
-                    {
-                        Player1.statistics.ModifyStatics(Player1, true);
-                        Player2.statistics.ModifyStatics(Player1, false);
-                        System.Console.WriteLine();
-                        Console.WriteLine($"Ha ganado {Player1.Name}!!");
-                    }
-                }
-            }
+            /*
+                        OnGoing = true;
+                        while (OnGoing)
+                        {
+                            if (recentAttacker == this.Player1)
+                            {
+                                this.Attack(this.Player2);
+                                System.Console.WriteLine();
+                                this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                                ShowBoard(this.Player2);
+                                recentAttacker = Player2;
+                            }
+                            else
+                            {
+                                this.Attack(this.Player1);
+                                this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                                ShowBoard(this.Player1);
+                                recentAttacker = Player1;
+                            }
+                            if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
+                            {
+                                EndGame();
+                                if (HitsPlayer2 == 15)
+                                {
+                                    Player1.statistics.ModifyStatics(Player1, false);
+                                    Player2.statistics.ModifyStatics(Player2, true);
+                                    System.Console.WriteLine();
+                                    Console.WriteLine($"Ha ganado {Player2.Name}!!");
+                                }
+                                if (HitsPlayer1 == 15)
+                                {
+                                    Player1.statistics.ModifyStatics(Player1, true);
+                                    Player2.statistics.ModifyStatics(Player1, false);
+                                    System.Console.WriteLine();
+                                    Console.WriteLine($"Ha ganado {Player1.Name}!!");
+                                }
+                            }
+                        }
+            */
         }
 
         /// <summary>
@@ -404,6 +420,11 @@ namespace Library
             //administrator.currentGame.Remove(this);            
         }
 
+        private async void sendTelegramMessage(User user, string message)
+        {
+            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+
+        }
         public User player1
         {
             get
