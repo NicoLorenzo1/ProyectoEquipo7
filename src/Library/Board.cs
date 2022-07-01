@@ -87,11 +87,12 @@ namespace Library
         /// <param name="printMode"> Este parámetro indica el tipo de tablero que deberá construir
         /// lo cual afectará en la construcción del mismo. Este parámetro será utilizado en el
         /// método RefreshBoard()</param>
-        public void PrintBoard(ArrayList refreshShips, List<string> refreshShots, string printMode)
+        public string PrintBoard(ArrayList refreshShips, List<string> refreshShots, string printMode)
         {
             List<List<string>> boardRows = StartBoard();
             RefreshBoard(refreshShips, refreshShots, printMode, boardRows);
-
+            string finalTable="";
+            int counter = 0;
             string RowI = "";
             //Recorro filas
             for (int y = 0; y < 11; y++)
@@ -142,7 +143,17 @@ namespace Library
                     }
                 }
                 Console.WriteLine(RowI);
+                if(counter==0)
+                {
+                    finalTable+=($"{RowI}");
+                }
+                else
+                {
+                    finalTable+=($"\n{RowI}");
+                }
+                counter+=1;
             }
+            return finalTable;
         }
         /// <summary>
         /// Por Creator, el responsable de conocer las lineas del tablero es la clase Board
@@ -237,7 +248,17 @@ namespace Library
                             System.Console.Write("Ingrese la dirección escogida (1-4): ");
                             dir = Console.ReadLine();
                             System.Console.WriteLine();
-                            Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                            bool overBoard = false;
+                            bool overShip = false;
+                            (overBoard, overShip)=Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                            if (overShip==true)
+                            {
+                                System.Console.WriteLine("tuki");
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("duko");
+                            }
                             break;
 
                         }
@@ -274,7 +295,7 @@ namespace Library
             int IndexY;
             IndexY = rowNum.IndexOf(entry2) + 1;
 
-            if (dir == "1")
+            if (dir == "1" || dir == "arriba")
             {
                 if (IndexY - actualShipDim < 0)
                 {
@@ -349,12 +370,14 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        //System.Console.WriteLine("Aca viene el nuevo print:");
+                        //System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
                     }
                 }
             }
-            else if (dir == "2")
+            else if (dir == "2" || dir == "abajo")
             {
                 if (IndexY + actualShipDim > 11)
                 {
@@ -436,7 +459,7 @@ namespace Library
                     }
                 }
             }
-            else if (dir == "3")
+            else if (dir == "3" || dir == "derecha")
             {
                 if (IndexX + actualShipDim > 11)
                 {
@@ -518,7 +541,7 @@ namespace Library
                     }
                 }
             }
-            else if (dir == "4")
+            else if (dir == "4" || dir == "izquierda")
             {
                 if (IndexX - actualShipDim < 0)
                 {
