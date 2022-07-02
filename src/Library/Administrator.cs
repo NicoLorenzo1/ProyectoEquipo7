@@ -120,6 +120,8 @@ namespace Library
             new Game("Classic"),
             new Bomb("Bomb")
         };
+
+        /*
         //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
         private void MatchPlayers()
         {
@@ -128,5 +130,6 @@ namespace Library
                 m.MatchPlayers();
             }
         }
+        */
     }
 }

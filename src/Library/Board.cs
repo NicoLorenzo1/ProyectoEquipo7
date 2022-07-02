@@ -207,53 +207,64 @@ namespace Library
             List<List<string>> boardRows = StartBoard();
             for (int s = 1; s <= 5; s++)
             {
-                Ship actualShip = new Ship(s); ;
+                Ship actualShip = new Ship(s); 
+                int IndexX = -1;
+                string entry1 = "";
 
-                while (true)
+                while (IndexX == -1)
                 {
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.Write("Ingrese la cordenada 1(A-J): ");
-                    string entry1;
                     entry1 = Console.ReadLine();
-                    if (ABC.Contains(entry1.ToUpper()))
+                   
+                    try
                     {
-                        int IndexX;
-                        IndexX = ABC.IndexOf(entry1.ToUpper());
+                        IndexX = readRow(entry1);
+                    }
+                    catch(InvalidRowNameExceptionException ex)
+                    {
+                        System.Console.WriteLine("Input del usuario no válido");
+                        IndexX = -1;
+                    }
+                }
+                    string entry2;
+                    Console.Write("Ingrese la cordenada 2(1-10): ");
+                    entry2 = Console.ReadLine();
+                    if (rowNum.Contains(entry2))
+                    {
+                        string dir;
+                        System.Console.WriteLine();
+                        System.Console.WriteLine("Dirección:");
+                        System.Console.WriteLine("---------------");
+                        System.Console.WriteLine("1-Hacia arriba");
+                        System.Console.WriteLine("2-Hacia abajo");
+                        System.Console.WriteLine("3-Derecha");
+                        System.Console.WriteLine("4-Izquierda");
+                        System.Console.WriteLine();
+                        System.Console.Write("Ingrese la dirección escogida (1-4): ");
+                        dir = Console.ReadLine();
+                        System.Console.WriteLine();
+                        Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                        
 
-                        string entry2;
-                        Console.Write("Ingrese la cordenada 2(1-10): ");
-                        entry2 = Console.ReadLine();
-                        if (rowNum.Contains(entry2))
-                        {
-                            string dir;
-                            System.Console.WriteLine();
-                            System.Console.WriteLine("Dirección:");
-                            System.Console.WriteLine("---------------");
-                            System.Console.WriteLine("1-Hacia arriba");
-                            System.Console.WriteLine("2-Hacia abajo");
-                            System.Console.WriteLine("3-Derecha");
-                            System.Console.WriteLine("4-Izquierda");
-                            System.Console.WriteLine();
-                            System.Console.Write("Ingrese la dirección escogida (1-4): ");
-                            dir = Console.ReadLine();
-                            System.Console.WriteLine();
-                            Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                            break;
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("No es una coordenada posible");
-                            System.Console.WriteLine();
-                        }
                     }
                     else
                     {
                         Console.WriteLine("No es una coordenada posible");
                         System.Console.WriteLine();
-                    }
-                }
+                    }            
             }
+        }
+
+        private int readRow(string letter)
+        {
+            int IndexX = ABC.IndexOf(letter.ToUpper());
+            
+            if (IndexX == -1)
+                {
+                    throw new InvalidRowNameException("No es una coordenada posible");
+                }   
+            return IndexX;
         }
 
         public (bool,bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
