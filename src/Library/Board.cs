@@ -91,7 +91,7 @@ namespace Library
         {
             List<List<string>> boardRows = StartBoard();
             RefreshBoard(refreshShips, refreshShots, printMode, boardRows);
-            string finalTable="";
+            string finalTable = "";
             int counter = 0;
             string RowI = "";
             //Recorro filas
@@ -143,15 +143,15 @@ namespace Library
                     }
                 }
                 Console.WriteLine(RowI);
-                if(counter==0)
+                if (counter == 0)
                 {
-                    finalTable+=($"{RowI}");
+                    finalTable += ($"{RowI}");
                 }
                 else
                 {
-                    finalTable+=($"\n{RowI}");
+                    finalTable += ($"\n{RowI}");
                 }
-                counter+=1;
+                counter += 1;
             }
             return finalTable;
         }
@@ -218,7 +218,7 @@ namespace Library
             List<List<string>> boardRows = StartBoard();
             for (int s = 1; s <= 5; s++)
             {
-                Ship actualShip = new Ship(s); ;
+                Ship actualShip = new Ship(s);
 
                 while (true)
                 {
@@ -250,6 +250,7 @@ namespace Library
                             System.Console.WriteLine();
                             bool overBoard = false;
                             bool overShip = false;
+
                             (overBoard, overShip)=Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
                             break;
 
@@ -268,8 +269,17 @@ namespace Library
                 }
             }
         }
-
-        public (bool,bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
+        /// <summary>
+        /// Recibe por parametro dos coordenadas, una direccion, el tipo de barco y la dimension de barco, 
+        /// y devuelve si se sale del tablero y el otro booleano devuelve si ya hay un barco en esa posicion o se solapa sobre otro
+        /// </summary>
+        /// <param name="entry1"></param>
+        /// <param name="entry2"></param>
+        /// <param name="dir"></param>
+        /// <param name="actualShipName"></param>
+        /// <param name="actualShipDim"></param>
+        /// <returns></returns>
+        public (bool, bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
         {
             bool overShip = false;
             bool overBoard = false;
@@ -285,7 +295,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -323,7 +333,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
 
                     }
                     else
@@ -353,7 +363,7 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable = PrintBoard(this.shipPos, this.shots, "MyBoard");
                         //System.Console.WriteLine("Aca viene el nuevo print:");
                         //System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
@@ -367,7 +377,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -405,7 +415,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
@@ -449,7 +459,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -490,7 +500,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
@@ -531,7 +541,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -571,7 +581,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
@@ -613,6 +623,7 @@ namespace Library
             }
             return (overBoard, overShip);
         }
+
 
         /// <summary>
         /// Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
@@ -801,6 +812,11 @@ namespace Library
             {
                 return rowNum;
             }
+        }
+
+        public int shipCount()
+        {
+            return shipPos.Count;
         }
 
         /*   

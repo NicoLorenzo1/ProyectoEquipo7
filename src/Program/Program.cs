@@ -18,24 +18,24 @@ namespace Library
         /// </summary>
         public static void Main()
         {
-            User user = new User("user1");
-            Administrator.Instance.UsersToPlay.Add(user, "classic");
+            //User user = new User("user1");
+            //Administrator.Instance.UsersToPlay.Add(user, "classic");
             //Bot.Instance.Setup();
             Bot bot = new Bot();
             bot.Setup();
             TelegramBot.Start();
             Console.WriteLine($"Bot ended!");
-            User jose = new User("Jose");
-            User juan = new User("Juan");
+            //User jose = new User("Jose");
+            //User juan = new User("Juan");
 
             Administrator administrator = Administrator.Instance;
             //administrator.usersRegistered.Add(jose);
 
             //administrator.UsersToPlay.Add(jose, "Classic");
-            administrator.usersRegistered.Add(juan);
-            administrator.UsersToPlay.Add(juan, "Challenge");
-            
-            
+            //administrator.usersRegistered.Add(juan);
+            //administrator.UsersToPlay.Add(juan, "Challenge");
+
+
 
             //Game game = new Game("classic");
             //game.AddUserToWaitList(user1);
@@ -74,7 +74,7 @@ namespace Library
 
             //Menu menu = new Menu();
             //menu.ShowMenu();
-        
+
 
 
             //Console.WriteLine(Stadistics.playedGames.Count);

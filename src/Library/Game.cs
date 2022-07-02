@@ -1,4 +1,5 @@
 using System;
+using Telegram.Bot;
 
 namespace Library
 {
@@ -63,14 +64,27 @@ namespace Library
         /// </summary>
         public virtual void StartGame()
         {
-            System.Console.WriteLine("Comienza la batalla naval!!");
-            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
-            System.Console.WriteLine();
+            //System.Console.WriteLine("Comienza la batalla naval!!");
+            sendTelegramMessage(Player1, "Comienza la batalla naval!!");
+            sendTelegramMessage(Player2, "Comienza la batalla naval!!");
 
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
-            BoardPlayer1.PositionShips();
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
-            BoardPlayer2.PositionShips();
+            sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
+            sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
+
+            //System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            //System.Console.WriteLine();
+
+            sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            //BoardPlayer1.PositionShips();
+            //BoardPlayer2.PositionShips();
+
+            /*
+                System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
+                BoardPlayer1.PositionShips();
+                System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
+                BoardPlayer2.PositionShips();
+                */
             User recentAttacker = this.Player2;
 
             OnGoing = true;
@@ -370,6 +384,11 @@ namespace Library
             //administrator.currentGame.Remove(this);            
         }
 
+        private async void sendTelegramMessage(User user, string message)
+        {
+            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+
+        }
         public User player1
         {
             get
@@ -398,7 +417,7 @@ namespace Library
         {
             get
             {
-                return this.BoardPlayer1;
+                return this.BoardPlayer2;
             }
         }
     }

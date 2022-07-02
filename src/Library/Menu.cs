@@ -8,7 +8,7 @@ namespace Library
 
         public void ShowMenu() //Cuando llega aca que es lo primero que deberia pasar ya tiene q estar registrado y no es asi 
         {
-            Console.WriteLine("Elige una opción \n 1- Registrarse \n 2- Jugar \n 3- Salir");
+            Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
 
             int num = int.Parse(Console.ReadLine());
 
