@@ -37,7 +37,7 @@ namespace Library
                 if (user.Id == message.From.Id)
                 {
                     response = "Estas en la lista de espera para jugar al modo TimeTrial.";
-                    Administrator.Instance.UsersToPlay.Add(user, "timeTrial");
+                    Administrator.Instance.UsersToPlay.Add(user, "TimeTrial");
                     Administrator.Instance.MatchPlayers();
                 }
             }

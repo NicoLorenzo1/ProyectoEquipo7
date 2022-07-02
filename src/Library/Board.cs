@@ -91,7 +91,7 @@ namespace Library
         {
             List<List<string>> boardRows = StartBoard();
             RefreshBoard(refreshShips, refreshShots, printMode, boardRows);
-            string finalTable="";
+            string finalTable = "";
             int counter = 0;
             string RowI = "";
             //Recorro filas
@@ -143,15 +143,15 @@ namespace Library
                     }
                 }
                 Console.WriteLine(RowI);
-                if(counter==0)
+                if (counter == 0)
                 {
-                    finalTable+=($"{RowI}");
+                    finalTable += ($"{RowI}");
                 }
                 else
                 {
-                    finalTable+=($"\n{RowI}");
+                    finalTable += ($"\n{RowI}");
                 }
-                counter+=1;
+                counter += 1;
             }
             return finalTable;
         }
@@ -250,8 +250,8 @@ namespace Library
                             System.Console.WriteLine();
                             bool overBoard = false;
                             bool overShip = false;
-                            (overBoard, overShip)=Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                            if (overShip==true)
+                            (overBoard, overShip) = Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                            if (overShip == true)
                             {
                                 System.Console.WriteLine("tuki");
                             }
@@ -370,7 +370,7 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable = PrintBoard(this.shipPos, this.shots, "MyBoard");
                         //System.Console.WriteLine("Aca viene el nuevo print:");
                         //System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
@@ -819,6 +819,11 @@ namespace Library
             {
                 return rowNum;
             }
+        }
+
+        public int shipCount()
+        {
+            return shipPos.Count;
         }
 
         /*   

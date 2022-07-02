@@ -39,7 +39,7 @@ namespace Library
                 {
                     sendTelegramMessage(user);
                     //response = "Estas en la lista de espera para jugar al modo Classic.";
-                    Administrator.Instance.UsersToPlay.Add(user, "classic");
+                    Administrator.Instance.UsersToPlay.Add(user, "Classic");
                     Administrator.Instance.MatchPlayers();
                 }
             }

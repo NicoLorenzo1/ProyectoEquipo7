@@ -453,7 +453,7 @@ namespace Library
         {
             get
             {
-                return this.BoardPlayer1;
+                return this.BoardPlayer2;
             }
         }
     }

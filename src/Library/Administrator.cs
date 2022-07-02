@@ -51,32 +51,32 @@ namespace Library
                     {
                         if (!(UsersToPlay.ElementAt(x).Key == match1.Key))
                         {
-                            if (UsersToPlay.ElementAt(x).Value == match1.Value)
+                            if (UsersToPlay.ElementAt(x).Value == match1.Value.ToLower())
                             {
 
                                 //await TelegramBot.telegramClient.SendTextMessageAsync(match1.Key.IdChat, $"Comenzara la batalla contra {match2.Key.Name}");
                                 //await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
 
                                 //game.StartGame();
-                                if (match1.Value == "classic")
+                                if (match1.Value.ToLower() == "classic")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Game game = new Game(match1.Key, match2.Key, "Classic");
                                     game.StartGame();
                                 }
-                                else if (match1.Value == "Bomb")
+                                else if (match1.Value.ToLower() == "Bomb")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Bomb");
                                     game.StartGame();
                                 }
-                                else if (match1.Value == "Challenge")
+                                else if (match1.Value.ToLower() == "Challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
                                     game.StartGame();
                                 }
-                                else if (match1.Value == "Challenge")
+                                else if (match1.Value.ToLower() == "Challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                     Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
@@ -117,6 +117,37 @@ namespace Library
             Console.WriteLine("\nUsuario registrado exitosamente\n");
             return user;
         }
+
+        public Board GetPlayerBoard(long playerId)
+        {
+            foreach (Game game in currentGame)
+            {
+                Console.WriteLine($">>>> playerId {game.player1.Id} - {game.player2.Id} - {playerId}");
+                if (game.player1.Id == playerId)
+                {
+                    return game.boardPlayer1;
+                }
+                else
+                if (game.player2.Id == playerId)
+                {
+                    return game.boardPlayer2;
+                }
+            }
+            return null;
+        }
+
+        public Game GetPlayerGame(long playerChatId)
+        {
+            foreach (Game game in currentGame)
+            {
+                if (game.player1.IdChat == playerChatId || game.player2.IdChat == playerChatId)
+                {
+                    return game;
+                }
+            }
+            return null;
+        }
+
 
         //lista general de modos de juego.
         /*
