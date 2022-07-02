@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Diagnostics;
 namespace Library
 
 {
@@ -207,67 +208,77 @@ namespace Library
             List<List<string>> boardRows = StartBoard();
             for (int s = 1; s <= 5; s++)
             {
-                Ship actualShip = new Ship(s); 
+                Ship actualShip = new Ship(s);
+
                 int IndexX = -1;
                 string entry1 = "";
-
                 while (IndexX == -1)
                 {
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.Write("Ingrese la cordenada 1(A-J): ");
                     entry1 = Console.ReadLine();
-                   
                     try
                     {
-                        IndexX = readRow(entry1);
+                        IndexX = readColumn(entry1);
                     }
-                    catch(InvalidRowNameExceptionException ex)
+                    catch (InvalidUserInputException ex)
                     {
-                        System.Console.WriteLine("Input del usuario no válido");
+                        Debug.WriteLine("Input del usuario no válido");
                         IndexX = -1;
                     }
                 }
-                    string entry2;
+
+                bool invalidNum = true;
+                string entry2 = "";
+                while (invalidNum == true)
+                {
                     Console.Write("Ingrese la cordenada 2(1-10): ");
                     entry2 = Console.ReadLine();
-                    if (rowNum.Contains(entry2))
+                    try
                     {
-                        string dir;
-                        System.Console.WriteLine();
-                        System.Console.WriteLine("Dirección:");
-                        System.Console.WriteLine("---------------");
-                        System.Console.WriteLine("1-Hacia arriba");
-                        System.Console.WriteLine("2-Hacia abajo");
-                        System.Console.WriteLine("3-Derecha");
-                        System.Console.WriteLine("4-Izquierda");
-                        System.Console.WriteLine();
-                        System.Console.Write("Ingrese la dirección escogida (1-4): ");
-                        dir = Console.ReadLine();
-                        System.Console.WriteLine();
-                        Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                        
-
+                        invalidNum = readRow(entry2);
                     }
-                    else
+                    catch (InvalidUserInputException ex)
                     {
-                        Console.WriteLine("No es una coordenada posible");
-                        System.Console.WriteLine();
-                    }            
+                        Debug.WriteLine("Input del usuario no válido");
+                        invalidNum = false;
+                    }
+                }
+
+                string dir;
+                System.Console.WriteLine("Dirección: \n---------------");
+                System.Console.WriteLine("1-Hacia arriba \n2-Hacia abajo");
+                System.Console.WriteLine("3-Derecha \n4-Izquierda");
+                System.Console.Write("Ingrese la dirección escogida (1-4): ");
+                dir = Console.ReadLine();
+                Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);   
             }
         }
 
-        private int readRow(string letter)
+        private int readColumn(string letter)
         {
             int IndexX = ABC.IndexOf(letter.ToUpper());
-            
+
             if (IndexX == -1)
-                {
-                    throw new InvalidRowNameException("No es una coordenada posible");
-                }   
+            {
+                throw new InvalidUserInputException("Input del usuario no válido");
+            }
             return IndexX;
         }
 
-        public (bool,bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
+        private bool readRow(string strNumber)
+        {
+            bool validNum = rowNum.Contains(strNumber);
+
+            if (validNum == false)
+            {
+                throw new InvalidUserInputException("Input del usuario no válido");
+            }
+            return validNum;
+        }
+
+
+        public (bool, bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
         {
             bool overShip = false;
             bool overBoard = false;
@@ -283,7 +294,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -321,7 +332,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
 
                     }
                     else
@@ -363,7 +374,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -401,7 +412,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
@@ -445,7 +456,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -486,7 +497,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
@@ -527,7 +538,7 @@ namespace Library
                     System.Console.WriteLine("No podes posicionar un barco en esa dirección");
                     System.Console.WriteLine("No se puede ubicar barcos fuera del tablero de juego");
                     System.Console.WriteLine();
-                    overBoard=true;
+                    overBoard = true;
                 }
                 else
                 {
@@ -567,7 +578,7 @@ namespace Library
                         System.Console.WriteLine("No podes posicionar un barco ahi");
                         System.Console.WriteLine("Ya hay un barco ocupando una de las ubicaciones selecionadas");
                         System.Console.WriteLine();
-                        overShip=true;
+                        overShip = true;
                     }
                     else
                     {
