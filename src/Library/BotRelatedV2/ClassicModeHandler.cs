@@ -12,7 +12,7 @@ namespace Library
 
         public ClassicModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Classic", "classic" };
+            this.Keywords = new string[] { "/Classic", "classic", "Classic" };
             State = ClassicModeState.Start;
         }
 
@@ -39,7 +39,7 @@ namespace Library
                 {
                     sendTelegramMessage(user);
                     //response = "Estas en la lista de espera para jugar al modo Classic.";
-                    Administrator.Instance.UsersToPlay.Add(user, "Classic");
+                    Administrator.Instance.UsersToPlay.Add(user, "classic");
                     Administrator.Instance.MatchPlayers();
                 }
             }

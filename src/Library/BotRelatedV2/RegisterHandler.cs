@@ -14,7 +14,7 @@ namespace Library
         /// <param name="next">El próximo "handler".</param>
         public RegisterHandler(BaseHandler next) : base(next)
         {
-            Keywords = new string[] { "registrarse" };
+            Keywords = new string[] { "/registrarse", "/Registrarse" };
             State = RegisterState.Start;
 
         }
@@ -60,7 +60,9 @@ namespace Library
 
                     }
                 }
-                response = "Usuario registrado\n Elige una opción \n 1- Jugar \n 2- Salir";
+
+                //response = "Usuario resgistrado Exitosamente.";
+                response = "Usuario registrado\n Elige una opción \n 1- /Jugar \n 2- /Salir";
                 State = RegisterState.Start;
 
             }

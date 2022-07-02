@@ -11,7 +11,7 @@ namespace Library
 
         public ChallengeModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Challenge", "challenge" };
+            this.Keywords = new string[] { "/Challenge", "challenge", "Challenge" };
             State = ChallengeModeState.Start;
         }
 

@@ -11,7 +11,7 @@ namespace Library
 
         public TimeTrialModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo TimeTrial", "timetrial" };
+            this.Keywords = new string[] { "/TimeTrial", "timetrial", "Timetrial" };
             State = TimeTrialModeState.Start;
         }
 

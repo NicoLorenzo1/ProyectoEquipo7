@@ -11,7 +11,7 @@ namespace Library
 
         public BombModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Bomb", "bomb" };
+            this.Keywords = new string[] { "/Bomb", "bomb", "Bomb" };
             State = BombModeState.Start;
         }
 

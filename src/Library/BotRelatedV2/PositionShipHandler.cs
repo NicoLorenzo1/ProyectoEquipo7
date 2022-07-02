@@ -32,7 +32,6 @@ namespace Library
             }
         }
 
-
         protected override void InternalHandle(Message message, out string response)
         {
             response = string.Empty;

@@ -31,12 +31,12 @@ namespace Library
 
             if (State == PrintBoardState.Start)
             {
-                response = "¿Que tablero deseas imprimir?\n -Mi tablero \n Tablero enemigo";
+                response = "¿Que tablero deseas imprimir?\n /Mitablero \n /TableroEnemigo";
                 State = PrintBoardState.Print;
             }
             else if (State == PrintBoardState.Print)
             {
-                if (message.Text.ToLower() == "mi tablero")
+                if (message.Text.ToLower() == "/MiTablero")
                 {
                     foreach (var game in Administrator.Instance.currentGame)
                     {
@@ -67,7 +67,6 @@ namespace Library
                             response = finalTable;
                         }
                     }
-
                 }
             }
         }
