@@ -11,7 +11,7 @@ namespace Library
 
         public BombModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Bomb", "bomb" };
+            this.Keywords = new string[] { "/Bomb", "bomb", "Bomb" };
             State = BombModeState.Start;
         }
 
@@ -37,7 +37,7 @@ namespace Library
                 if (user.Id == message.From.Id)
                 {
                     response = "Estas en la lista de espera para jugar al modo Bomb.";
-                    Administrator.Instance.UsersToPlay.Add(user, "bomb");
+                    Administrator.Instance.UsersToPlay.Add(user, "Bomb");
                     Administrator.Instance.MatchPlayers();
                 }
             }

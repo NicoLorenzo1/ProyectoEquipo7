@@ -1,4 +1,5 @@
 using System;
+using Telegram.Bot;
 
 namespace Library
 {
@@ -64,13 +65,27 @@ namespace Library
         public virtual void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
+            /*
+            sendTelegramMessage(Player1, "Comienza la batalla naval!!");
+            sendTelegramMessage(Player2, "Comienza la batalla naval!!");
+
+            sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
+            sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
+            */
+
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
             System.Console.WriteLine();
+
+            /*
+            sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            */
 
             System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
             BoardPlayer1.PositionShips();
             System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
             BoardPlayer2.PositionShips();
+
             User recentAttacker = this.Player2;
 
             OnGoing = true;
@@ -78,7 +93,14 @@ namespace Library
             {
                 if (recentAttacker == this.Player1)
                 {
-                    this.Attack(this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player2.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
                     System.Console.WriteLine();
                     this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                     ShowBoard(this.Player2);
@@ -86,7 +108,14 @@ namespace Library
                 }
                 else
                 {
-                    this.Attack(this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player1.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
                     this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
                     ShowBoard(this.Player1);
                     recentAttacker = Player1;
@@ -117,30 +146,23 @@ namespace Library
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
         /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
-        public virtual void Attack(User attacker, Board attackerBoard, User defender, Board defenderBoard)
+        public virtual void Attack(string coord1, string coord2, User attacker, Board attackerBoard, User defender, Board defenderBoard)
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine($"Ataca {attacker.Name}:");
-            Console.WriteLine("A donde quiere atacar?");
-            Console.Write("Escriba la primer coordenada(A-J): ");
-            string coord1 = Console.ReadLine();
-            Console.Write("Escriba la segunda coordenada(1-10): ");
-            string coord2 = Console.ReadLine();
             if (attacker == this.Player1)
             {
-                bool outOfBoard=CoordCheck(coord1,coord2);
-                bool alreadyShot=ShotHistory(coord1,coord2);
+                bool outOfBoard = CoordCheck(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2);
 
-                if (outOfBoard==true || alreadyShot==true)
+                if (outOfBoard == true || alreadyShot == true)
                 {
-                    Attack(attacker, attackerBoard, defender, defenderBoard);
+                    Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
                 }
                 else
                 {
                     (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
                     if (hit)
                     {
-                        (bool sink, bool wreck)=ShipMessage(currentShipName);
+                        (bool sink, bool wreck) = ShipMessage(currentShipName);
                         HitsPlayer1 += 1;
                     }
                     else
@@ -155,20 +177,20 @@ namespace Library
             else if (attacker == this.Player2)
             {
 
-                bool outOfBoard=CoordCheck(coord1,coord2);
-                bool alreadyShot=ShotHistory(coord1,coord2);
+                bool outOfBoard = CoordCheck(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2);
 
 
-                if (outOfBoard==true || alreadyShot==true)
+                if (outOfBoard == true || alreadyShot == true)
                 {
-                    Attack(attacker, attackerBoard, defender, defenderBoard);
+                    Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
                 }
                 else
                 {
                     (bool hit, string currentShipName) = this.BoardPlayer1.CheckShip(coord1, coord2, defenderBoard.shipPos);
                     if (hit)
                     {
-                        (bool sink, bool wreck)=ShipMessage(currentShipName);
+                        (bool sink, bool wreck) = ShipMessage(currentShipName);
                         HitsPlayer2 += 1;
                     }
                     else
@@ -202,14 +224,14 @@ namespace Library
             }
             else
             {
-                return outOfBoard;   
+                return outOfBoard;
             }
         }
         public bool ShotHistory(string coord1, string coord2)
         {
-            bool alreadyShot=false;
+            bool alreadyShot = false;
             for (int i = 0; i < BoardPlayer1.shots.Count; i += 2)
-            {   
+            {
                 string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
                 string setter2 = Convert.ToString(BoardPlayer1.shots[i + 1]);
                 if (setter1 == coord1.ToUpper())
@@ -226,10 +248,10 @@ namespace Library
             }
             return alreadyShot;
         }
-        public (bool,bool) ShipMessage(string currentShipName)
+        public (bool, bool) ShipMessage(string currentShipName)
         {
-            bool sink=false;
-            bool wreck=false;
+            bool sink = false;
+            bool wreck = false;
             if (currentShipName.ToLower() == "lancha")
             {
                 Lancha1Health -= 1;
@@ -237,13 +259,13 @@ namespace Library
                 {
                     Console.WriteLine($"Hundido {currentShipName}");
                     sink = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
                 else
                 {
                     Console.WriteLine("Tocado");
                     wreck = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
             }
             else if (currentShipName.ToLower() == "crucero")
@@ -253,13 +275,13 @@ namespace Library
                 {
                     Console.WriteLine($"Hundido {currentShipName}");
                     sink = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
                 else
                 {
                     Console.WriteLine("Tocado");
                     wreck = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
             }
             else if (currentShipName.ToLower() == "submarino")
@@ -269,13 +291,13 @@ namespace Library
                 {
                     Console.WriteLine($"Hundido {currentShipName}");
                     sink = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
                 else
                 {
                     Console.WriteLine("Tocado");
                     wreck = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
             }
             else if (currentShipName.ToLower() == "buque")
@@ -285,13 +307,13 @@ namespace Library
                 {
                     Console.WriteLine($"Hundido {currentShipName}");
                     sink = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
                 else
                 {
                     Console.WriteLine("Tocado");
                     wreck = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
             }
             else if (currentShipName.ToLower() == "portaaviones")
@@ -301,19 +323,19 @@ namespace Library
                 {
                     Console.WriteLine($"Hundido {currentShipName}");
                     sink = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
                 else
                 {
                     Console.WriteLine("Tocado");
                     wreck = true;
-                    return (sink,wreck);
+                    return (sink, wreck);
                 }
             }
             else
             {
             }
-            return (sink,wreck);
+            return (sink, wreck);
         }
 
 
@@ -370,6 +392,11 @@ namespace Library
             //administrator.currentGame.Remove(this);            
         }
 
+        private async void sendTelegramMessage(User user, string message)
+        {
+            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+
+        }
         public User player1
         {
             get
@@ -398,7 +425,7 @@ namespace Library
         {
             get
             {
-                return this.BoardPlayer1;
+                return this.BoardPlayer2;
             }
         }
     }

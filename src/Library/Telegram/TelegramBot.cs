@@ -28,8 +28,9 @@ namespace Library
                 new CommandsHandler(
                 new QuickChatHandler(
                 new PositionShipHandler(
+                new PrintBoardHandler(
                 new ExitHandler(null)
-            )))))))))))));
+            ))))))))))))));
 
             var cts = new CancellationTokenSource();
 

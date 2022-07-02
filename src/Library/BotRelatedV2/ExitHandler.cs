@@ -8,10 +8,9 @@ namespace Library
 
         public ExitHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Salir" };
+            this.Keywords = new string[] { "/Salir", "salir", "Salir" };
             this.State = ExitHandlerState.Start;
         }
-
 
         protected override bool CanHandle(Message message)
         {
@@ -34,7 +33,6 @@ namespace Library
         protected override void InternalHandle(Message message, out string response)
         {
             response = "Nos vemos la próxima!";
-
         }
 
 
