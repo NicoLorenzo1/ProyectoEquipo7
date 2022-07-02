@@ -35,10 +35,22 @@ namespace Library
 
                     }
                 }
-                Console.WriteLine("\nEse nombre de usuario no se encuentra registrado en el sistema");
-                //si no se encuentra en el sistema se envia a que se registre
-                Register();
-                return;
+                if (knownUser==false)
+                {
+                    Console.WriteLine("\nEse nombre de usuario no se encuentra registrado en el sistema aún");
+                    System.Console.WriteLine("...");
+                    //Si no se encuentra en el sistema se crea y se envía a la lista de usuarios registrados
+                    User user = new User(name);
+                    administrator.usersRegistered.Add(user);
+                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados");
+                    knownUser = true;
+                    ShowMenu();
+                    //return knownUser;
+                }
+            }
+            else if(num == 2)
+            {
+                SelectMode(administrator.usersRegistered.Last());
             }
 
             if (num == 3)

@@ -108,7 +108,7 @@ namespace Library
         //</summary>
         public virtual void Attack(User player)
         {
-            bool hit = false;
+            Hit = false;
             bool outOfBoard = false;
             System.Console.WriteLine();
             System.Console.WriteLine($"Ataca {player.Name}:");
@@ -154,8 +154,8 @@ namespace Library
                 }
                 else
                 {
-                    hit = this.BoardPlayer2.CheckShip(coord1,coord2, BoardPlayer2.shipPos,out string shipName);
-                    if (hit)
+                    Hit = this.BoardPlayer2.CheckShip(coord1,coord2, BoardPlayer2.shipPos,out string shipName);
+                    if (Hit)
                     {
                         if (shipName.ToLower() == "lancha")
                         {
@@ -223,8 +223,8 @@ namespace Library
                     {
                         Console.WriteLine("Agua");
                     }
-                    BoardPlayer1.shots.Add(coord1.ToUpper());
-                    BoardPlayer1.shots.Add(coord2);
+                    this.BoardPlayer1.shots.Add(coord1.ToUpper());
+                    this.BoardPlayer1.shots.Add(coord2);
                     Console.WriteLine($"Atacó {player.Name}");
                 }            
             }
@@ -263,8 +263,8 @@ namespace Library
                 }
                 else
                 {
-                    hit = this.BoardPlayer1.CheckShip(coord1,coord2, BoardPlayer1.shipPos, out string shipName);
-                    if (hit)
+                    Hit = this.BoardPlayer1.CheckShip(coord1,coord2, BoardPlayer1.shipPos, out string shipName);
+                    if (Hit)
                     {
                         if (shipName.ToLower() == "lancha")
                         {
@@ -335,8 +335,8 @@ namespace Library
                     {
                         Console.WriteLine("Agua");
                     }
-                    BoardPlayer2.shots.Add(coord1.ToUpper());
-                    BoardPlayer2.shots.Add(coord2);
+                    this.BoardPlayer2.shots.Add(coord1.ToUpper());
+                    this.BoardPlayer2.shots.Add(coord2);
                     Console.WriteLine($"Atacó {player.Name}");
                 }
             }

@@ -24,19 +24,7 @@ namespace Library
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
         }
-        public TimeTrialMode(string name) : base(name)
-        {
-            if (name.ToLower() == "timetrial mode")
-            {
-                this.Name = name;
-                TimeTrialMode game = new TimeTrialMode(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
-            }
-            else
-            {
-                Console.WriteLine("Modo incorrecto");
-            }
-        }
+        
         public override void StartGame()
         {
             while (true)
