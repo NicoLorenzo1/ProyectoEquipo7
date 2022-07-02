@@ -61,25 +61,25 @@ namespace Library
                                 if (match1.Value.ToLower() == "classic")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Game game = new Game(match1.Key, match2.Key, "Classic");
+                                    Game game = new Game(match1.Key, match2.Key, "classic");
                                     game.StartGame();
                                 }
-                                else if (match1.Value.ToLower() == "Bomb")
+                                else if (match1.Value.ToLower() == "bomb")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "Bomb");
+                                    Challenge game = new Challenge(match1.Key, match2.Key, "bomb");
                                     game.StartGame();
                                 }
-                                else if (match1.Value.ToLower() == "Challenge")
+                                else if (match1.Value.ToLower() == "challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
+                                    Challenge game = new Challenge(match1.Key, match2.Key, "challenge");
                                     game.StartGame();
                                 }
-                                else if (match1.Value.ToLower() == "Challenge")
+                                else if (match1.Value.ToLower() == "challenge")
                                 {
                                     KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "Challenge");
+                                    Challenge game = new Challenge(match1.Key, match2.Key, "challenge");
                                     game.StartGame();
                                 }
 

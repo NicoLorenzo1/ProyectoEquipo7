@@ -362,9 +362,9 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        string finalTable = PrintBoard(this.shipPos, this.shots, "MyBoard");
-                        //System.Console.WriteLine("Aca viene el nuevo print:");
-                        //System.Console.WriteLine($"{finalTable}");
+                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        System.Console.WriteLine("### Aca viene el nuevo print: ###");
+                        System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
                     }
                 }

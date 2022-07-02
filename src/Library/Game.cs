@@ -70,20 +70,14 @@ namespace Library
             Bot.sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
             Bot.sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
 
-            //System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
-            //System.Console.WriteLine();
+            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            System.Console.WriteLine();
 
             Bot.sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
             Bot.sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
             //BoardPlayer1.PositionShips();
             //BoardPlayer2.PositionShips();
 
-            /*
-                System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
-                BoardPlayer1.PositionShips();
-                System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
-                BoardPlayer2.PositionShips();
-                */
             User recentAttacker = this.Player2;
 
             OnGoing = true;
@@ -91,7 +85,14 @@ namespace Library
             {
                 if (recentAttacker == this.Player1)
                 {
-                    this.Attack(this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player2.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
                     System.Console.WriteLine();
                     this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                     ShowBoard(this.Player2);
@@ -99,7 +100,14 @@ namespace Library
                 }
                 else
                 {
-                    this.Attack(this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player1.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
                     this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
                     ShowBoard(this.Player1);
                     recentAttacker = Player1;
@@ -130,15 +138,8 @@ namespace Library
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
         /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
-        public virtual void Attack(User attacker, Board attackerBoard, User defender, Board defenderBoard)
+        public virtual void Attack(string coord1, string coord2, User attacker, Board attackerBoard, User defender, Board defenderBoard)
         {
-            System.Console.WriteLine();
-            System.Console.WriteLine($"Ataca {attacker.Name}:");
-            Console.WriteLine("A donde quiere atacar?");
-            Console.Write("Escriba la primer coordenada(A-J): ");
-            string coord1 = Console.ReadLine();
-            Console.Write("Escriba la segunda coordenada(1-10): ");
-            string coord2 = Console.ReadLine();
             if (attacker == this.Player1)
             {
                 bool outOfBoard = CoordCheck(coord1, coord2);
@@ -146,7 +147,7 @@ namespace Library
 
                 if (outOfBoard == true || alreadyShot == true)
                 {
-                    Attack(attacker, attackerBoard, defender, defenderBoard);
+                    Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
                 }
                 else
                 {
@@ -174,7 +175,7 @@ namespace Library
 
                 if (outOfBoard == true || alreadyShot == true)
                 {
-                    Attack(attacker, attackerBoard, defender, defenderBoard);
+                    Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
                 }
                 else
                 {
