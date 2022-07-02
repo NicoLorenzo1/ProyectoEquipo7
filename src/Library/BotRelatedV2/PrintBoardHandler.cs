@@ -38,11 +38,36 @@ namespace Library
             {
                 if (message.Text.ToLower() == "mi tablero")
                 {
-                    response = "tablero a mostrar mio ";
+                    foreach (var game in Administrator.Instance.currentGame)
+                    {
+                        if (game.player1.IdChat == message.Chat.Id)
+                        {
+                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "MyBoard");
+                            response = finalTable;
+                        }
+                        else
+                        {
+                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "MyBoard");
+                            response = finalTable;
+                        }
+                    }
                 }
                 else
                 {
-                    response = "tablero enemigo";
+                    foreach (var game in Administrator.Instance.currentGame)
+                    {
+                        if (game.player1.IdChat == message.Chat.Id)
+                        {
+                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
+                            response = finalTable;
+                        }
+                        else
+                        {
+                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
+                            response = finalTable;
+                        }
+                    }
+
                 }
             }
         }
