@@ -251,14 +251,6 @@ namespace Library
                             bool overBoard = false;
                             bool overShip = false;
                             (overBoard, overShip)=Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                            if (overShip==true)
-                            {
-                                System.Console.WriteLine("tuki");
-                            }
-                            else
-                            {
-                                System.Console.WriteLine("duko");
-                            }
                             break;
 
                         }
@@ -309,7 +301,7 @@ namespace Library
                         IndexCheck1 = (rowNum.IndexOf(entry2));
                         if (x == 0)
                         {
-                            shipTest = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos, out string shipName);
+                            (shipTest,string currentShipName) = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -319,7 +311,7 @@ namespace Library
                         {
                             poscheck1 = entry1;
                             poscheck2 = rowNum[IndexCheck1 - x];
-                            shipTest = CheckShip(entry1, poscheck2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(entry1, poscheck2, this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -391,7 +383,7 @@ namespace Library
                         IndexCheck1 = (rowNum.IndexOf(entry2));
                         if (x == 0)
                         {
-                            shipTest = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -401,7 +393,7 @@ namespace Library
                         {
                             poscheck1 = entry1;
                             poscheck2 = rowNum[IndexCheck1 + x];
-                            shipTest = CheckShip(entry1, poscheck2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(entry1, poscheck2, this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -475,7 +467,7 @@ namespace Library
                         IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
                         if (x == 0)
                         {
-                            shipTest = CheckShip(ABC[IndexCheck2], entry2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(ABC[IndexCheck2], entry2, this.shipPos);
                             //System.Console.WriteLine(shipTest);
                             if (shipTest == true)
                             {
@@ -486,7 +478,7 @@ namespace Library
                         {
                             poscheck1 = ABC[IndexCheck2 + (x)];
                             poscheck2 = entry2;
-                            shipTest = CheckShip(poscheck1, entry2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(poscheck1, entry2, this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -557,7 +549,7 @@ namespace Library
                         IndexCheck2 = (ABC.IndexOf(entry1.ToUpper()));
                         if (x == 0)
                         {
-                            shipTest = CheckShip(ABC[IndexCheck2], entry2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(ABC[IndexCheck2], entry2, this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -567,7 +559,7 @@ namespace Library
                         {
                             poscheck1 = ABC[IndexCheck2 - x];
                             poscheck2 = entry2;
-                            shipTest = CheckShip(poscheck1, entry2, this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(poscheck1, entry2, this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -633,9 +625,10 @@ namespace Library
         /// <param name="chosenShips"> Lista de barcos en donde se verificará si hay una coincidencia</param>
         /// <param name="shipName"> Retorna el nombre del barco en el cual se generó la coincidencia</param>
         /// <returns>coincidence</returns>
-        public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
+        public (bool,string) CheckShip(string check1, string check2, ArrayList chosenShips)
         {
             bool coincidence = false;
+            string currentShipName = "";
             foreach (ArrayList item in chosenShips)
             {
                 for (int i = 1; i <= (item.Count - 1); i++)
@@ -647,10 +640,10 @@ namespace Library
                     {
                         string numCheck = Convert.ToString(item[i + 1]);
                         if (check2 == numCheck)
-                        {
-                            shipName = Convert.ToString(item[0]);
+                        {                           
+                            currentShipName = Convert.ToString(item[0]);
                             coincidence = true;
-                            return coincidence;
+                            return (coincidence,currentShipName);
                         }
                         else
                         {
@@ -661,8 +654,7 @@ namespace Library
                     }
                 }
             }
-            shipName = "";
-            return coincidence;
+            return (coincidence,currentShipName);
         }
         /// <summary>
         /// Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
@@ -694,7 +686,7 @@ namespace Library
                     string setter1 = Convert.ToString(refreshShots[i]);
                     string setter2 = Convert.ToString(refreshShots[i + 1]);
 
-                    bool result = CheckShip(setter1, setter2, refreshShips, out string shipName);
+                    (bool result,string currentShipName) = CheckShip(setter1, setter2, refreshShips);
                     if (result == true)
                     {
                         EditBoard(setter1, setter2, "X", boardRows);
@@ -713,7 +705,7 @@ namespace Library
                     string setter2 = Convert.ToString(refreshShots[i + 1]);
 
                     //Hay que agregar parametro de shipPos al checkship porque hay que pasarle en que lista de barcos mirar
-                    bool result = CheckShip(setter1, setter2, refreshShips, out string shipName);
+                    (bool result, string currentShipName) = CheckShip(setter1, setter2, refreshShips);
                     if (result == true)
                     {
                         EditBoard(setter1, setter2, "X", boardRows);
