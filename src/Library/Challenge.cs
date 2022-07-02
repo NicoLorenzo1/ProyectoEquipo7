@@ -53,13 +53,13 @@ namespace Library
                 {
                     if (recentAttacker == this.Player1)
                     {
-                        this.Attack(this.Player2);
+                        this.Attack(this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
                         ShowBoard(this.Player1);
                         recentAttacker = Player2;
                     }
                     else
                     {
-                        this.Attack(this.Player1);
+                        this.Attack(this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
                         ShowBoard(this.Player2);
                         recentAttacker = Player1;
                     }
