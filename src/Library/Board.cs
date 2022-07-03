@@ -221,7 +221,7 @@ namespace Library
                     {
                         IndexX = readColumn(entry1);
                     }
-                    catch (InvalidUserInputException ex)
+                    catch(InvalidUserInputException ex)
                     {
                         Debug.WriteLine("Input del usuario no válido");
                         IndexX = -1;
@@ -236,22 +236,38 @@ namespace Library
                     entry2 = Console.ReadLine();
                     try
                     {
-                        invalidNum = readRow(entry2);
+                        invalidNum = isValidRow(entry2);
                     }
-                    catch (InvalidUserInputException ex)
+                    catch(InvalidUserInputException ex)
                     {
                         Debug.WriteLine("Input del usuario no válido");
-                        invalidNum = false;
+                        invalidNum = true;
                     }
                 }
 
-                string dir;
                 System.Console.WriteLine("Dirección: \n---------------");
                 System.Console.WriteLine("1-Hacia arriba \n2-Hacia abajo");
                 System.Console.WriteLine("3-Derecha \n4-Izquierda");
-                System.Console.Write("Ingrese la dirección escogida (1-4): ");
-                dir = Console.ReadLine();
-                Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);   
+
+                string invalidDir = "0";
+                string dir = "";
+                while (invalidDir == "0")
+                {
+                    System.Console.Write("Ingrese la dirección escogida (1-4): ");
+                    dir = Console.ReadLine();
+                    try
+                    {
+                        invalidDir = readDirection(dir);
+                    }
+                    catch(InvalidUserInputException ex)
+                    {
+                        Debug.WriteLine("Input del usuario no válido");
+                        invalidDir = "0";
+                    }
+                }
+
+
+                Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
             }
         }
 
@@ -261,20 +277,29 @@ namespace Library
 
             if (IndexX == -1)
             {
-                throw new InvalidUserInputException("Input del usuario no válido");
+                throw new InvalidUserInputException("Input de columna del usuario no válido");
             }
             return IndexX;
         }
 
-        private bool readRow(string strNumber)
+        private bool isValidRow(string strNumber)
         {
-            bool validNum = rowNum.Contains(strNumber);
+            bool invalidNum = rowNum.Contains(strNumber);
 
-            if (validNum == false)
+            if (invalidNum)
             {
-                throw new InvalidUserInputException("Input del usuario no válido");
+                throw new InvalidUserInputException("Input de fila del usuario no válido");
             }
-            return validNum;
+            return invalidNum;
+        }
+
+        private string readDirection(string strNumber)
+        {
+            if (strNumber != "1" && strNumber != "2" && strNumber != "3" && strNumber != "4")
+            {
+                throw new InvalidUserInputException("Input de dirección del usuario no válido");
+            }
+            return strNumber;
         }
 
 
