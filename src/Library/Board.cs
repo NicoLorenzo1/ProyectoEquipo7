@@ -285,7 +285,7 @@ namespace Library
         {
             int IndexX = ABC.IndexOf(letter.ToUpper());
 
-            if (IndexX == -1)
+            if (IndexX == -1) 
             {
                 throw new InvalidUserInputException("Input de columna del usuario no válido");
             }
