@@ -11,7 +11,7 @@ namespace Library
 
         public SelectModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "jugar" };
+            this.Keywords = new string[] { "/jugar", "/Jugar" };
             this.State = SelectModeState.Start;
         }
 
@@ -30,9 +30,8 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Elige una opción \n 1- Modo Classic \n 2- Modo TimeTrial \n 3- Modo Challenge \n 4- Modo Bomb";
+            response = "Elige un modo de juego: \n 1- /Classic \n 2- /TimeTrial \n 3- /Challenge \n 4- /Bomb";
         }
-
 
         public enum SelectModeState
         {

@@ -8,7 +8,7 @@ namespace Library
 
         public void ShowMenu() //Cuando llega aca que es lo primero que deberia pasar ya tiene q estar registrado y no es asi 
         {
-            Console.WriteLine("Elige una opción \n 1- Registrarse \n 2- Jugar \n 3- Salir");
+            Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
 
             int num = int.Parse(Console.ReadLine());
 
@@ -119,22 +119,22 @@ namespace Library
             */
             if (num == 1)
             {
-                administrator.UsersToPlay.Add(user,"Classic");
+                administrator.UsersToPlay.Add(user,"classic");
                 addedPlayer = true;
             }
             else if (num == 2)
             {
-                administrator.UsersToPlay.Add(user,"Bomb");
+                administrator.UsersToPlay.Add(user,"bomb");
                 addedPlayer = true;
             }
             else if (num == 3)
             {
-                administrator.UsersToPlay.Add(user,"TimeTrial");
+                administrator.UsersToPlay.Add(user,"timeTrial");
                 addedPlayer = true;
             }
             else if (num == 4)
             {
-                administrator.UsersToPlay.Add(user,"Challenge");
+                administrator.UsersToPlay.Add(user,"challenge");
                 addedPlayer = true;
             }
             else

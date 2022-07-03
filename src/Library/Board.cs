@@ -92,7 +92,8 @@ namespace Library
         {
             List<List<string>> boardRows = StartBoard();
             RefreshBoard(refreshShips, refreshShots, printMode, boardRows);
-
+            string finalTable = "";
+            int counter = 0;
             string RowI = "";
             //Recorro filas
             for (int y = 0; y < 11; y++)
@@ -143,6 +144,15 @@ namespace Library
                     }
                 }
                 Console.WriteLine(RowI);
+                if (counter == 0)
+                {
+                    finalTable += ($"{RowI}");
+                }
+                else
+                {
+                    finalTable += ($"\n{RowI}");
+                }
+                counter += 1;
             }
         }
         /// <summary>
@@ -303,6 +313,16 @@ namespace Library
         }
 
 
+        /// <summary>
+        /// Recibe por parametro dos coordenadas, una direccion, el tipo de barco y la dimension de barco, 
+        /// y devuelve si se sale del tablero y el otro booleano devuelve si ya hay un barco en esa posicion o se solapa sobre otro
+        /// </summary>
+        /// <param name="entry1"></param>
+        /// <param name="entry2"></param>
+        /// <param name="dir"></param>
+        /// <param name="actualShipName"></param>
+        /// <param name="actualShipDim"></param>
+        /// <returns></returns>
         public (bool, bool) Positioner(string entry1, string entry2, string dir, string actualShipName, int actualShipDim)
         {
             bool overShip = false;
@@ -387,7 +407,9 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        System.Console.WriteLine("### Aca viene el nuevo print: ###");
+                        System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
                     }
                 }
@@ -646,6 +668,7 @@ namespace Library
             return (overBoard, overShip);
         }
 
+
         /// <summary>
         /// Por Expert, al Board conocer lo que hay en cada posición del tablero, es el encargado
         /// de conocer si hay un barco en una posición en específica o no.
@@ -833,6 +856,11 @@ namespace Library
             {
                 return rowNum;
             }
+        }
+
+        public int shipCount()
+        {
+            return shipPos.Count;
         }
 
         /*   

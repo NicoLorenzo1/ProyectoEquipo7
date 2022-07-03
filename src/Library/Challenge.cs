@@ -1,10 +1,10 @@
 using System;
-        
-        //<summary>
-        //Por motivos de tiempo, no fuimos capaces de realizar los tests necesarios para
-        //la clase Challenge, por lo que, al ser una modalidad agregada por nosotros,
-        //decidimos dejarla sin funcionamiento para esta entrega
-        //</summary>
+
+//<summary>
+//Por motivos de tiempo, no fuimos capaces de realizar los tests necesarios para
+//la clase Challenge, por lo que, al ser una modalidad agregada por nosotros,
+//decidimos dejarla sin funcionamiento para esta entrega
+//</summary>
 
 namespace Library
 {
@@ -33,7 +33,7 @@ namespace Library
             {
                 this.Name = name;
                 Challenge game = new Challenge(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
+                this.StartGame();
             }
             else
             {
@@ -43,7 +43,7 @@ namespace Library
         public override void StartGame()
         {
             System.Console.WriteLine("Ingresaste a Challenge");
-            while (WinsPlayer1<2 || WinsPlayer2<2)
+            while (WinsPlayer1 < 2 || WinsPlayer2 < 2)
             {
                 BoardPlayer1.PositionShips();
                 BoardPlayer2.PositionShips();
@@ -53,13 +53,27 @@ namespace Library
                 {
                     if (recentAttacker == this.Player1)
                     {
-                        this.Attack(this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
+                        System.Console.WriteLine();
+                        System.Console.WriteLine($"Ataca {Player2.Name}:");
+                        Console.WriteLine("A donde quiere atacar?");
+                        Console.Write("Escriba la primer coordenada(A-J): ");
+                        string coord1 = Console.ReadLine();
+                        Console.Write("Escriba la segunda coordenada(1-10): ");
+                        string coord2 = Console.ReadLine();
+                        this.Attack(coord1, coord2,this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
                         ShowBoard(this.Player1);
                         recentAttacker = Player2;
                     }
                     else
                     {
-                        this.Attack(this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
+                        System.Console.WriteLine();
+                        System.Console.WriteLine($"Ataca {Player1.Name}:");
+                        Console.WriteLine("A donde quiere atacar?");
+                        Console.Write("Escriba la primer coordenada(A-J): ");
+                        string coord1 = Console.ReadLine();
+                        Console.Write("Escriba la segunda coordenada(1-10): ");
+                        string coord2 = Console.ReadLine();
+                        this.Attack(coord1, coord2,this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
                         ShowBoard(this.Player2);
                         recentAttacker = Player1;
                     }

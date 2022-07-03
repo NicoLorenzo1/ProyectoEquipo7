@@ -11,7 +11,7 @@ namespace Library
 
         public ChallengeModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Challenge", "challenge" };
+            this.Keywords = new string[] { "/Challenge", "challenge", "Challenge" };
             State = ChallengeModeState.Start;
         }
 
@@ -37,7 +37,7 @@ namespace Library
                 if (user.Id == message.From.Id)
                 {
                     response = "Estas en la lista de espera para jugar al modo Challenge.";
-                    Administrator.Instance.UsersToPlay.Add(user, "challenge");
+                    Administrator.Instance.UsersToPlay.Add(user, "Challenge");
                     Administrator.Instance.MatchPlayers();
                 }
             }

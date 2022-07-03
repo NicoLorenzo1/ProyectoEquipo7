@@ -39,7 +39,7 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Elige una opción \n 1- Registrarse \n 2- Salir";
+            response = "Elige una opción \n 1- /Registrarse \n 2- /Salir";
 
         }
 
