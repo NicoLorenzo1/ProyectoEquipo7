@@ -41,9 +41,9 @@ namespace Library
             //game.AddUserToWaitList(user1);
             //game.AddUserToWaitList(user2);
 
-            Menu menu = new Menu();
-            menu.ShowMenu();
-            administrator.MatchPlayers();
+            //Menu menu = new Menu();
+            //menu.ShowMenu();
+            //administrator.MatchPlayers();
             //menu.SelectMode(jose);
 
             /* Esto es lo que tenia yo
