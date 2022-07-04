@@ -38,15 +38,17 @@ namespace Library
                     //Si no se encuentra en el sistema se crea y se envía a la lista de usuarios registrados
                     User user = new User(name);
                     administrator.usersRegistered.Add(user);
-                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados");
+                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados\n");
                     knownUser = true;
-                    ShowMenu();
+                    SelectMode(user);
+                    //ShowMenu();
                     //return knownUser;
                 }
             }
             else if(num == 2)
             {
-                SelectMode(administrator.usersRegistered[1]);
+                SelectMode(administrator.usersRegistered.Last());
+
             }
             else if (num == 3)
             {
@@ -89,7 +91,6 @@ namespace Library
 
         public (bool,int) SelectMode(User user)
         {
-            (bool, int)returner;
             bool addedPlayer = false;
             //List<Lobby> modes = administrator.modeList;
 

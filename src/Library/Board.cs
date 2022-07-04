@@ -216,7 +216,7 @@ namespace Library
         public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
-            for (int s = 1; s <= 5; s++)
+            for (int s = 1; s <= 2; s++)
             {
                 Ship actualShip = new Ship(s);
 
@@ -250,10 +250,16 @@ namespace Library
                             System.Console.WriteLine();
                             bool overBoard = false;
                             bool overShip = false;
+                            if (dir != "1" && dir != "2" && dir != "3" && dir != "4")
+                            {
+                                System.Console.WriteLine("No es un dirección válida\n");
 
-                            (overBoard, overShip)=Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                            break;
-
+                            }
+                            else
+                            {
+                                (overBoard, overShip) = Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                                break;
+                            }
                         }
                         else
                         {
@@ -311,7 +317,7 @@ namespace Library
                         IndexCheck1 = (rowNum.IndexOf(entry2));
                         if (x == 0)
                         {
-                            (shipTest,string currentShipName) = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos);
+                            (shipTest, string currentShipName) = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -363,7 +369,7 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable = PrintBoard(this.shipPos, this.shots, "MyBoard");
                         System.Console.WriteLine("### Aca viene el nuevo print: ###");
                         System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
@@ -636,8 +642,9 @@ namespace Library
         /// <param name="chosenShips"> Lista de barcos en donde se verificará si hay una coincidencia</param>
         /// <param name="shipName"> Retorna el nombre del barco en el cual se generó la coincidencia</param>
         /// <returns>coincidence</returns>
-        public (bool,string) CheckShip(string check1, string check2, ArrayList chosenShips)
+        public (bool, string) CheckShip(string check1, string check2, ArrayList chosenShips)
         {
+            System.Console.WriteLine("Acá estas en Checkship...");
             bool coincidence = false;
             string currentShipName = "";
             foreach (ArrayList item in chosenShips)
@@ -651,10 +658,10 @@ namespace Library
                     {
                         string numCheck = Convert.ToString(item[i + 1]);
                         if (check2 == numCheck)
-                        {                           
+                        {
                             currentShipName = Convert.ToString(item[0]);
                             coincidence = true;
-                            return (coincidence,currentShipName);
+                            return (coincidence, currentShipName);
                         }
                         else
                         {
@@ -665,7 +672,7 @@ namespace Library
                     }
                 }
             }
-            return (coincidence,currentShipName);
+            return (coincidence, currentShipName);
         }
         /// <summary>
         /// Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
@@ -697,7 +704,7 @@ namespace Library
                     string setter1 = Convert.ToString(refreshShots[i]);
                     string setter2 = Convert.ToString(refreshShots[i + 1]);
 
-                    (bool result,string currentShipName) = CheckShip(setter1, setter2, refreshShips);
+                    (bool result, string currentShipName) = CheckShip(setter1, setter2, refreshShips);
                     if (result == true)
                     {
                         EditBoard(setter1, setter2, "X", boardRows);
@@ -743,7 +750,7 @@ namespace Library
                     int rowPosThree = IndexY;
                     if (rowPosOne >= 0)
                     {
-                        System.Console.WriteLine("Entro a rowPosOne");
+                        //System.Console.WriteLine("Entro a rowPosOne");
                         for (int i = IndexX - 1; i <= IndexX + 1; i++)
                         {
                             if (i >= 1 && i <= 11)
@@ -819,32 +826,32 @@ namespace Library
             return shipPos.Count;
         }
 
-        /*   
-            public void showList()
-            {
-                foreach (ArrayList item in shipPos)
-                {
-                    System.Console.WriteLine($"{item[0]} está ubicado en: ");
 
-                    for (int i = 1; i < (item.Count-1); i+=2)
+        public void showList()
+        {
+            foreach (ArrayList item in shipPos)
+            {
+                System.Console.WriteLine($"{item[0]} está ubicado en: ");
+
+                for (int i = 1; i < (item.Count - 1); i += 2)
+                {
+                    for (int j = i; j <= (i + 1); j++)
                     {
-                        for (int j = i; j <= (i+1); j++)
-                        {
-                         System.Console.Write($"[{item[j]}] ");                           
-                        }
-                        if (i==(item.Count-2))
-                        {
-                            System.Console.WriteLine();
-                        }
-                        else
-                        {
-                            System.Console.Write(",");
-                        }
+                        System.Console.Write($"[{item[j]}] ");
                     }
-                    System.Console.WriteLine();
+                    if (i == (item.Count - 2))
+                    {
+                        System.Console.WriteLine();
+                    }
+                    else
+                    {
+                        System.Console.Write(",");
+                    }
                 }
+                System.Console.WriteLine();
             }
-        */
+        }
+
     }
 
 }
