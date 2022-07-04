@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 
 namespace Library
@@ -8,10 +9,22 @@ namespace Library
 
         public void ShowMenu() //Cuando llega aca que es lo primero que deberia pasar ya tiene q estar registrado y no es asi 
         {
-            Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
-
-            int num = int.Parse(Console.ReadLine());
-
+            int num = 0;
+            while (num == 0)
+            {
+                Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
+                num = int.Parse(Console.ReadLine());   
+                try
+                {
+                    num = readNumber(num);
+                }
+                catch(InvalidUserInputException ex)
+                {
+                    Debug.WriteLine("Input del usuario no válido");
+                    num = 0;
+                }
+            }
+            
             if (num == 1)
             {
                 Console.Write("\nIngresa tu nombre de usuario para continuar: ");
@@ -55,11 +68,16 @@ namespace Library
                 Console.WriteLine("\nTe esperamos la proxima!");
                 return;
             }
-            else
-            {
-                Console.WriteLine("\nNo es una opción válida");
-            }
             return;
+        }
+
+        private int readNumber(int intNumber)
+        {
+            if (intNumber != 1 && intNumber != 2 && intNumber != 3)
+            {
+                throw new InvalidUserInputException("Input de opción seleccionada por el usuario no válido");
+            }
+            return intNumber;
         }
 
         public void Register()
