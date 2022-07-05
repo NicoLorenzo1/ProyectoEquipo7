@@ -80,11 +80,16 @@ namespace Library
             }
             catch(InvalidUserInputException ex)
             {
-                Console.WriteLine("Operación no válida");
+                Console.WriteLine("Input recibido del usuario no válido");
             }
             return this.Keywords.Any(s => message.Text.Equals(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        /// <summary>
+        /// Se utiliza para tirar una excepción en caso de que se cumpla cierta condición.
+        /// </summary>
+        /// <param name="message">El mensaje a procesar.</param>
+        /// <returns>El mismo mensaje que se tomó como parámetro, si es que no se dió una excepción.</returns>
         private Message isValidKeyword(Message message)
         {
             if (this.Keywords == null || this.Keywords.Length == 0)

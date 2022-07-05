@@ -1,3 +1,4 @@
+using System.Globalization;
 namespace Library 
 {
     /// <summary>
@@ -48,7 +49,6 @@ namespace Library
             {
                 user.statistics.winRate = playedGames / wins * 100;
             }
-
         }
 
         /// <summary>
@@ -102,23 +102,6 @@ namespace Library
             {
                 return this.user;
             }
-        }
-
-        /// <summary>
-        /// Equals devuelve un valor booleano que indica si la instancia actual
-        /// es igual al objeto especificado o no.
-        /// </summary>
-        /// <param name="obj">Objeto a comparar con la instancia acual.</param>
-        /// <returns>Devuelve true si son valores iguales, sino false.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            Statistics input = (Statistics)obj;
-
-            return this.user.Id == input.user.Id;
         }
     }
 }

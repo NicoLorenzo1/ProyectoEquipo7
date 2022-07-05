@@ -12,18 +12,11 @@ namespace Library
     public class Ranking
     {
         /// <summary>
-        /// HashSet de estadísticas como atributo.
+        /// Lisa de estadísticas como atributo.
         /// </summary>
-        /// <typeparam name="Statistics">Los objetos que componen el HashSet son de la clase
+        /// <typeparam name="Statistics">Los objetos que componen el Lista son de la clase
         /// Statistics.</typeparam>
-        public static HashSet<Statistics> playerStats = new HashSet<Statistics>() { }; 
-
-        /// <summary>
-        /// Lista de estadísticas como atributo.
-        /// </summary>
-        /// <typeparam name="Statistics">Los objetos que componen la lista son de la clase
-        /// Statistics.</typeparam>
-        public List<Statistics> top10 = new List<Statistics>() { };
+        public static List<Statistics> playerStats = new List<Statistics>() { }; 
 
         /// <summary>
         /// Constructor de Ranking.
@@ -59,35 +52,6 @@ namespace Library
         }
 
         /// <summary>
-        /// El método checkTop10Status recibe un objeto de clase Statistics y verifica si 
-        /// entra a los primeros 10 usuarios en el ranking.
-        /// </summary>
-        /// <param name="st">Objeto de clase Statistics para verificar si entra en el top10.</param>
-        public void checkTop10Status(Statistics st)
-        {
-            if (top10.IndexOf(st) == -1)
-            {
-                int initialWins = top10.Count > 0 ? int.MaxValue : -1;
-
-                foreach (Statistics t10 in top10)
-                {
-                    initialWins = t10.Wins < initialWins ? t10.Wins : initialWins;
-                }
-                if (st.Wins > initialWins)
-                {
-                    top10.Add(st);
-
-                    sortStats(top10);
-
-                    if (top10.Count > 10)
-                    {
-                        top10.RemoveAt(10);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// El método AddToRankList agrega las estadísticas de un usuario al ranking global.
         /// </summary>
         /// <param name="stats">Objeto de clase Statistics.</param>
@@ -102,7 +66,6 @@ namespace Library
         public void ShowAll()
         {
             List<Statistics> sortedAll = getAllSorted();
-
             Console.WriteLine("Ranking de jugadores:");
             for (int i = 0; i < sortedAll.Count ; i++)
             {   
@@ -110,15 +73,11 @@ namespace Library
             }
         }
 
-        /// <summary>
-        /// El método ShowAll muestra el ranking global de jugadores.
-        /// </summary>
         public void ShowTop10()
         {
             List<Statistics> sortedAll = getAllSorted();
-
-            Console.WriteLine("Ranking de jugadores:");
-            for (int i = 0; i < sortedAll.Count ; i++)
+            Console.WriteLine("Top 10 Jugadores:");
+            for (int i = 0; i < 10 ; i++)
             {   
                 Console.WriteLine($"{i+1}-Nombre:{sortedAll[i].User.Name} - Wins={sortedAll[i].Wins} - WinRate={sortedAll[i].WinRate}");
             }
