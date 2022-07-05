@@ -40,42 +40,39 @@ namespace Library
 
                 if (message.Text.ToLower() == "/MiTablero")
                 {
-                        if (game.player1.Id == message.From.Id)
-                        {
-                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "MyBoard");
-                            response = finalTable;
-                        }
-                        else
-                        {
-                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "MyBoard");
-                            response = finalTable;
-                        }
+                    if (game.player1.Id == message.From.Id)
+                    {
+                        string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "MyBoard");
+                        response = finalTable;
+                    }
+                    else
+                    {
+                        string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "MyBoard");
+                        response = finalTable;
+                    }
                 }
                 else
                 {
-                        if (game.player1.Id == message.From.Id)
-                        {
-                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
-                            response = finalTable;
-                        }
-                        else
-                        {
-                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
-                            response = finalTable;
-                        }
+                    if (game.player1.Id == message.From.Id)
+                    {
+                        string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
+                        response = finalTable;
+                    }
+                    else
+                    {
+                        string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
+                        response = finalTable;
+                    }
                 }
-            State = PrintBoardState.Start;
+                State = PrintBoardState.Start;
 
             }
         }
-
-
 
         public enum PrintBoardState
         {
             Start,
             Print,
-
         }
     }
 }

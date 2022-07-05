@@ -1122,6 +1122,12 @@ namespace Library
             }
         }
         //private List<string> surroundCoords = new List<string>();
+        /// <summary>
+        /// Recibe una coordenada y devuelve las 8 que la rodean
+        /// </summary>
+        /// <param name="alphaCoord">Coordenada alfabética deseada</param>
+        /// <param name="numCoord">Coordenada númerica deseada</param>
+        /// <returns>Devuelve la lista de coordenadas que se encuentran al rededor de la deseada</returns>
         public List<string> coordSurround(string alphaCoord, string numCoord)
         {
             List<string> surroundCoords = new List<string>();

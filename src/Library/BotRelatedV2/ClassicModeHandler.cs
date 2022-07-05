@@ -11,7 +11,7 @@ namespace Library
 
         public ClassicModeHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Modo Classic", "classic", "/classic", "/Classic"};
+            this.Keywords = new string[] { "Modo Classic", "classic", "/classic", "/Classic" };
         }
 
         protected override bool CanHandle(Message message)
@@ -21,8 +21,6 @@ namespace Library
             if (state.Equals(SelectModeState.ModeSelected))
             {
                 return base.CanHandle(message);
-
-                // return true;
             }
             else
             {
@@ -34,25 +32,19 @@ namespace Library
         {
             response = "ClassicModeHandler";
             //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
-                User user = Administrator.Instance.isUserRegistered(message.From.Id);
+            User user = Administrator.Instance.isUserRegistered(message.From.Id);
 
-                if (user != null)
-                {
-                    response = "Estas en la lista de espera para jugar al modo Classic.";
-                    Administrator.Instance.AddUserToPlayPool(user, "classic");
-                    Administrator.Instance.SetUserState(message.From.Id, SelectModeState.ReadyToPlay);
-                    Administrator.Instance.MatchPlayers();
-                }
-                else{
-                    response = "El usuario aun no esta registrado. Para registrarse responda /registrar";
-                }
+            if (user != null)
+            {
+                response = "Estas en la lista de espera para jugar al modo Classic.";
+                Administrator.Instance.AddUserToPlayPool(user, "classic");
+                Administrator.Instance.SetUserState(message.From.Id, SelectModeState.ReadyToPlay);
+                Administrator.Instance.MatchPlayers();
             }
-        
-
-        /* //IL private async void sendTelegramMessage(User user)
-        {
-            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, "Estas en la lista de espera para jugar al modo Classic.");
-
-        }*/
+            else
+            {
+                response = "El usuario aun no esta registrado. Para registrarse responda /registrar";
+            }
+        }
     }
 }

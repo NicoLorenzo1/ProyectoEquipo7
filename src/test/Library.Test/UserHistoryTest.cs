@@ -1,4 +1,5 @@
-using NUnit.Framework;
+
+/*using NUnit.Framework;
 using Library;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,20 @@ namespace Test.Library
             Assert.Contains(game, Administrator.Instance.currentGame);
 
         }
+<<<<<<< HEAD
+=======
+
+        /// <summary>
+        /// Test que se encarga de verificar si se crea un usuario correctamente y se asigna a la lista de usuarios registrados
+        /// </summary>       
+        [Test]
+        public void CreateUserTest()
+        {
+            User player1 = new User("Jose");
+            
+            Assert.Contains(player1,User.users);
+        }
+>>>>>>> main
         
         /// <summary>
         /// Test que se encarga de verificar si el Metodo MatchPlayers() añade correctamente al jugador al diccionario UserToPlay
@@ -76,5 +91,49 @@ namespace Test.Library
             };
             Assert.AreEqual(boardRows[1],test);
         }
+<<<<<<< HEAD
     }
 }
+=======
+
+        [Test]
+        public void VerifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            //player1.statistics.ModifyStatics(player1, true);
+            
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void ModifyStaticsTest()
+        {
+            User player1 = new User("Manuel");
+            User player2 = new User("Jose");
+
+            player1.statistics.ModifyStatics(player1, true);
+            player2.statistics.ModifyStatics(player2, true);
+            
+            Assert.AreEqual(player1.statistics.Wins, player2.statistics.Wins);
+        }
+
+        [Test]
+        public void VerifyShipSize()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.ShipDim, 5);
+        }
+
+        [Test]
+        public void VerifyShipName()
+        {
+            Ship s1 = new Ship(5);
+
+            Assert.AreEqual(s1.Shipname, "Portaaviones");
+        }
+    }
+}*/
+>>>>>>> main
