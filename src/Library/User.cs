@@ -7,8 +7,6 @@ namespace Library
     /// </summary>
     public class User
     {
-        //public static Dictionary<string, int> users = new Dictionary<string, int>();
-
         // public static List<User> users = new List<User>();
 
         private static int count = 0;

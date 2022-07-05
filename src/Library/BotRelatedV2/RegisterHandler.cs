@@ -9,23 +9,21 @@ namespace Library
     {
         // public RegisterState State { get; set; }
         /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "registrarse".
+        /// Inicializa una nueva instancia de la clase <see cref="RegisterHandler"/>. Esta clase procesa el mensaje "registrarse".
         /// </summary>
         /// <param name="next">El próximo "handler".</param>
         public RegisterHandler(BaseHandler next) : base(next)
         {
             Keywords = new string[] { "/registrarse", "/Registrarse" };
-            // State = RegisterState.Start;
         }
 
         protected override bool CanHandle(Message message)
         {
             Enum state = Administrator.Instance.GetUserState(message.From.Id);
 
-            if (state.Equals(RegisterState.Start) 
+            if (state.Equals(RegisterState.Start)
             || state.Equals(RegisterState.Register))
             {
-                // return base.CanHandle(message);
                 return true;
             }
             else
@@ -44,17 +42,18 @@ namespace Library
         {
             response = string.Empty;
             Enum state = Administrator.Instance.GetUserState(message.From.Id);
-            switch(state){
+            switch (state)
+            {
                 case RegisterState.Start:
                     response = "Ingresa un nombre de usuario para registrarte.";
                     Administrator.Instance.SetUserState(message.From.Id, RegisterState.Register);
                     break;
-                
+
                 case RegisterState.Register:
                     Administrator.Instance.CheckUser(message.Text, message.From.Id);
                     response = "Usuario registrado\n Elige una opción \n 1- /Jugar \n 2- /Salir";
                     Administrator.Instance.SetUserState(message.From.Id, RegisterState.Completed);
-                break;
+                    break;
             }
         }
 
