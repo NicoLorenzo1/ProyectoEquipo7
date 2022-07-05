@@ -9,7 +9,7 @@ namespace Library
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private string Mode;
-        private bool OnGoing;
+        protected bool OnGoing;
         private bool Hit;
         protected int HitsPlayer1;
         protected int HitsPlayer2;
@@ -146,38 +146,39 @@ namespace Library
                 attackerBoard = BoardPlayer1;
                 defenderBoard = BoardPlayer2;
             }
-            else{
+            else
+            {
                 attacker = Player2;
                 defender = Player1;
                 attackerBoard = BoardPlayer2;
                 defenderBoard = BoardPlayer1;
             }
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
-                if (outOfBoard == true || alreadyShot == true)
+            bool outOfBoard = CoordCheck(coord1, coord2);
+            bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+            if (outOfBoard == true || alreadyShot == true)
+            {
+                result = "reintentar";
+                System.Console.WriteLine("Perdiste el turno");
+                //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
+            }
+            else
+            {
+                (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                if (hit)
                 {
-                    result = "reintentar";
-                    System.Console.WriteLine("Perdiste el turno");
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
+                    (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                    HitsPlayer1 += 1;
+                    result = sink ? "Hundido" : "Tocado";
                 }
                 else
                 {
-                    (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer1 += 1;
-                        result = sink ? "Hundido" : "Tocado";
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                        result = "Agua";
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
+                    Console.WriteLine("Agua");
+                    result = "Agua";
                 }
+                attackerBoard.shots.Add(coord1.ToUpper());
+                attackerBoard.shots.Add(coord2);
+                Console.WriteLine($"Atacó {attacker.Name}");
+            }
             // }
             /*else if (attacker == this.Player2)
             {
@@ -487,26 +488,34 @@ namespace Library
             */
         }
 
-        public virtual User CheckMatch(){
-            if(HitsPlayer1 == 15 || HitsPlayer2 == 15){
-                if(HitsPlayer1 > HitsPlayer2){
+        public virtual User CheckMatch()
+        {
+            if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
+            {
+                if (HitsPlayer1 > HitsPlayer2)
+                {
                     return Player1;
                 }
-                else{
+                else
+                {
                     return Player2;
                 }
             }
-            else{
+            else
+            {
                 return null;
-            } 
+            }
         }
 
-        public virtual User GameWinner(){
-            User winner; 
-            if(HitsPlayer1 > HitsPlayer2){
+        public virtual User GameWinner()
+        {
+            User winner;
+            if (HitsPlayer1 > HitsPlayer2)
+            {
                 winner = Player1;
             }
-            else{
+            else
+            {
                 winner = Player2;
             }
             EndGame();
@@ -520,7 +529,6 @@ namespace Library
         {
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
-            //administrator.currentGame.Remove(this);            
         }
         public void RestartHits()
         {
@@ -592,6 +600,18 @@ namespace Library
             set
             {
                 HitsPlayer2 = value;
+            }
+        }
+
+        public bool onGoing
+        {
+            get
+            {
+                return this.OnGoing;
+            }
+            set
+            {
+                OnGoing = value;
             }
         }
     }

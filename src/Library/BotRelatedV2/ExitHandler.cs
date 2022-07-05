@@ -32,7 +32,6 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            // Administrator.Instance.RemovePlayer(message.From.Id);
             response = "Nos vemos la próxima!";
         }
 

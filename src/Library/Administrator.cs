@@ -8,7 +8,6 @@ namespace Library
     public class Administrator
     {
         private static IHandler firstHandler;
-        //IL private static TelegramBotClient telegramClient;
         private List<User> usersRegisteredd = new List<User>();
         public Dictionary<User, Enum> usersRegisteredWithState = new Dictionary<User, Enum>();
         public List<Game> currentGame = new List<Game>();
@@ -94,18 +93,21 @@ namespace Library
         public User CheckUser(string name, long chatId)
         {
             User user = isUserRegistered(chatId);
-            if(user != null){
+            if (user != null)
+            {
                 Console.WriteLine("\nEl usuario ya esta registrado en el juego");
                 user.Name = name; //Actualizo el nombre del usuario
                 return user;
             }
-            else{
+            else
+            {
                 user = new User(name);
                 user.Id = chatId;
                 user.IdChat = chatId;
                 usersRegisteredWithState.Add(user, RegisterState.Start);
                 Console.WriteLine("\nUsuario registrado exitosamente\n");
-                return user;}
+                return user;
+            }
         }
 
         public Board GetPlayerBoard(long playerId)
@@ -138,34 +140,44 @@ namespace Library
             return null;
         }
 
-        public User isUserRegistered(long Id){
-            foreach(var (user, state) in usersRegisteredWithState){
-                if(Id != -1 && user.IdChat == Id){
+        public User isUserRegistered(long Id)
+        {
+            foreach (var (user, state) in usersRegisteredWithState)
+            {
+                if (Id != -1 && user.IdChat == Id)
+                {
                     return user;
                 }
             }
             return null;
         }
 
-        public void AddUserToPlayPool(User user, string mode){
+        public void AddUserToPlayPool(User user, string mode)
+        {
             UsersToPlay[user] = mode; // Nos aseguramos que el jugador este esperando por un solo modo de juego
         }
 
-        public Enum GetUserState(long Id){
-            foreach(var (user, state) in usersRegisteredWithState){
-                if(Id != -1 && user.IdChat == Id){
+        public Enum GetUserState(long Id)
+        {
+            foreach (var (user, state) in usersRegisteredWithState)
+            {
+                if (Id != -1 && user.IdChat == Id)
+                {
                     return state;
                 }
             }
             // return  null;
             return RegisterState.Start; //Si el usuario no se encuentra es porque aun no esta registrado y debe seguir el proceso de registro
         }
-        public void SetUserState(long id, Enum state){
+        public void SetUserState(long id, Enum state)
+        {
             User user = isUserRegistered(id);
-            if(user != null){
+            if (user != null)
+            {
                 usersRegisteredWithState[user] = state;
             }
-            else{
+            else
+            {
                 // Si el usuario no existe y quiero setearle estado, creo uno para poder seguir el proceso de registro
                 User u = new User("");
                 u.Id = id;
@@ -174,10 +186,13 @@ namespace Library
             }
         }
 
-        public void RemovePlayer(long id){
+        public void RemovePlayer(long id)
+        {
             //Borrar el usuario de la lista de espera
-            foreach(var (user, mode) in UsersToPlay){
-                if(user.Id == id){
+            foreach (var (user, mode) in UsersToPlay)
+            {
+                if (user.Id == id)
+                {
                     UsersToPlay.Remove(user);
                 }
             }
@@ -186,15 +201,18 @@ namespace Library
             game.EndGame();
         }
 
-        public bool BotEnabled{
-            get{
+        public bool BotEnabled
+        {
+            get
+            {
                 return botEnabled;
             }
-            set {
+            set
+            {
                 botEnabled = value;
             }
         }
-        
+
 
         //lista general de modos de juego.
         /*
@@ -212,7 +230,8 @@ namespace Library
             }
         }*/
     }
-    public enum UserState{
+    public enum UserState
+    {
         Play
     }
 }
