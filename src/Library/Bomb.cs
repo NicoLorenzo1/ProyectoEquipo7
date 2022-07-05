@@ -1,76 +1,170 @@
-/*
 using System;
 
-        //<summary>
-        //La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
-        //no funciona como debería de hacerlo, ya que no hemos logrado implementar una
-        //manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
-        //que se le pasan
-        //</summary>
+//<summary>
+//La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
+//no funciona como debería de hacerlo, ya que no hemos logrado implementar una
+//manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
+//que se le pasan
+//</summary>
 
 namespace Library
 {
     public class Bomb : Game
     {
-        private User Player1;
-        private User Player2;
+        // private User Player1;
+        // private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
+        private bool OnGoing;
+        private int BombHitsPlayer1;
+        private int BombHitsPlayer2;
         private bool Hit;
-        private int MissedShots = 0;
+        private int MissedShots1;
+        private int MissedShots2;
         public Bomb(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(player1);
-            BoardPlayer2 = new Board(player2); 
+            BoardPlayer2 = new Board(player2);
+            this.MissedShots1 = 0;
+            this.MissedShots2 = 0;
         }
-        public Bomb(string name) : base(name)
+
+        public override void StartGame()
         {
-            if (name.ToLower() == "bomb mode")
+            System.Console.WriteLine("Comienza la batalla naval!!");
+            System.Console.WriteLine("Modo Bomb");
+            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            System.Console.WriteLine();
+
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
+            BoardPlayer1.PositionShips();
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
+            BoardPlayer2.PositionShips();
+
+            User recentAttacker = this.Player2;
+
+            OnGoing = true && !Administrator.Instance.BotEnabled; // Para evitar que al jugar en Telegram se ejecuten los Console.ReadLine
+            while (OnGoing)
             {
-                this.Name = name;
-                Bomb game = new Bomb(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
-            }
-            else
-            {
-                Console.WriteLine("Modo incorrecto");
+                if (recentAttacker == this.Player1)
+                {
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player2.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player2/*, this.BoardPlayer2, this.Player1, this.BoardPlayer1*/);
+                    System.Console.WriteLine();
+                    this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                    ShowBoard(this.Player2, BoardPlayer1, BoardPlayer2);
+                    recentAttacker = Player2;
+                }
+                else
+                {
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player1.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
+                    System.Console.WriteLine();
+                    this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                    ShowBoard(this.Player1, BoardPlayer1, BoardPlayer2);
+                    recentAttacker = Player1;
+                }
+                if (BombHitsPlayer1 == 15 || BombHitsPlayer2 == 15)
+                {
+                    EndGame();
+                    if (BombHitsPlayer2 == 15)
+                    {
+                        Player1.statistics.ModifyStatics(Player1, false);
+                        Player2.statistics.ModifyStatics(Player2, true);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player2.Name}!!");
+                    }
+                    if (BombHitsPlayer1 == 15)
+                    {
+                        Player1.statistics.ModifyStatics(Player1, true);
+                        Player2.statistics.ModifyStatics(Player1, false);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player1.Name}!!");
+                    }
+                }
             }
         }
-        public override void Attack(User player)
+        public override string Attack(string coord1, string coord2, User attacker/*, Board attackerBoard, User defender, Board defenderBoard*/)
         {
-            if (MissedShots == 3)
+            Board attackerBoard, defenderBoard;
+            User defender;
+            string result = "";
+            if (attacker == this.Player1)
             {
-                //Falta ver como hacer un ataque 3x3
-                Console.WriteLine("Escriba la primer coordenada del centro de la bomba(A-J)");
-                string coord1 = Console.ReadLine();
-                Console.WriteLine("Escriba la segunda coordenada del centro de la bomba(1-10)");
-                string coord2 = Console.ReadLine();
-                if (player == this.Player1)
-                {
-                    this.BoardPlayer2.EditBoard(coord1,coord2);
-                }
-                else if (player == this.Player2)
-                {
-                    this.BoardPlayer1.EditBoard(coord1, coord2);
-                }
-                MissedShots = 0;
+                attacker = Player1;
+                defender = Player2;
+                attackerBoard = BoardPlayer1;
+                defenderBoard = BoardPlayer2;
             }
-            else
-            {
-                base.Attack(player);
-                if (!Hit)
+            else{
+                attacker = Player2;
+                defender = Player1;
+                attackerBoard = BoardPlayer2;
+                defenderBoard = BoardPlayer1;
+            }
+
+                bool outOfBoard = CoordCheck(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+
+                // #######################
+                if ((attacker == Player1 && MissedShots1 == 1) || attacker == Player2 && MissedShots2 == 1)
                 {
-                    MissedShots += 1;
+                    System.Console.WriteLine("Entraste al tirador de bombas");
+                    List<string> bombita = attackerBoard.coordSurround(coord1, coord2);
+                    for (int i = 0; i < bombita.Count; i += 2)
+                    {
+                        string setter1 = Convert.ToString(bombita[i]);
+                        string setter2 = Convert.ToString(bombita[i + 1]);
+
+                        bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
+                        if (repeatedShot == false)
+                        {
+                            attackerBoard.shots.Add(setter1);
+                            attackerBoard.shots.Add(setter2);
+                            (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                            if (hit)
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                                BombHitsPlayer1 += 1;
+                                result = sink ? "Hundido" : "Tocado";
+
+                            }
+                            else
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                Console.WriteLine("Agua");
+                                result = "Agua";
+                            }
+
+                        }
+                    }
+                    // MissedShots1 corresponde a player1. Si el attacker es player1 entonces si igualo a 0 de lo contrario lo dejo con el mismo valor
+                    // Lo mismo con MissedShots2
+                    MissedShots1 = attacker == Player1 ? 0 : MissedShots1 ;
+                    MissedShots2 = attacker == Player2 ? 0 : MissedShots2 ;
                 }
-            } 
-        }
-        public override void MatchPlayers()
-        {
-            Bomb game = new Bomb("Bomb Mode");
-            base.MatchPlayers();
+                // #######################
+                else
+                {
+                    result = base.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
+                    MissedShots1 += 1;
+                }
+                return result;
         }
     }
 }
-*/

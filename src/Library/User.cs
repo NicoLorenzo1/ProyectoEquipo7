@@ -9,11 +9,12 @@ namespace Library
     {
         //public static Dictionary<string, int> users = new Dictionary<string, int>();
 
-        public static List<User> users = new List<User>();
+        // public static List<User> users = new List<User>();
 
         private static int count = 0;
         private string name;
-        private int id;
+        private long id;
+        private long idChat;
 
         public Statistics statistics;
 
@@ -24,9 +25,8 @@ namespace Library
         public User(string name)
         {
             this.name = name;
-            this.id = count += 1;
+            //this.id = count += 1;
             this.statistics = new Statistics(this);
-            users.Add(this);
         }
 
         /// <summary>
@@ -38,20 +38,40 @@ namespace Library
             {
                 return this.name;
             }
+            set
+            {
+                this.name = value;
+            }
         }
 
         /// <summary>
         /// Get del nombre del usuario.
         /// </summary>
-        public int Id
+        public long Id
         {
             get
             {
                 return this.id;
             }
+            set
+            {
+                id = value;
+            }
+        }
+
+        public long IdChat
+        {
+            get
+            {
+                return this.idChat;
+            }
+            set
+            {
+                idChat = value;
+            }
         }
 
     }
 
-    
+
 }
