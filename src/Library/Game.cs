@@ -133,7 +133,7 @@ namespace Library
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
         /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
-        public virtual string Attack(string coord1, string coord2, User attacker/*, Board attackerBoardNotUSed, User defenderNotUSed, Board defenderBoardNotUsed*/)
+        public virtual string Attack(string coord1, string coord2, User attacker)
         {
             string result = "";
             Board attackerBoard, defenderBoard;
@@ -159,7 +159,6 @@ namespace Library
             {
                 result = "reintentar";
                 System.Console.WriteLine("Perdiste el turno");
-                //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
             }
             else
             {
@@ -179,40 +178,6 @@ namespace Library
                 attackerBoard.shots.Add(coord2);
                 Console.WriteLine($"Atacó {attacker.Name}");
             }
-            // }
-            /*else if (attacker == this.Player2)
-            {
-
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, boardPlayer1);
-
-
-                if (outOfBoard == true || alreadyShot == true)
-                {
-                    result = "repetir";
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
-                }
-                else
-                {
-                    (bool hit, string currentShipName) = this.BoardPlayer1.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer2 += 1;
-                        result = "impacto";
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                        result = "fallo";
-
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
-                }
-            }*/
             return result;
         }
 

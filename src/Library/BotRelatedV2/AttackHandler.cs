@@ -10,12 +10,9 @@ namespace Library
         private User player1;
         private User player2;
 
-        // public AttackState State { get; set; }
-
         public AttackHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "Atacar", "/Atacar", "/ReintentarAtaque" };
-            // Administrator.Instance.SetUserState(player1.Id, AttackState.StartAttackPlayer1);
         }
 
         protected override bool CanHandle(Message message)
@@ -31,7 +28,6 @@ namespace Library
             || (state.Equals(AttackState.Wait))
             && (!message.Text.ToLower().Equals("tablero")
             && (!message.Text.ToLower().Equals("mensajes"))))
-
 
             {
 
@@ -153,7 +149,6 @@ namespace Library
 
         protected override void InternalCancel()
         {
-            // this.Administrator.Instance.SetUserState(player1.Id, AttackState.End);
         }
 
         private string Attack(User player)
@@ -176,9 +171,6 @@ namespace Library
 
             }
             string result = game.Attack(check1, check2, attacker);
-            //response = $"Atacando al jugador {player2.Name}";
-            // Administrator.Instance.SetUserState(attacker.Id, AttackState.Wait);
-            // Administrator.Instance.SetUserState(defender.Id, AttackState.StartAttackPlayer2);
 
             if (!result.Equals("/reintentar"))
             {
@@ -260,7 +252,5 @@ namespace Library
         End
 
     }
-
-
 }
 

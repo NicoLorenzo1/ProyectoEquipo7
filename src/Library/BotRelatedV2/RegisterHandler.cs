@@ -9,13 +9,12 @@ namespace Library
     {
         // public RegisterState State { get; set; }
         /// <summary>
-        /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "registrarse".
+        /// Inicializa una nueva instancia de la clase <see cref="RegisterHandler"/>. Esta clase procesa el mensaje "registrarse".
         /// </summary>
         /// <param name="next">El próximo "handler".</param>
         public RegisterHandler(BaseHandler next) : base(next)
         {
             Keywords = new string[] { "/registrarse", "/Registrarse" };
-            // State = RegisterState.Start;
         }
 
         protected override bool CanHandle(Message message)

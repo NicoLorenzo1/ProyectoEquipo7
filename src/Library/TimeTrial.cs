@@ -5,7 +5,7 @@ using System.Timers;
 namespace Library
 {
     /// <summary>
-    /// Nuevo modo de juego el cual se va a implementar para la entrega final, se basa en el modo de juego base pero se le suma la cualidad de que va a tener un
+    /// Nuevo modo de juego, se basa en el modo de juego base pero se le suma la cualidad de que va a tener un
     /// tiempo limitado, logrando de esta forma una modalidad de juego mas rapida.
     /// </summary>
     public class TimeTrial : Game
@@ -14,7 +14,7 @@ namespace Library
         private Board BoardPlayer2;
 
         //Seteo 3 minutos en milisegundos. 180000
-        System.Timers.Timer timerCounter = new System.Timers.Timer(120000);
+        System.Timers.Timer timerCounter = new System.Timers.Timer(180000);
 
 
         public TimeTrial(User player1, User player2, string name) : base(player1, player2, name)
@@ -27,8 +27,6 @@ namespace Library
 
         public void StartTimer()
         {
-            Console.WriteLine("StartTimer>>>>>>>>>>>>>");
-
             timerCounter.Elapsed += timerCounter_Elapsed;
             timerCounter.AutoReset = false;
             timerCounter.Enabled = true;

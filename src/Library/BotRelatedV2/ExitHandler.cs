@@ -5,13 +5,11 @@ namespace Library
     public class ExitHandler : BaseHandler
     {
         public ExitHandlerState State { get; set; }
-
         public ExitHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "/Salir", "salir", "Salir" };
             this.State = ExitHandlerState.Start;
         }
-
         protected override bool CanHandle(Message message)
         {
             if (this.State == ExitHandlerState.Start)
@@ -33,8 +31,8 @@ namespace Library
         protected override void InternalHandle(Message message, out string response)
         {
             response = "Nos vemos la próxima!";
+            Administrator.Instance.SetUserState(message.From.Id, RegisterState.Start);
         }
-
 
         public enum ExitHandlerState
         {

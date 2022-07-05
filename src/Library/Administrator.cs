@@ -7,8 +7,6 @@ namespace Library
     /// </summary>
     public class Administrator
     {
-        private static IHandler firstHandler;
-        private List<User> usersRegisteredd = new List<User>();
         public Dictionary<User, Enum> usersRegisteredWithState = new Dictionary<User, Enum>();
         public List<Game> currentGame = new List<Game>();
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
@@ -166,7 +164,6 @@ namespace Library
                     return state;
                 }
             }
-            // return  null;
             return RegisterState.Start; //Si el usuario no se encuentra es porque aun no esta registrado y debe seguir el proceso de registro
         }
         public void SetUserState(long id, Enum state)
@@ -212,23 +209,6 @@ namespace Library
                 botEnabled = value;
             }
         }
-
-
-        //lista general de modos de juego.
-        /*
-        public List<Lobby> modeList = new List<Lobby>()
-        {
-            new TimeTrialMode("Time Trial"),
-            new Game("Classic")
-        };
-        //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
-        private void MatchPlayers()
-        {
-            foreach (Lobby m in modeList)
-            {
-                m.MatchPlayers();
-            }
-        }*/
     }
     public enum UserState
     {

@@ -69,13 +69,10 @@ namespace Library
             }
         }
 
-
-
         public enum PrintBoardState
         {
             Start,
             Print,
-
         }
     }
 }
