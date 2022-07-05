@@ -73,6 +73,9 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Muestra por consola los primeros 10 jugadores del ranking global.
+        /// </summary>
         public void ShowTop10()
         {
             List<Statistics> sortedAll = getAllSorted();
@@ -89,20 +92,22 @@ namespace Library
         /// todos los jugadores del ranking.
         /// </summary>
         /// <param name="user">Objeto de clase User.</param>
-        public void ShowMyRank(User user)
+        public string ShowMyRank(User user)
         {
             List<Statistics> sortedAll = getAllSorted();
 
+            int userRankingIndex = 0;
             int i = 1;
             foreach (Statistics st in sortedAll)
             {
                 if (user.Id == st.User.Id)
                 {
-                    Console.WriteLine($"Tu posición en el ranking global es: {i}");
+                    userRankingIndex = i;
                     break;
                 }
                 i++;
             }
+            return ($"Tu posición en el ranking global es: {userRankingIndex}");
         }
     }
 }
