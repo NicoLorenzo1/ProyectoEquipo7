@@ -31,6 +31,7 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
+            /*
             response = "No tenemos ese mensaje disponible.";
             if (QuickChatState.Start == State)
             {
@@ -41,7 +42,14 @@ namespace Library
             {
                 SendMessage(message);
             }
+            */
+            
 
+        }
+
+        private Message isValidQuickChat(Message message)
+        {
+            
         }
 
         /// <summary>

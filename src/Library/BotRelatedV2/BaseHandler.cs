@@ -74,12 +74,24 @@ namespace Library
         {
             // Cuando no hay palabras clave este método debe ser sobreescrito por las clases sucesoras y por lo tanto
             // este método no debería haberse invocado.
+            try
+            {
+                Message validMessage = isValidKeyword(message);
+            }
+            catch(InvalidUserInputException ex)
+            {
+                Console.WriteLine("Operación no válida");
+            }
+            return this.Keywords.Any(s => message.Text.Equals(s, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private Message isValidKeyword(Message message)
+        {
             if (this.Keywords == null || this.Keywords.Length == 0)
             {
-                throw new InvalidOperationException("No hay palabras clave que puedan ser procesadas");
+                throw new InvalidUserInputException("No hay palabras clave que puedan ser procesadas");
             }
-
-            return this.Keywords.Any(s => message.Text.Equals(s, StringComparison.InvariantCultureIgnoreCase));
+            return message;
         }
 
         /// <summary>

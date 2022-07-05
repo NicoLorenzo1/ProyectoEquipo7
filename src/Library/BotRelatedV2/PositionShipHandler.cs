@@ -92,6 +92,17 @@ namespace Library
             }
         }
 
+        private int readColumn(string letter)
+        {
+            int IndexX = abc.IndexOf(letter.ToUpper());
+
+            if (IndexX == -1) 
+            {
+                throw new InvalidUserInputException("Input de columna del usuario no válido");
+            }
+            return IndexX;
+        }
+
         protected override void InternalCancel()
         {
             this.State = PositionShipState.End;
