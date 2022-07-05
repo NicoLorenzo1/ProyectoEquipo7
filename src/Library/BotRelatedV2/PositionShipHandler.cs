@@ -1,34 +1,43 @@
-/*using Telegram.Bot.Types;
+using Telegram.Bot.Types;
 
 namespace Library
 {
     public class PositionShipHandler : BaseHandler
     {
-        public string check1;
-        public string check2;
-        public string direction1;
+        // Se asignan los valores check1, check2 y direction junto al Id del usuario en diccionarios para evitar conflictos
+        public Dictionary<long,string> checks1 = new Dictionary<long,string>();
+
+        public Dictionary<long,string> checks2 = new Dictionary<long,string>();
+
+        public Dictionary<long,string> direction = new Dictionary<long,string>();
+
         public List<string> directions = new List<string>()
         {
-            "arriba", "abajo", "izquierda", "derecha"
+            "/arriba", "/abajo", "/izquierda", "/derecha"
         };
         private Dictionary<int, string> shipNames = new Dictionary<int, string> { { 1, "Lancha" }, { 2, "Crucero" }, { 3, "Submarino" }, { 4, "Buque" }, { 5, "Portaaviones" } };
-        public PositionShipState State { get; set; }
 
         public PositionShipHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "posicionar", "Posicionar", "/Reintentar" };
-            State = PositionShipState.Start;
+            // State = PositionShipState.Start;
         }
 
         protected override bool CanHandle(Message message)
         {
-            if (State == PositionShipState.Start)
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+
+            if (state.Equals(SelectModeState.ReadyToPlay)
+            || (state.Equals(PositionShipState.Complete))
+            || (state.Equals(PositionShipState.PositionCheck1))
+            || (state.Equals(PositionShipState.PositionCheck2))
+            || (state.Equals(PositionShipState.Direction)))
             {
-                return base.CanHandle(message);
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -37,22 +46,25 @@ namespace Library
             response = string.Empty;
             Board board = Administrator.Instance.GetPlayerBoard(message.From.Id);
             int shipCount = board.shipCount();
+
             if (shipCount == 5)
             {
-                State = PositionShipState.Complete;
+                // State = PositionShipState.Complete;
+                Administrator.Instance.SetUserState(message.From.Id, PositionShipState.Complete);
             }
-            switch (State)
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+            switch (state)
             {
-                case PositionShipState.Start:
+                case SelectModeState.ReadyToPlay:
                     response = $"Posiciona el lugar de {shipNames[shipCount + 1]} (A-J)";
-                    State = PositionShipState.PositionCheck1;
+                    Administrator.Instance.SetUserState(message.From.Id,  PositionShipState.PositionCheck1);
                     break;
 
                 case PositionShipState.PositionCheck1:
                     if (Board.abc.Contains(message.Text.ToUpper()))
                     {
-                        check1 = message.Text;
-                        State = PositionShipState.PositionCheck2;
+                        checks1[message.From.Id] = message.Text;
+                        Administrator.Instance.SetUserState(message.From.Id,  PositionShipState.PositionCheck2);
                         response = $"Posiciona el lugar de {shipNames[shipCount + 1]} (1-10)";
                     }
                     else
@@ -64,9 +76,10 @@ namespace Library
                 case PositionShipState.PositionCheck2:
                     if (Board.num.Contains(message.Text.ToUpper()))
                     {
-                        check2 = message.Text;
-                        State = PositionShipState.Direction;
-                        response = $"Posiciona la direccion de {shipNames[shipCount + 1]} (Arriba, Abajo, Derecha, Izquierda)";
+                        checks2[message.From.Id] = message.Text;
+
+                        Administrator.Instance.SetUserState(message.From.Id,  PositionShipState.Direction);
+                        response = $"Posiciona la direccion de {shipNames[shipCount + 1]} (/Arriba, /Abajo, /Derecha, /Izquierda)";
                     }
                     else
                     {
@@ -76,20 +89,25 @@ namespace Library
                 case PositionShipState.Direction:
                     if (directions.Contains(message.Text.ToLower()))
                     {
-                        direction1 = message.Text.ToLower();
-                        AddShipToBoard(check1, check2, direction1, shipCount + 1, message, out response);
+                        direction[message.From.Id] = message.Text.ToLower();
+
+                        AddShipToBoard(checks1[message.From.Id], checks2[message.From.Id], direction[message.From.Id], shipCount + 1, message, out response);
                         //InternalHandle(message, out response);
                     }
                     else
                     {
-                        response = $"La direccion ingresada no es correcta.\nPosiciona la direccion de {shipNames[shipCount + 1]} (Arriba, Abajo, Derecha, Izquierda)";
+                        response = $"La direccion ingresada no es correcta.\nPosiciona la direccion de {shipNames[shipCount + 1]} (/Arriba, /Abajo, /Derecha, /Izquierda)";
                     }
                     break;
                 case PositionShipState.Complete:
-                    State = PositionShipState.Start;
+
+                    Administrator.Instance.SetUserState(message.From.Id,  SelectModeState.ReadyToPlay);
                     Game game = Administrator.Instance.GetPlayerGame(message.Chat.Id);
                     if (game.boardPlayer1.shipCount() == 5 && game.boardPlayer2.shipCount() == 5)
                     {
+                        Administrator.Instance.SetUserState(game.player1.Id,  AttackState.StartAttackPlayer1);
+                        Administrator.Instance.SetUserState(game.player2.Id,  AttackState.Wait);
+
                         Bot.sendTelegramMessage(game.player1, "Para comenzar envía /Atacar");
                         Bot.sendTelegramMessage(game.player2, $"El jugador {game.player1.Name} comienza atacando.");
                     }
@@ -97,20 +115,9 @@ namespace Library
             }
         }
 
-        private int readColumn(string letter)
-        {
-            int IndexX = abc.IndexOf(letter.ToUpper());
-
-            if (IndexX == -1) 
-            {
-                throw new InvalidUserInputException("Input de columna del usuario no válido");
-            }
-            return IndexX;
-        }
-
         protected override void InternalCancel()
         {
-            this.State = PositionShipState.End;
+            // Administrator.Instance.SetUserState(message.From.Id,  PositionShipState.End);
         }
 
         private void AddShipToBoard(String check1, String check2, String direction, int shipSize, Message message, out string response)
@@ -118,28 +125,31 @@ namespace Library
             response = string.Empty;
             bool overShip, overBoard;
             Board board = Administrator.Instance.GetPlayerBoard(message.From.Id);
-            (overBoard, overShip) = board.Positioner(check1, check2, direction1, shipNames[shipSize], shipSize);
+            (overBoard, overShip) = board.Positioner(check1, check2, direction, shipNames[shipSize], shipSize);
 
             if (overBoard == true)
             {
                 response = "No se puede posicionar el barco en esa ubicación porque se sale del tablero \n /Reintentar";
-                State = PositionShipState.Start;
+                Administrator.Instance.SetUserState(message.From.Id,  SelectModeState.ReadyToPlay);
             }
             else if (overShip == true)
             {
                 response = "No se puede porque ya hay una nave en esa ubicación. \n /Reintentar";
-                State = PositionShipState.Start;
+                Administrator.Instance.SetUserState(message.From.Id,  SelectModeState.ReadyToPlay);
             }
 
             else
             {
+                Console.WriteLine($">>>> messageChatId: {message.Chat.Id} messgeFromId: {message.From.Id}");
                 Game game = Administrator.Instance.GetPlayerGame(message.Chat.Id);
                 User player = game.player1.Id == message.From.Id ? game.player1 : game.player2;
-                State = PositionShipState.Start;
+                Administrator.Instance.SetUserState(message.From.Id,  SelectModeState.ReadyToPlay);
                 if (board.shipCount() == 5)
                 {
                     //Bot.sendTelegramMessage(player, "La nave esta lista.");
                     Bot.sendTelegramMessage(player, "La flota esta lista.");
+                    InternalHandle(message, out response);
+
                 }
                 else if (board.shipCount() < 5)
                 {
@@ -147,11 +157,11 @@ namespace Library
                     InternalHandle(message, out response);
                 }
 
-                if (game.boardPlayer1.shipCount() == 5 && game.boardPlayer2.shipCount() == 5)
-                {
-                    Bot.sendTelegramMessage(game.player1, "Para Comenzar envía /Atacar");
-                    Bot.sendTelegramMessage(game.player2, $"El jugador {game.player1.Name} comienza atacando.");
-                }
+                // if (game.boardPlayer1.shipCount() == 5 && game.boardPlayer2.shipCount() == 5)
+                // {
+                    // Bot.sendTelegramMessage(game.player1, "Para Comenzar envía /Atacar");
+                    // Bot.sendTelegramMessage(game.player2, $"El jugador {game.player1.Name} comienza atacando.");
+                // }
 
             }
         }
@@ -168,4 +178,3 @@ namespace Library
         }
     }
 }
-*/

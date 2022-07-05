@@ -31,7 +31,7 @@ namespace Library
                 string name = Console.ReadLine();
 
                 bool knownUser = false;
-                foreach (var item in administrator.usersRegistered)
+                foreach (var (item, state) in administrator.usersRegisteredWithState)
                 {
                     //Console.WriteLine(item.Name);
 
@@ -50,7 +50,7 @@ namespace Library
                     System.Console.WriteLine("...");
                     //Si no se encuentra en el sistema se crea y se envía a la lista de usuarios registrados
                     User user = new User(name);
-                    administrator.usersRegistered.Add(user);
+                    administrator.usersRegisteredWithState.Add(user, null);
                     System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados\n");
                     knownUser = true;
                     SelectMode(user);
@@ -60,7 +60,7 @@ namespace Library
             }
             else if(num == 2)
             {
-                SelectMode(administrator.usersRegistered.Last());
+                SelectMode(administrator.usersRegisteredWithState.Keys.Last());
 
             }
             else if (num == 3)
@@ -70,16 +70,11 @@ namespace Library
                 Console.WriteLine("\nTe esperamos la proxima!");
                 return;
             }
-            return;
-        }
-
-        private int readNumber(int intNumber)
-        {
-            if (intNumber != 1 && intNumber != 2 && intNumber != 3)
+            else
             {
-                throw new InvalidUserInputException("Input de opción seleccionada por el usuario no válido");
+                Console.WriteLine("\nNo es una opción válida");
             }
-            return intNumber;
+            return;
         }
 
         public void Register()

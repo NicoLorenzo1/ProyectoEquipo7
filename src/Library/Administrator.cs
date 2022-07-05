@@ -7,10 +7,15 @@ namespace Library
     /// </summary>
     public class Administrator
     {
-        public List<User> usersRegistered = new List<User>();
+        private static IHandler firstHandler;
+        //IL private static TelegramBotClient telegramClient;
+        private List<User> usersRegisteredd = new List<User>();
+        public Dictionary<User, Enum> usersRegisteredWithState = new Dictionary<User, Enum>();
         public List<Game> currentGame = new List<Game>();
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
         private static Administrator instance;
+
+        private bool botEnabled = false;
 
         /// <summary>
         /// Se crea una única instancia de la clase Administrator.
@@ -86,21 +91,21 @@ namespace Library
         /// </summary>
         /// <param name="name">Nombre del usuario.</param>
         /// <returns>Devuelve un objeto de clase User.</returns>
-        public User CheckUser(string name)
+        public User CheckUser(string name, long chatId)
         {
-            foreach (User u in usersRegistered)
-            {
-                if (u.Name == name)
-                {
-                    Console.WriteLine("\nEl usuario ya esta registrado en el juego");
-                    return u;
-                }
+            User user = isUserRegistered(chatId);
+            if(user != null){
+                Console.WriteLine("\nEl usuario ya esta registrado en el juego");
+                user.Name = name; //Actualizo el nombre del usuario
+                return user;
             }
-
-            User user = new User(name);
-            usersRegistered.Add(user);
-            Console.WriteLine("\nUsuario registrado exitosamente\n");
-            return user;
+            else{
+                user = new User(name);
+                user.Id = chatId;
+                user.IdChat = chatId;
+                usersRegisteredWithState.Add(user, RegisterState.Start);
+                Console.WriteLine("\nUsuario registrado exitosamente\n");
+                return user;}
         }
 
         public Board GetPlayerBoard(long playerId)
@@ -132,5 +137,98 @@ namespace Library
             }
             return null;
         }
+
+        public User isUserRegistered(long Id){
+            foreach(var (user, state) in usersRegisteredWithState){
+                if(Id != -1 && user.IdChat == Id){
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        public void AddUserToPlayPool(User user, string mode){
+            UsersToPlay[user] = mode; // Nos aseguramos que el jugador este esperando por un solo modo de juego
+        }
+
+        public Enum GetUserState(long Id){
+            foreach(var (user, state) in usersRegisteredWithState){
+                if(Id != -1 && user.IdChat == Id){
+                    return state;
+                }
+            }
+            // return  null;
+            return RegisterState.Start; //Si el usuario no se encuentra es porque aun no esta registrado y debe seguir el proceso de registro
+        }
+        public void SetUserState(long id, Enum state){
+            User user = isUserRegistered(id);
+            if(user != null){
+                usersRegisteredWithState[user] = state;
+            }
+            else{
+                // Si el usuario no existe y quiero setearle estado, creo uno para poder seguir el proceso de registro
+                User u = new User("");
+                u.Id = id;
+                u.IdChat = id;
+                usersRegisteredWithState.Add(u, state);
+            }
+        }
+
+        public void RemovePlayer(long id){
+            //Borrar el usuario de la lista de espera
+            foreach(var (user, mode) in UsersToPlay){
+                if(user.Id == id){
+                    UsersToPlay.Remove(user);
+                }
+            }
+            //Terminar cualquier partida en curso y designar ganador al oponente
+            Game game = GetPlayerGame(id);
+            game.EndGame();
+        }
+
+        public bool BotEnabled{
+            get{
+                return botEnabled;
+            }
+            set {
+                botEnabled = value;
+            }
+        }
+        
+
+        //lista general de modos de juego.
+        /*
+        public List<Lobby> modeList = new List<Lobby>()
+        {
+            foreach (Game game in currentGame)
+            {
+                Console.WriteLine($">>>> playerId {game.player1.Id} - {game.player2.Id} - {playerId}");
+                if (game.player1.Id == playerId)
+                {
+                    return game.boardPlayer1;
+                }
+                else
+                if (game.player2.Id == playerId)
+                {
+                    return game.boardPlayer2;
+                }
+            }
+            return null;
+        }
+
+        public Game GetPlayerGame(long playerChatId)
+        {
+            foreach (Game game in currentGame)
+            {
+                if (game.player1.IdChat == playerChatId || game.player2.IdChat == playerChatId)
+                {
+                    return game;
+                }
+            }
+            return null;
+        }
+    }
+    public enum UserState{
+        Play
     }
 }

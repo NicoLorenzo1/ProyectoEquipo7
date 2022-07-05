@@ -62,7 +62,9 @@ namespace Library
         ///Metodo para enviar mensajes a travéz de telegram, recibe un user y un message como parametro.
         public static async void sendTelegramMessage(User user, string message)
         {
-            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+            if(Administrator.Instance.BotEnabled){
+                await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+            }
         }
     }
 }

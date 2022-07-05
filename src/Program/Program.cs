@@ -18,28 +18,51 @@ namespace Library
         /// </summary>
         public static void Main()
         {
+            try{
+            Bot bot = new Bot();
+            bot.Setup();
+            Administrator.Instance.BotEnabled = true;
 
-            User jose = new User("Jose");
-            User juan = new User("Juan");
-            User nico = new User("Nico");
-            User manu = new User("Manu");
-            User maria = new User("Maria");
+            TelegramBot.Start();
+            Console.WriteLine($"Bot ended!");
+            }
+            catch(Exception e){
+                Console.WriteLine($"Excepcion: {e.Message} Stacktrace: {e.StackTrace}");
+            }
 
-            Administrator administrator = Administrator.Instance;
+            /*
+            try
+            {
+                Bot bot = new Bot();
+                bot.Setup();
+                User jose = new User("Jose");
+                User juan = new User("Juan");
+                User nico = new User("Nico");
+                User manu = new User("Manu");
+                User maria = new User("Maria");
 
-            administrator.usersRegistered.Add(juan);
-            administrator.usersRegistered.Add(nico);
-            administrator.usersRegistered.Add(manu);
-            administrator.usersRegistered.Add(maria);
-            administrator.UsersToPlay.Add(juan, "classic");
-            administrator.UsersToPlay.Add(nico, "challenge");
-            administrator.UsersToPlay.Add(manu, "bomb");
-            administrator.UsersToPlay.Add(maria, "timetrial");
+                Administrator administrator = Administrator.Instance;
+                administrator.BotEnabled = false;
 
 
-            Menu menu = new Menu();
-            menu.ShowMenu();
-            administrator.MatchPlayers();
+                administrator.usersRegisteredWithState.Add(juan, null);
+                administrator.usersRegisteredWithState.Add(nico, null);
+                administrator.usersRegisteredWithState.Add(manu, null);
+                administrator.usersRegisteredWithState.Add(maria, null);
+                administrator.UsersToPlay.Add(juan, "classic");
+                administrator.UsersToPlay.Add(nico, "challenge");
+                administrator.UsersToPlay.Add(manu, "bomb");
+                administrator.UsersToPlay.Add(maria, "timetrial");
+
+                Menu menu = new Menu();
+                menu.ShowMenu();
+                administrator.MatchPlayers();
+            }
+            catch (Exception e)
+            {
+                Console
+                    .WriteLine($"Exception: {e.Message} Stacktrace: {e.StackTrace}");
+            }*/
         }
 
     }

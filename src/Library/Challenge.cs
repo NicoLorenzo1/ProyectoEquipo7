@@ -5,21 +5,28 @@ using System;
 //la clase Challenge, por lo que, al ser una modalidad agregada por nosotros,
 //decidimos dejarla sin funcionamiento para esta entrega
 //</summary>
-
 namespace Library
 {
     public class Challenge : Game
     {
-        private User Player1;
-        private User Player2;
+        // private User Player1;
+        // private User Player2;
         private Board BoardPlayer1;
+
         private Board BoardPlayer2;
+
         private bool OnGoing;
+
         private int ChallengeHitsPlayer1;
+
         private int ChallengeHitsPlayer2;
+
         private int WinsPlayer1;
+
         private int WinsPlayer2;
-        public Challenge(User player1, User player2, string name) : base(player1, player2, name)
+
+        public Challenge(User player1, User player2, string name) :
+            base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
@@ -31,14 +38,16 @@ namespace Library
             WinsPlayer1 = 0;
         }
 
-
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
             System.Console.WriteLine("Challenge!!!");
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            
+            Bot.sendTelegramMessage(Player1, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
+            Bot.sendTelegramMessage(Player2, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
 
-            while (WinsPlayer1 < 2 && WinsPlayer2 < 2)
+            while (WinsPlayer1 < 2 && WinsPlayer2 < 2 && !Administrator.Instance.BotEnabled)
             {
                 int counter = WinsPlayer1 + WinsPlayer2;
                 if (counter == 0)
@@ -53,13 +62,13 @@ namespace Library
                 {
                     System.Console.WriteLine("-- Tercer y últuma partida --");
                 }
-                ClearBoards(BoardPlayer1, BoardPlayer2);
+                ClearBoards (BoardPlayer1, BoardPlayer2);
                 System.Console.WriteLine($"\nPosicionamiento de barcos de {Player1.Name}");
                 BoardPlayer1.PositionShips();
                 System.Console.WriteLine($"\nPosicionamiento de barcos de {Player2.Name}");
                 BoardPlayer2.PositionShips();
                 User recentAttacker = Player2;
-                OnGoing = true;
+                OnGoing = true && !Administrator.Instance.BotEnabled; // Para evitar que al jugar en Telegram se ejecuten los Console.ReadLine
                 while (OnGoing)
                 {
                     if (recentAttacker == Player1)
@@ -71,9 +80,17 @@ namespace Library
                         string coord1 = Console.ReadLine();
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
-                        Attack(coord1, coord2, Player2, BoardPlayer2, Player1, BoardPlayer1);
-                        this.BoardPlayer2.PrintBoard(this.BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
-                        ShowBoard(Player2, BoardPlayer1, BoardPlayer2);
+                        Attack (
+                            coord1,
+                            coord2,
+                            Player2 /*, BoardPlayer2, Player1, BoardPlayer1*/
+                        );
+                        this
+                            .BoardPlayer2
+                            .PrintBoard(this.BoardPlayer1.shipPos,
+                            BoardPlayer2.shots,
+                            "EnemyBoard");
+                        ShowBoard (Player2, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player2;
                     }
                     else
@@ -85,14 +102,21 @@ namespace Library
                         string coord1 = Console.ReadLine();
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
-                        Attack(coord1, coord2, Player1, BoardPlayer1, Player2, BoardPlayer2);
-                        this.BoardPlayer1.PrintBoard(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "EnemyBoard");
-                        ShowBoard(Player1, BoardPlayer1, BoardPlayer2);
+                        Attack (
+                            coord1,
+                            coord2,
+                            Player1 /*, BoardPlayer1, Player2, BoardPlayer2*/
+                        );
+                        this
+                            .BoardPlayer1
+                            .PrintBoard(this.BoardPlayer2.shipPos,
+                            this.BoardPlayer1.shots,
+                            "EnemyBoard");
+                        ShowBoard (Player1, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player1;
                     }
                     if ((hitsPlayer1 == 1 || hitsPlayer2 == 1))
                     {
-
                         if (hitsPlayer2 == 1)
                         {
                             WinsPlayer2 += 1;
@@ -101,7 +125,7 @@ namespace Library
                             ChallengeHitsPlayer1 = 0;
                             ChallengeHitsPlayer2 = 0;
                             OnGoing = false;
-                            hitsPlayer2=0;
+                            hitsPlayer2 = 0;
                             RestartHits();
                         }
                         if (hitsPlayer1 == 1)
@@ -112,7 +136,7 @@ namespace Library
                             ChallengeHitsPlayer1 = 0;
                             ChallengeHitsPlayer2 = 0;
                             OnGoing = false;
-                            hitsPlayer1=0;
+                            hitsPlayer1 = 0;
                             RestartHits();
                         }
                     }
@@ -140,6 +164,25 @@ namespace Library
             BoardPlayer2.shipPos.Clear();
             BoardPlayer1.shots.Clear();
             BoardPlayer2.shots.Clear();
+        }
+        
+        public User GameWinner()
+        {
+            User winner = null;
+            if(WinsPlayer1 + WinsPlayer2 == 3){
+
+                if (WinsPlayer1 > WinsPlayer2)
+                {
+                    winner = Player1;
+                }
+                else
+                {
+                    winner = Player2;
+                }
+                    EndGame();
+                    return winner;
+            }
+        return winner;
         }
     }
 }

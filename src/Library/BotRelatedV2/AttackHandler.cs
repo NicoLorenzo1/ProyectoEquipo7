@@ -1,4 +1,4 @@
-/*using Telegram.Bot.Types;
+using Telegram.Bot.Types;
 
 namespace Library
 {
@@ -10,23 +10,36 @@ namespace Library
         private User player1;
         private User player2;
 
-        public AttackState State { get; set; }
+        // public AttackState State { get; set; }
 
         public AttackHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Atacar" };
-            State = AttackState.StartAttackPlayer1;
+            this.Keywords = new string[] { "Atacar", "/Atacar", "/ReintentarAtaque"};
+            // Administrator.Instance.SetUserState(player1.Id, AttackState.StartAttackPlayer1);
         }
 
         protected override bool CanHandle(Message message)
         {
-            if (State == AttackState.StartAttackPlayer1)
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+
+            if (state.Equals(AttackState.StartAttackPlayer1)
+            || (state.Equals(AttackState.StartAttackPlayer2))
+            || (state.Equals(AttackState.AttackPositionCheck1))
+            || (state.Equals(AttackState.AttackPositionCheck2))
+            || (state.Equals(AttackState.AttackPositionCheck1Player2))
+            || (state.Equals(AttackState.AttackPositionCheck2Player2))
+            || (state.Equals(AttackState.Wait))
+            // && (!message.Text.ToLower().Equals("tablero")
+            // && (!message.Text.ToLower().Equals("mensajes"))
+            )
             {
                 return base.CanHandle(message);
+
+                // return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -37,15 +50,18 @@ namespace Library
             game = Administrator.Instance.GetPlayerGame(message.Chat.Id);
             player1 = game.player1;
             player2 = game.player2;
+            Enum state;
 
             if (message.From.Id == player1.Id)
             {
-                switch (State)
+                state = Administrator.Instance.GetUserState(player1.Id);
+                switch (state)
                 {
                     //Comienza el ataque del player 1
                     case AttackState.StartAttackPlayer1:
                         response = "Escriba la primer coordenada para atacar(A - J)";
-                        State = AttackState.AttackPositionCheck1;
+                        Administrator.Instance.SetUserState(player1.Id, AttackState.AttackPositionCheck1);
+                        
                         break;
 
                     case AttackState.AttackPositionCheck1:
@@ -53,7 +69,7 @@ namespace Library
                         {
                             check1 = message.Text;
                             response = "Escriba la segunda coordenada para atacar(1 - 10)";
-                            State = AttackState.AttackPositionCheck2;
+                            Administrator.Instance.SetUserState(player1.Id, AttackState.AttackPositionCheck2);
                         }
                         else
                         {
@@ -65,9 +81,15 @@ namespace Library
                         if (Board.num.Contains(message.Text))
                         {
                             check2 = message.Text;
-                            Attack(player1);
-                            State = AttackState.StartAttackPlayer2;
-                            CheckGame();
+                            string result = Attack(player1);
+                            if(result.Equals("reintentar")){
+                                response = "Ya disparaste en esa posición. /ReintentarAtaque";
+                            }
+                            else{
+                                Administrator.Instance.SetUserState(player1.Id, AttackState.Wait);
+                                Administrator.Instance.SetUserState(player2.Id, AttackState.StartAttackPlayer2);
+                                CheckGame();
+                            }
                         }
                         else
                         {
@@ -79,20 +101,22 @@ namespace Library
             }
             else
             {
-                switch (State)
+                state = Administrator.Instance.GetUserState(player2.Id);
+
+                switch (state)
                 {
                     //Comienza el ataque del player 2
                     case AttackState.StartAttackPlayer2:
                         response = "Escriba la primer coordenada para atacar (A - J)";
-                        State = AttackState.AttackPositionCheck1Player2;
+                        Administrator.Instance.SetUserState(player2.Id, AttackState.AttackPositionCheck1Player2);
                         break;
 
                     case AttackState.AttackPositionCheck1Player2:
-                        if (Board.abc.Contains(message.Text))
+                        if (Board.abc.Contains(message.Text.ToUpper()))
                         {
                             check1 = message.Text;
                             response = "Escriba la segunda coordenada para atacar (1 - 10)";
-                            State = AttackState.AttackPositionCheck2Player2;
+                            Administrator.Instance.SetUserState(player2.Id, AttackState.AttackPositionCheck2Player2);
                         }
                         else
                         {
@@ -104,18 +128,21 @@ namespace Library
                         if (Board.num.Contains(message.Text))
                         {
                             check2 = message.Text;
-                            Attack(player2);
-                            State = AttackState.StartAttackPlayer1;
-                            CheckGame();
+                            string result = Attack(player2);
+                            if(result.Equals("reintentar")){
+                                response = "Ya disparaste en esa posición. /ReintentarAtaque";
+                            }
+                            else{
+                                Administrator.Instance.SetUserState(player2.Id, AttackState.Wait);
+                                Administrator.Instance.SetUserState(player1.Id, AttackState.StartAttackPlayer1);
+                                CheckGame();
+                            }
+                            
                         }
                         else
                         {
                             response = "Debes ingresar un número valido";
                         }
-                        break;
-
-                    default:
-                        Console.WriteLine($"entra default {State}");
                         break;
                 }
             }
@@ -123,59 +150,85 @@ namespace Library
 
         protected override void InternalCancel()
         {
-            this.State = AttackState.End;
+            // this.Administrator.Instance.SetUserState(player1.Id, AttackState.End);
         }
 
-        private void Attack(User player)
-        {
-            game.Attack(check1, check2, player);
-            if (player == player1)
-            {
-                //response = $"Atacando al jugador {player2.Name}";
-                Bot.sendTelegramMessage(player2, $"El jugador {player1.Name} atacó.");
-                Bot.sendTelegramMessage(player2, "Ahora es tu turno de atacar. /Atacar");
-                string showBoard = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
-                Bot.sendTelegramMessage(player1, showBoard);
+        private string Attack(User player)
+        {   
+            User attacker, defender;
+            Board attackerBoard, defenderBoard;
+            if(player == player1){
+                attacker = player1;
+                defender = player2;
+                attackerBoard = game.boardPlayer1;
+                defenderBoard = game.boardPlayer2;
             }
-            else
-            {
-                //response = $"Atacando al jugador {player1.Name}";
-                Bot.sendTelegramMessage(player1, $"El jugador {player2.Name} atacó.");
-                Bot.sendTelegramMessage(player1, "Ahora es tu turno de atacar. /Atacar");
-                string showBoard = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
-                Bot.sendTelegramMessage(player2, showBoard);
+            else{
+                attacker = player2;
+                defender = player1;
+                attackerBoard = game.boardPlayer2;
+                defenderBoard = game.boardPlayer1;
+
             }
+            string result = game.Attack(check1, check2, attacker);
+            //response = $"Atacando al jugador {player2.Name}";
+            // Administrator.Instance.SetUserState(attacker.Id, AttackState.Wait);
+            // Administrator.Instance.SetUserState(defender.Id, AttackState.StartAttackPlayer2);
+
+            if(!result.Equals("/reintentar")){
+                string showBoard = attackerBoard.PrintBoard(defenderBoard.shipPos, attackerBoard.shots, "EnemyBoard");
+                Bot.sendTelegramMessage(defender, $"El jugador {attacker.Name} atacó.");
+                Bot.sendTelegramMessage(attacker, showBoard);
+                Bot.sendTelegramMessage(attacker, $"El resultado del disparo fue: {result}");
+                Bot.sendTelegramMessage(defender, $"El resultado del disparo fue: {result}");
+                Bot.sendTelegramMessage(defender, "Ahora es tu turno de atacar. /Atacar");
+            }
+
+            return result;
         }
         private bool CheckGame()
         {
-            if (game.hitsPlayer1 == 1 || game.hitsPlayer2 == 1)
-            {
-                game.EndGame();
-                if (game.hitsPlayer2 == 1)
-                {
-                    Bot.sendTelegramMessage(player1, $"La partida ha finalizado\n Ha ganado {player2.Name}.");
-                    Bot.sendTelegramMessage(player2, $"La partida ha finalizado\n Ha ganado {player2.Name}.");
+            User winner = game.CheckMatch(); // el ganador del match
+            if(winner != null){ // si hay un ganador es que el match termino
+                User looser = winner == player1 ? player2 : player1;
+                if(game.mode.Equals("challenge")){
 
-                    player1.statistics.ModifyStatics(player1, false);
-                    player2.statistics.ModifyStatics(player2, true);
-                    State = AttackState.End;
-                    return true;
-                }
-                if (game.hitsPlayer1 == 1)
-                {
-                    Bot.sendTelegramMessage(player1, $"La partida ha finalizado\n Ha ganado {player1.Name}.");
-                    Bot.sendTelegramMessage(player2, $"La partida ha finalizado\n Ha ganado {player1.Name}.");
+                    Console.Write($">>>> //IL estado challenge seteado");
 
-                    player1.statistics.ModifyStatics(player1, true);
-                    player2.statistics.ModifyStatics(player2, false);
-                    State = AttackState.End;
-                    return true;
+                    User challengeWinner = game.GameWinner(); //si hay un challengeWinner es que el challenge termino
+                    if(challengeWinner != null){ //aca es cuando termina el challenge
+                        looser = challengeWinner == player1 ? player2 : player1;
+                        Bot.sendTelegramMessage(player1, $"El challenge ha finalizado\n Ha ganado {challengeWinner.Name}.");
+                        Bot.sendTelegramMessage(player2, $"El challenge ha finalizado\n Ha ganado {challengeWinner.Name}.");
+                        Administrator.Instance.SetUserState(player1.Id, AttackState.End); 
+                        Administrator.Instance.SetUserState(player2.Id, AttackState.End);
+                        winner.statistics.ModifyStatics(challengeWinner, true);
+                        looser.statistics.ModifyStatics(looser, false);
+                    }
+                    else{// sino el challenge sigue y solo termino una mas de los partidas
+                        Bot.sendTelegramMessage(player1, $"La partida ha finalizado\n Ha ganado {winner.Name}.");
+                        Bot.sendTelegramMessage(player2, $"La partida ha finalizado\n Ha ganado {winner.Name}.");
+                        Administrator.Instance.SetUserState(player1.Id, SelectModeState.ChallengeState); //Con este estado vuelven a posicionar barcos para jugar otra vez
+                        Administrator.Instance.SetUserState(player2.Id, SelectModeState.ChallengeState);
+                        winner.statistics.ModifyStatics(winner, true);
+                        looser.statistics.ModifyStatics(looser, false);
+                    }
                 }
+                else{
+                    Bot.sendTelegramMessage(player1, $"La partida ha finalizado\n Ha ganado {winner.Name}.");
+                    Bot.sendTelegramMessage(player2, $"La partida ha finalizado\n Ha ganado {winner.Name}.");
+                    Administrator.Instance.SetUserState(player1.Id, AttackState.End); 
+                    Administrator.Instance.SetUserState(player2.Id, AttackState.End);
+                    winner.statistics.ModifyStatics(winner, true);
+                    looser.statistics.ModifyStatics(looser, false);
+
+
+                }
+                return true;
             }
             return false;
         }
-
-
+}
         public enum AttackState
         {
             StartAttackPlayer1,
@@ -184,10 +237,11 @@ namespace Library
             StartAttackPlayer2,
             AttackPositionCheck1Player2,
             AttackPositionCheck2Player2,
+            Wait,
             End
 
         }
-    }
+    
+    
 }
 
-*/

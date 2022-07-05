@@ -10,8 +10,8 @@ namespace Library
     /// </summary>
     public class TimeTrial : Game
     {
-        private User Player1;
-        private User Player2;
+        // private User Player1;
+        // private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         public static int count = 0;

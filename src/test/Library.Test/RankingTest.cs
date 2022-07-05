@@ -13,10 +13,7 @@ namespace Test.Library
         {
             User player1 = new User("Manuel");
 
-            Assert.Contains(player1.statistics, )
-
+            Assert.Contains(player1.statistics, Ranking.playerStats);
         }
-      
-
     }
 }

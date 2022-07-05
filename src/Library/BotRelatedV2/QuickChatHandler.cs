@@ -9,39 +9,41 @@ namespace Library
     /// </summary>
     public class QuickChatHandler : BaseHandler
     {
+        public static List<string> messages = new List<string>{"/Horrible", "/Buen_disparo", "/Muy_cerca"};
         public QuickChatState State { get; set; }
 
         public QuickChatHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "QuickChat", "Mensajes" };
-            State = QuickChatState.Start;
+            this.Keywords = new string[] { "QuickChat", "Mensajes", "/Horrible", "/Buen_disparo", "/Muy_cerca" };
         }
 
         protected override bool CanHandle(Message message)
         {
-            if (State == QuickChatState.Start)
-            {
                 return base.CanHandle(message);
-            }
-            else
-            {
-                return true;
-            }
+
         }
 
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "No tenemos ese mensaje disponible.";
-            if (QuickChatState.Start == State)
-            {
-                response = "Elige el numero del mensaje que quieres enviar \n 1- Horrible! \n 2- Buen disparo! \n 3- Muy cerca!";
-                State = QuickChatState.SendMessage;
+            response = string.Empty;
+            User from, to;
+            Game game = Administrator.Instance.GetPlayerGame(message.From.Id);
+            if(game != null){
+                if (game.player1.Id == message.From.Id)
+                {
+                    from = game.player1;
+                    to = game.player2;
+                }else{
+                    from = game.player2;
+                    to = game.player1;
+                }
+                if(!messages.Contains(message.Text)){
+                    Bot.sendTelegramMessage(from, "Elige el mensaje que quieres enviar \n /Horrible \n /Buen_disparo \n /Muy_cerca");
+                }
+                else{
+                    SendMessage(message, from , to);
+                }
             }
-            else if (QuickChatState.SendMessage == State)
-            {
-                SendMessage(message);
-            }
-
         }
 
         /// <summary>
@@ -49,43 +51,9 @@ namespace Library
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        private static async void SendMessage(Message message)
+        private static async void SendMessage(Message message, User from, User to)
         {
-            foreach (var game in Administrator.Instance.currentGame)
-            {
-                if (game.player2.IdChat == message.Chat.Id)
-                {
-                    if (message.Text == "1")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Horrible!");
-                    }
-                    if (message.Text == "2")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Buen disparo!");
-
-                    }
-                    if (message.Text == "3")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player1.IdChat, $"El jugador {game.player2.Name} dijo: Muy cerca!");
-                    }
-                }
-                else if (game.player1.IdChat == message.Chat.Id)
-                {
-                    if (message.Text == "1")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Horrible!");
-                    }
-                    if (message.Text == "2")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Buen disparo!");
-                    }
-                    if (message.Text == "3")
-                    {
-                        await TelegramBot.telegramClient.SendTextMessageAsync(game.player2.IdChat, $"El jugador {game.player1.Name} dijo: Muy cerca!");
-                    }
-                }
-            }
-
+            Bot.sendTelegramMessage(to, $"El jugador {from.Name} dijo: {message.Text}");
         }
 
         public enum QuickChatState

@@ -7,23 +7,26 @@ namespace Library
     /// </summary>
     public class ChallengeModeHandler : BaseHandler
     {
-        public ChallengeModeState State { get; set; }
 
         public ChallengeModeHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "/Challenge", "challenge", "Challenge" };
-            State = ChallengeModeState.Start;
         }
 
         protected override bool CanHandle(Message message)
         {
-            if (State == ChallengeModeState.Start)
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+            Console.WriteLine($">>>> //IL Can Handle ChallengeHandler {state} ");
+            if ( state.Equals(SelectModeState.ModeSelected)
+                || state.Equals(SelectModeState.ChallengeState))
             {
                 return base.CanHandle(message);
+                
+                // return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -32,20 +35,24 @@ namespace Library
             response = string.Empty;
 
             //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
-            foreach (var user in User.users)
-            {
-                if (user.Id == message.From.Id)
+                User user = Administrator.Instance.isUserRegistered(message.From.Id);
+
+                if (user != null)
                 {
                     response = "Estas en la lista de espera para jugar al modo Challenge.";
-                    Administrator.Instance.UsersToPlay.Add(user, "challenge");
+                    Administrator.Instance.AddUserToPlayPool(user, "challenge");
+                    Administrator.Instance.SetUserState(message.From.Id, SelectModeState.ReadyToPlay);
+                    Console.WriteLine(">>>> Challengehandler Internal Handler before match");
+
                     Administrator.Instance.MatchPlayers();
+                    Console.WriteLine(">>>> Challengehandler Internal Handler after match");
+
+                }
+                else{
+                    response = "El usuario aun no esta registrado. Para registrarse responda /registrar";
                 }
             }
-        }
+        
 
-        public enum ChallengeModeState
-        {
-            Start,
-        }
     }
 }

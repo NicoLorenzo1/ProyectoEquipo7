@@ -31,7 +31,7 @@ namespace Library
         {
             response = "No hay estadisticas disponibles para mostrar.";
 
-            if (User.users.Count > 0)
+            /* //IL if (User.users.Count > 0)
             {
                 foreach (var user in User.users)
                 {
@@ -40,7 +40,7 @@ namespace Library
                         response = $"Las estadisticas del usuario: {user.Name} son {Statistics.ShowStats(user)}";
                     }
                 }
-            }
+            }*/
         }
 
         public enum StaticsHandlerState

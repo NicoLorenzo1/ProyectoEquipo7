@@ -7,7 +7,7 @@ namespace Library
     /// </summary>
     public class RegisterHandler : BaseHandler
     {
-        public RegisterState State { get; set; }
+        // public RegisterState State { get; set; }
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="HelloHandler"/>. Esta clase procesa el mensaje "registrarse".
         /// </summary>
@@ -15,20 +15,22 @@ namespace Library
         public RegisterHandler(BaseHandler next) : base(next)
         {
             Keywords = new string[] { "/registrarse", "/Registrarse" };
-            State = RegisterState.Start;
-
+            // State = RegisterState.Start;
         }
 
         protected override bool CanHandle(Message message)
         {
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
 
-            if (this.State == RegisterState.Start)
+            if (state.Equals(RegisterState.Start) 
+            || state.Equals(RegisterState.Register))
             {
-                return base.CanHandle(message);
+                // return base.CanHandle(message);
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -40,42 +42,26 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            if (State == RegisterState.Start)
-            {
-                response = "Ingresa un nombre de usuario para registrarte.";
-                State = RegisterState.Register;
-            }
-            else if (State == RegisterState.Register)
-            {
-                Administrator.Instance.CheckUser(message.Text);
-
-                //Le asigno al user la id de telegram
-                foreach (var user in User.users)
-                {
-                    if (user.Name == message.Text)
-                    {
-                        user.Id = message.From.Id;
-                        user.IdChat = message.Chat.Id;
-                        Console.WriteLine(user.Id);
-
-                    }
-                }
-
-                //response = "Usuario resgistrado Exitosamente.";
-                response = "Usuario registrado\n Elige una opción \n 1- /Jugar \n 2- /Salir";
-                State = RegisterState.Start;
-
-            }
-            else
-            {
-                response = string.Empty;
+            response = string.Empty;
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+            switch(state){
+                case RegisterState.Start:
+                    response = "Ingresa un nombre de usuario para registrarte.";
+                    Administrator.Instance.SetUserState(message.From.Id, RegisterState.Register);
+                    break;
+                
+                case RegisterState.Register:
+                    Administrator.Instance.CheckUser(message.Text, message.From.Id);
+                    response = "Usuario registrado\n Elige una opción \n 1- /Jugar \n 2- /Salir";
+                    Administrator.Instance.SetUserState(message.From.Id, RegisterState.Completed);
+                break;
             }
         }
 
-
         protected override void InternalCancel()
         {
-            this.State = RegisterState.Start;
+            // this.State = RegisterState.Start;
+
         }
     }
 
@@ -84,7 +70,7 @@ namespace Library
     {
         Start,
         Register,
-
+        Completed
     }
 
 }
