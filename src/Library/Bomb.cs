@@ -16,8 +16,6 @@ namespace Library
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private bool OnGoing;
-        private int BombHitsPlayer1;
-        private int BombHitsPlayer2;
         private bool Hit;
         private int MissedShots1;
         private int MissedShots2;
@@ -78,17 +76,17 @@ namespace Library
                     ShowBoard(this.Player1, BoardPlayer1, BoardPlayer2);
                     recentAttacker = Player1;
                 }
-                if (BombHitsPlayer1 == 15 || BombHitsPlayer2 == 15)
+                if (hitsPlayer1 == 15 || hitsPlayer2 == 15)
                 {
                     EndGame();
-                    if (BombHitsPlayer2 == 15)
+                    if (hitsPlayer2 == 15)
                     {
                         Player1.statistics.ModifyStatics(Player1, false);
                         Player2.statistics.ModifyStatics(Player2, true);
                         System.Console.WriteLine();
                         Console.WriteLine($"Ha ganado {Player2.Name}!!");
                     }
-                    if (BombHitsPlayer1 == 15)
+                    if (hitsPlayer1 == 15)
                     {
                         Player1.statistics.ModifyStatics(Player1, true);
                         Player2.statistics.ModifyStatics(Player1, false);
@@ -103,30 +101,32 @@ namespace Library
 
             if (attacker == this.Player1)
             {
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+                //bool outOfBoard = CoordCheck(coord1, coord2);
+                //bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
                 // #######################
                 if (MissedShots1 == 1)
                 {
-                    System.Console.WriteLine("Entraste al tirador de bombas");
+                    //System.Console.WriteLine("Entraste al tirador de bombas");
                     List<string> bombita = this.BoardPlayer1.coordSurround(coord1, coord2);
                     for (int i = 0; i < bombita.Count; i += 2)
                     {
                         string setter1 = Convert.ToString(bombita[i]);
                         string setter2 = Convert.ToString(bombita[i + 1]);
+                        System.Console.Write($"{setter1}{setter2} ");
 
                         bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
                         if (repeatedShot == false)
                         {
                             this.BoardPlayer1.shots.Add(setter1);
                             this.BoardPlayer1.shots.Add(setter2);
-                            (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                            if (hit)
+                            //defenderBoard.showList();
+                            (bool hit, string currentShipName) = defenderBoard.CheckShip(setter1, setter2, defenderBoard.shipPos);
+                            if (hit==true)
                             {
                                 System.Console.Write($"{setter1}{setter2} -> ");
                                 (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                                BombHitsPlayer1 += 1;
+                                hitsPlayer1 += 1;
                             }
                             else
                             {
@@ -134,6 +134,10 @@ namespace Library
                                 Console.WriteLine("Agua");
                             }
 
+                        }
+                        else
+                        {
+                            repeatedShot = true;
                         }
                     }
                     MissedShots1 = 0;
@@ -147,8 +151,8 @@ namespace Library
             }
             else if (attacker == this.Player2)
             {
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+                //bool outOfBoard = CoordCheck(coord1, coord2);
+                //bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
                 // #######################
                 if (MissedShots2 == 1)
@@ -164,6 +168,22 @@ namespace Library
                         {
                             this.BoardPlayer2.shots.Add(setter1);
                             this.BoardPlayer2.shots.Add(setter2);
+                            (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                            if (hit==true)
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                                hitsPlayer1 += 1;
+                            }
+                            else
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                Console.WriteLine("Agua");
+                            }
+                        }
+                        else
+                        {
+                            repeatedShot = true;
                         }
                     }
                     
