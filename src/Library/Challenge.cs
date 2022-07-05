@@ -1,16 +1,14 @@
 using System;
 
-//<summary>
-//Por motivos de tiempo, no fuimos capaces de realizar los tests necesarios para
-//la clase Challenge, por lo que, al ser una modalidad agregada por nosotros,
-//decidimos dejarla sin funcionamiento para esta entrega
-//</summary>
+/// <summary>
+/// Clase Challenge que implementa una de las funcionalidades agregadas por nosotros, es un modo de juego en el cual se juegan 3 partidas
+/// y gana el jugador con mas victorias.
+/// Esta funcionalidad funciona con el bot de telegram como en consola.
+/// </summary>
 namespace Library
 {
     public class Challenge : Game
     {
-        // private User Player1;
-        // private User Player2;
         private Board BoardPlayer1;
 
         private Board BoardPlayer2;
@@ -37,13 +35,15 @@ namespace Library
             WinsPlayer1 = 0;
             WinsPlayer1 = 0;
         }
-
+        /// <summary>
+        /// Ejecuta el juego hasta que uno de los 2 jugadores gane 2 veces
+        /// </summary>
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
             System.Console.WriteLine("Challenge!!!");
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
-            
+
             Bot.sendTelegramMessage(Player1, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
             Bot.sendTelegramMessage(Player2, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
 
@@ -62,7 +62,7 @@ namespace Library
                 {
                     System.Console.WriteLine("-- Tercer y últuma partida --");
                 }
-                ClearBoards (BoardPlayer1, BoardPlayer2);
+                ClearBoards(BoardPlayer1, BoardPlayer2);
                 System.Console.WriteLine($"\nPosicionamiento de barcos de {Player1.Name}");
                 BoardPlayer1.PositionShips();
                 System.Console.WriteLine($"\nPosicionamiento de barcos de {Player2.Name}");
@@ -80,7 +80,7 @@ namespace Library
                         string coord1 = Console.ReadLine();
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
-                        Attack (
+                        Attack(
                             coord1,
                             coord2,
                             Player2 /*, BoardPlayer2, Player1, BoardPlayer1*/
@@ -90,7 +90,7 @@ namespace Library
                             .PrintBoard(this.BoardPlayer1.shipPos,
                             BoardPlayer2.shots,
                             "EnemyBoard");
-                        ShowBoard (Player2, BoardPlayer1, BoardPlayer2);
+                        ShowBoard(Player2, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player2;
                     }
                     else
@@ -102,7 +102,7 @@ namespace Library
                         string coord1 = Console.ReadLine();
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
-                        Attack (
+                        Attack(
                             coord1,
                             coord2,
                             Player1 /*, BoardPlayer1, Player2, BoardPlayer2*/
@@ -112,7 +112,7 @@ namespace Library
                             .PrintBoard(this.BoardPlayer2.shipPos,
                             this.BoardPlayer1.shots,
                             "EnemyBoard");
-                        ShowBoard (Player1, BoardPlayer1, BoardPlayer2);
+                        ShowBoard(Player1, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player1;
                     }
                     if ((hitsPlayer1 == 1 || hitsPlayer2 == 1))
@@ -158,6 +158,11 @@ namespace Library
                 base.EndGame();
             }
         }
+        /// <summary>
+        /// Resetea los tableros de juego
+        /// </summary>
+        /// <param name="BoardPlayer1">Tablero a resetear</param>
+        /// <param name="BoardPlayer2">Tablero a resetear</param>
 
         public void ClearBoards(Board BoardPlayer1, Board BoardPlayer2)
         {
@@ -166,11 +171,15 @@ namespace Library
             BoardPlayer1.shots.Clear();
             BoardPlayer2.shots.Clear();
         }
-        
+        /// <summary>
+        /// Determina que jugador ganó
+        /// </summary>
+        /// <returns>Devuelve el jugador que ganó</returns>
         public User GameWinner()
         {
             User winner = null;
-            if(WinsPlayer1 + WinsPlayer2 == 3){
+            if (WinsPlayer1 + WinsPlayer2 == 3)
+            {
 
                 if (WinsPlayer1 > WinsPlayer2)
                 {
@@ -180,10 +189,10 @@ namespace Library
                 {
                     winner = Player2;
                 }
-                    EndGame();
-                    return winner;
+                EndGame();
+                return winner;
             }
-        return winner;
+            return winner;
         }
     }
 }

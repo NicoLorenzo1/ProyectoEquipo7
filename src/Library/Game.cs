@@ -9,7 +9,7 @@ namespace Library
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private string Mode;
-        private bool OnGoing;
+        protected bool OnGoing;
         private bool Hit;
         protected int HitsPlayer1;
         protected int HitsPlayer2;
@@ -132,8 +132,11 @@ namespace Library
         /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
-        /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
-        public virtual string Attack(string coord1, string coord2, User attacker/*, Board attackerBoardNotUSed, User defenderNotUSed, Board defenderBoardNotUsed*/)
+        /// <param name="coord1">Primer valor de la coordenada de ataque</param>
+        /// <param name="coord2">Segundo valor de la coordenada de ataque</param>
+        /// <param name="attacker">Jugador que realiza el ataque</param>
+        /// <returns>Devuelve el resultado del ataque</returns>
+        public virtual string Attack(string coord1, string coord2, User attacker)
         {
             string result = "";
             Board attackerBoard, defenderBoard;
@@ -146,75 +149,46 @@ namespace Library
                 attackerBoard = BoardPlayer1;
                 defenderBoard = BoardPlayer2;
             }
-            else{
+            else
+            {
                 attacker = Player2;
                 defender = Player1;
                 attackerBoard = BoardPlayer2;
                 defenderBoard = BoardPlayer1;
             }
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
-                if (outOfBoard == true || alreadyShot == true)
-                {
-                    result = "reintentar";
-                    System.Console.WriteLine("Perdiste el turno");
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
-                }
-                else
-                {
-                    (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer1 += 1;
-                        result = sink ? "Hundido" : "Tocado";
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                        result = "Agua";
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
-                }
-            // }
-            /*else if (attacker == this.Player2)
+            bool outOfBoard = CoordCheck(coord1, coord2);
+            bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+            if (outOfBoard == true || alreadyShot == true)
             {
-
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, boardPlayer1);
-
-
-                if (outOfBoard == true || alreadyShot == true)
+                result = "reintentar";
+                System.Console.WriteLine("Perdiste el turno");
+            }
+            else
+            {
+                (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                if (hit)
                 {
-                    result = "repetir";
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
+                    (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                    HitsPlayer1 += 1;
+                    result = sink ? "Hundido" : "Tocado";
                 }
                 else
                 {
-                    (bool hit, string currentShipName) = this.BoardPlayer1.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer2 += 1;
-                        result = "impacto";
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                        result = "fallo";
-
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
+                    Console.WriteLine("Agua");
+                    result = "Agua";
                 }
-            }*/
+                attackerBoard.shots.Add(coord1.ToUpper());
+                attackerBoard.shots.Add(coord2);
+                Console.WriteLine($"Atacó {attacker.Name}");
+            }
             return result;
         }
-
+        /// <summary>
+        /// Checkeo de si la posición del ataque es válida
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <returns>Devuelve si el ataque está dentro del tablero</returns>
         public bool CoordCheck(string coord1, string coord2)
         {
             bool outOfBoard = false;
@@ -238,6 +212,13 @@ namespace Library
                 return outOfBoard;
             }
         }
+        /// <summary>
+        /// Checkeo si la coordenada no ha sido atacada
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <param name="shotsBoard">Tablero que realizó los ataques</param>
+        /// <returns>Devuelve si no se ha atacado en un sitio</returns>
         public bool ShotHistory(string coord1, string coord2, Board shotsBoard)
         {
             bool alreadyShot = false;
@@ -259,6 +240,13 @@ namespace Library
             }
             return alreadyShot;
         }
+
+        /// <summary>
+        /// Método que determina si un barco fue hundido o no
+        /// </summary>
+        /// <param name="currentShipName">El nombre del barco al que se le pegó</param>
+        /// <param name="Player">Usuario al que corresponde el barco</param>
+        /// <returns>Devuelve si el barco fue hundido o tocado</returns>
         public (bool, bool) ShipMessage(string currentShipName, User Player)
         {
             bool sink = false;
@@ -486,27 +474,37 @@ namespace Library
             }
             */
         }
-
-        public virtual User CheckMatch(){
-            if(HitsPlayer1 == 15 || HitsPlayer2 == 15){
-                if(HitsPlayer1 > HitsPlayer2){
+        public virtual User CheckMatch()
+        {
+            if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
+            {
+                if (HitsPlayer1 > HitsPlayer2)
+                {
                     return Player1;
                 }
-                else{
+                else
+                {
                     return Player2;
                 }
             }
-            else{
+            else
+            {
                 return null;
-            } 
+            }
         }
-
-        public virtual User GameWinner(){
-            User winner; 
-            if(HitsPlayer1 > HitsPlayer2){
+        /// <summary>
+        /// Se determina el ganador del juego y se termina dicho juego
+        /// </summary>
+        /// <returns>Devuelve el usuario que ganó</returns>
+        public virtual User GameWinner()
+        {
+            User winner;
+            if (HitsPlayer1 > HitsPlayer2)
+            {
                 winner = Player1;
             }
-            else{
+            else
+            {
                 winner = Player2;
             }
             EndGame();
@@ -520,8 +518,11 @@ namespace Library
         {
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
-            //administrator.currentGame.Remove(this);            
         }
+
+        /// <summary>
+        /// Resetea la vida de los barcos
+        /// </summary>
         public void RestartHits()
         {
             Lancha1Health = 1;
@@ -592,6 +593,18 @@ namespace Library
             set
             {
                 HitsPlayer2 = value;
+            }
+        }
+
+        public bool onGoing
+        {
+            get
+            {
+                return this.OnGoing;
+            }
+            set
+            {
+                OnGoing = value;
             }
         }
     }

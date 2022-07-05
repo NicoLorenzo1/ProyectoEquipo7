@@ -1,18 +1,14 @@
 using System;
 
-//<summary>
-//La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
-//no funciona como debería de hacerlo, ya que no hemos logrado implementar una
-//manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
-//que se le pasan
-//</summary>
+/// <summary>
+/// Clase bomb la cual es otra de las nuevas funcionalidades, esta actualmente esta funcionando por consola ya que no llegamos con el tiempo necesario para
+/// implementarlo con el bot e telegram.
+/// </summary>
 
 namespace Library
 {
     public class Bomb : Game
     {
-        // private User Player1;
-        // private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private bool OnGoing;
@@ -30,7 +26,9 @@ namespace Library
             this.MissedShots1 = 0;
             this.MissedShots2 = 0;
         }
-
+        /// <summary>
+        /// inicia la instancia del modo de juego
+        /// </summary>
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
@@ -98,7 +96,15 @@ namespace Library
                 }
             }
         }
-        public override string Attack(string coord1, string coord2, User attacker/*, Board attackerBoard, User defender, Board defenderBoard*/)
+
+        /// <summary>
+        /// Método de ataque
+        /// </summary>
+        /// <param name="coord1">Primer valor de la coordenada de ataque</param>
+        /// <param name="coord2">Segundo valor de la coordenada de ataque</param>
+        /// <param name="attacker">Jugador que realiza el ataque</param>
+        /// <returns>Devuelve el resultado del ataque</returns>
+        public override string Attack(string coord1, string coord2, User attacker)
         {
             Board attackerBoard, defenderBoard;
             User defender;
@@ -110,61 +116,62 @@ namespace Library
                 attackerBoard = BoardPlayer1;
                 defenderBoard = BoardPlayer2;
             }
-            else{
+            else
+            {
                 attacker = Player2;
                 defender = Player1;
                 attackerBoard = BoardPlayer2;
                 defenderBoard = BoardPlayer1;
             }
 
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+            bool outOfBoard = CoordCheck(coord1, coord2);
+            bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
-                // #######################
-                if ((attacker == Player1 && MissedShots1 == 1) || attacker == Player2 && MissedShots2 == 1)
+            // #######################
+            if ((attacker == Player1 && MissedShots1 == 1) || attacker == Player2 && MissedShots2 == 1)
+            {
+                System.Console.WriteLine("Entraste al tirador de bombas");
+                List<string> bombita = attackerBoard.coordSurround(coord1, coord2);
+                for (int i = 0; i < bombita.Count; i += 2)
                 {
-                    System.Console.WriteLine("Entraste al tirador de bombas");
-                    List<string> bombita = attackerBoard.coordSurround(coord1, coord2);
-                    for (int i = 0; i < bombita.Count; i += 2)
+                    string setter1 = Convert.ToString(bombita[i]);
+                    string setter2 = Convert.ToString(bombita[i + 1]);
+
+                    bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
+                    if (repeatedShot == false)
                     {
-                        string setter1 = Convert.ToString(bombita[i]);
-                        string setter2 = Convert.ToString(bombita[i + 1]);
-
-                        bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
-                        if (repeatedShot == false)
+                        attackerBoard.shots.Add(setter1);
+                        attackerBoard.shots.Add(setter2);
+                        (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                        if (hit)
                         {
-                            attackerBoard.shots.Add(setter1);
-                            attackerBoard.shots.Add(setter2);
-                            (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                            if (hit)
-                            {
-                                System.Console.Write($"{setter1}{setter2} -> ");
-                                (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                                BombHitsPlayer1 += 1;
-                                result = sink ? "Hundido" : "Tocado";
-
-                            }
-                            else
-                            {
-                                System.Console.Write($"{setter1}{setter2} -> ");
-                                Console.WriteLine("Agua");
-                                result = "Agua";
-                            }
+                            System.Console.Write($"{setter1}{setter2} -> ");
+                            (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                            BombHitsPlayer1 += 1;
+                            result = sink ? "Hundido" : "Tocado";
 
                         }
+                        else
+                        {
+                            System.Console.Write($"{setter1}{setter2} -> ");
+                            Console.WriteLine("Agua");
+                            result = "Agua";
+                        }
+
                     }
-                    // MissedShots1 corresponde a player1. Si el attacker es player1 entonces si igualo a 0 de lo contrario lo dejo con el mismo valor
-                    // Lo mismo con MissedShots2
-                    MissedShots1 = attacker == Player1 ? 0 : MissedShots1 ;
-                    MissedShots2 = attacker == Player2 ? 0 : MissedShots2 ;
                 }
-                // #######################
-                else
-                {
-                    result = base.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
-                    MissedShots1 += 1;
-                }
-                return result;
+                // MissedShots1 corresponde a player1. Si el attacker es player1 entonces si igualo a 0 de lo contrario lo dejo con el mismo valor
+                // Lo mismo con MissedShots2
+                MissedShots1 = attacker == Player1 ? 0 : MissedShots1;
+                MissedShots2 = attacker == Player2 ? 0 : MissedShots2;
+            }
+            // #######################
+            else
+            {
+                result = base.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
+                MissedShots1 += 1;
+            }
+            return result;
         }
     }
 }
