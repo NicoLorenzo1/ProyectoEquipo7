@@ -29,18 +29,18 @@ namespace Library
         /// segun los resultados de las partidas jugadas.
         /// </summary>
         /// <param name="user">Usuario al cual se le modifican las estadísticas.</param>
-        /// <param name="boolean">Variable booleana que determina si se le agrega una
+        /// <param name="victory">Variable booleana que determina si se le agrega una
         /// victoria al usuario.</param>
-        public void ModifyStatics(User user, bool boolean)
+        public void ModifyStatics(User user, bool victory)
         {
             user.statistics.playedGames = +1;
 
-            if (boolean == true)
+            if (victory)
             {
                 user.statistics.wins = +1;
             }
 
-            if (wins==0)
+            if (wins == 0)
             {
                 user.statistics.winRate = 0;
             }
@@ -48,16 +48,17 @@ namespace Library
             {
                 user.statistics.winRate = playedGames / wins * 100;
             }
-            
+
         }
 
         /// <summary>
         /// El método ShowStats imprime las estadísticas del usuario.
         /// </summary>
         /// <param name="user">Usuario del cual se imprimirán las estadísticas.</param>
-        public static void ShowStats(User user)
+        public static string ShowStats(User user)
         {
             Console.WriteLine($"Estadisticas del usuario {user.Name}\n Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%");
+            return $"Partidas jugadas: {user.statistics.playedGames}\n Partidas ganadas: {user.statistics.wins}\n Ratio de victorias: {user.statistics.winRate}%";
         }
 
         /// <summary>
@@ -120,13 +121,6 @@ namespace Library
             return this.user.Id == input.user.Id;
         }
 
-        /// <summary>
-        /// GetHashCode consigue el HashCode del Id del usuario.
-        /// </summary>
-        /// <returns>Devuelve el Id del usuario.</returns>
-        public override int GetHashCode()
-        {
-            return this.user.Id;
-        }
+
     }
 }
