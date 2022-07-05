@@ -1,79 +1,69 @@
 ﻿using System;
-using Library;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
-namespace Program
+namespace Library
 {
-    class Program
+    /// <summary>
+    /// Un programa que implementa un bot de Telegram.
+    /// </summary>
+    public abstract class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Punto de entrada al programa.
+        /// </summary>
+        public static void Main()
         {
-            User jose = new User("Jose");
-            User juan = new User("Juan");
-            User nico = new User("Nico");
+            try{
+            Bot bot = new Bot();
+            bot.Setup();
+            Administrator.Instance.BotEnabled = true;
 
-            Administrator administrator = Administrator.Instance;
-            administrator.usersRegistered.Add(jose);
-            //administrator.UsersToPlay.Add(jose, "Classic");
-            administrator.usersRegistered.Add(juan);
-            //administrator.UsersToPlay.Add(juan, "Challenge");
-            administrator.usersRegistered.Add(nico);
-            //administrator.UsersToPlay.Add(nico, "Bomb");
-            
-            
+            TelegramBot.Start();
+            Console.WriteLine($"Bot ended!");
+            }
+            catch(Exception e){
+                Console.WriteLine($"Excepcion: {e.Message} Stacktrace: {e.StackTrace}");
+            }
 
-            //Game game = new Game("classic");
-            //game.AddUserToWaitList(user1);
-            //game.AddUserToWaitList(user2);
+            /*
+            try
+            {
+                Bot bot = new Bot();
+                bot.Setup();
+                User jose = new User("Jose");
+                User juan = new User("Juan");
+                User nico = new User("Nico");
+                User manu = new User("Manu");
+                User maria = new User("Maria");
 
-            Menu menu = new Menu();
-            menu.ShowMenu();
-            administrator.MatchPlayers(jose,"Classic");
-            administrator.MatchPlayers(nico,"Bomb");
-            administrator.MatchPlayers(juan,"Challenge");
-            //menu.SelectMode(jose);
-
-            /* Esto es lo que tenia yo
-
-            User user = new User("user");
-            User user2 = new User("user2");
-            Game game = new Game(user,user2,"classic");
-            game.StartGame();
-            */
+                Administrator administrator = Administrator.Instance;
+                administrator.BotEnabled = false;
 
 
+                administrator.usersRegisteredWithState.Add(juan, null);
+                administrator.usersRegisteredWithState.Add(nico, null);
+                administrator.usersRegisteredWithState.Add(manu, null);
+                administrator.usersRegisteredWithState.Add(maria, null);
+                administrator.UsersToPlay.Add(juan, "classic");
+                administrator.UsersToPlay.Add(nico, "challenge");
+                administrator.UsersToPlay.Add(manu, "bomb");
+                administrator.UsersToPlay.Add(maria, "timetrial");
 
-
-
-
-
-
-            //User user2 = new User("user1");
-            //User user4 = new User("user4");
-
-            //Console.WriteLine(User.users["user"]);
-            //Console.WriteLine(user.Id);
-            // Console.WriteLine(user2.Id);
-            // Console.WriteLine(user4.Id);
-
-            //TimeTrial timeTrial = new TimeTrial();
-            //timeTrial.FinishTimeGame();
-
-            //Menu menu = new Menu();
-            //menu.ShowMenu();
-        
-
-
-            //Console.WriteLine(Stadistics.playedGames.Count);
-
-
-
-            //QuickChat.SendPredefinedChat(1);
-            //QuickChat.AllMessages();
-            //Stadistics.ShowStats(user);
-
-
-
-
+                Menu menu = new Menu();
+                menu.ShowMenu();
+                administrator.MatchPlayers();
+            }
+            catch (Exception e)
+            {
+                Console
+                    .WriteLine($"Exception: {e.Message} Stacktrace: {e.StackTrace}");
+            }*/
         }
     }
 }

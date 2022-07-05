@@ -1,317 +1,170 @@
 using System;
 
-        //<summary>
-        //La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
-        //no funciona como debería de hacerlo, ya que no hemos logrado implementar una
-        //manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
-        //que se le pasan
-        //</summary>
+//<summary>
+//La clase Bomb es una de las modalidades que decidimos agregar, que a día de hoy
+//no funciona como debería de hacerlo, ya que no hemos logrado implementar una
+//manera de que el ataque sea un cuadrado de 3x3 con el centro en las coordenadas
+//que se le pasan
+//</summary>
 
 namespace Library
 {
     public class Bomb : Game
     {
-        private User Player1;
-        private User Player2;
+        // private User Player1;
+        // private User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
+        private bool OnGoing;
+        private int BombHitsPlayer1;
+        private int BombHitsPlayer2;
         private bool Hit;
-        private int HitsPlayer1;
-        private int HitsPlayer2;
-        private int MissedShotsPlayer1 = 0;
-        private int MissedShotsPlayer2 = 0;
-        private int Lancha1Health = 1;
-        private int Crucero1Health = 2;
-        private int Submarino1Health = 3;
-        private int Buque1Health = 4;
-        private int Portaaviones1Health = 5;
-        private int Lancha2Health = 1;
-        private int Crucero2Health = 2;
-        private int Submarino2Health = 3;
-        private int Buque2Health = 4;
-        private int Portaaviones2Health = 5;
+        private int MissedShots1;
+        private int MissedShots2;
         public Bomb(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(player1);
-            BoardPlayer2 = new Board(player2); 
-            Administrator.Instance.currentGame.Add(this);
+            BoardPlayer2 = new Board(player2);
+            this.MissedShots1 = 0;
+            this.MissedShots2 = 0;
         }
-        public override void Attack(User player)
+
+        public override void StartGame()
         {
-            if (MissedShotsPlayer1 == 3 || MissedShotsPlayer2 == 3)
+            System.Console.WriteLine("Comienza la batalla naval!!");
+            System.Console.WriteLine("Modo Bomb");
+            System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
+            System.Console.WriteLine();
+
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
+            BoardPlayer1.PositionShips();
+            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
+            BoardPlayer2.PositionShips();
+
+            User recentAttacker = this.Player2;
+
+            OnGoing = true && !Administrator.Instance.BotEnabled; // Para evitar que al jugar en Telegram se ejecuten los Console.ReadLine
+            while (OnGoing)
             {
-                if (MissedShotsPlayer1 == 3 && player == this.Player1)
+                if (recentAttacker == this.Player1)
                 {
-                    bool hit = false;
-                    bool outOfBoard = false;
                     System.Console.WriteLine();
-                    System.Console.WriteLine($"Ataca {player.Name}:");
+                    System.Console.WriteLine($"Ataca {Player2.Name}:");
                     Console.WriteLine("A donde quiere atacar?");
                     Console.Write("Escriba la primer coordenada(A-J): ");
                     string coord1 = Console.ReadLine();
                     Console.Write("Escriba la segunda coordenada(1-10): ");
                     string coord2 = Console.ReadLine();
-                    if (!Board.num.Contains(coord2))
-                    {
-                        Console.WriteLine("No puede atacar en esta ubicacion");
-                        System.Console.WriteLine("Esta fuera del tablero");
-                        outOfBoard = true;
-                    }
-                    else if (!Board.abc.Contains(coord1.ToUpper()))
-                    {
-                        Console.WriteLine("No puede atacar en esta ubicacion");
-                        System.Console.WriteLine("Esta fuera del tablero");
-                        outOfBoard = true;
-                    }
-                                
-                    for (int i = 0; i < BoardPlayer1.shots.Count; i+=2)
-                    {
-                        string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
-                        string setter2 = Convert.ToString(BoardPlayer1.shots[i+1]);
-                        if (setter1 == coord1.ToUpper())
-                        {
-                            if (setter2 == coord2)
-                            {
-                                System.Console.WriteLine();
-                                Console.WriteLine("Ya ha atacado aqui");
-                                System.Console.WriteLine("Intente denuevo");
-                                outOfBoard = true;
-                            }
-                        }
-                    }
-                    if (outOfBoard)
-                    {
-                        Attack(player);
-                    }
-                    else
-                    {
-                        hit = this.BoardPlayer2.CheckShip(coord1,coord2, BoardPlayer2.shipPos,out string shipName);
-                        if (hit)
-                        {
-                            if (shipName.ToLower() == "lancha")
-                            {
-                                Lancha2Health -=1;
-                                if (Lancha2Health == 0)
-                                {
-                                    Console.WriteLine($"{shipName} Hundido!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "crucero")
-                            {
-                            Crucero2Health -=1;
-                                if (Crucero2Health == 0)
-                                {
-                                    Console.WriteLine($"{shipName} Hundido!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "submarino")
-                            {
-                                Submarino2Health -=1;
-                                if (Submarino2Health == 0)
-                                {
-                                    Console.WriteLine($"{shipName} Hundido!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "buque")
-                            {
-                                Buque2Health -=1;
-                                if (Buque2Health == 0)
-                                {
-                                    Console.WriteLine($"{shipName} Hundido!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "portaaviones")
-                            {
-                                Portaaviones2Health -=1;
-                                if (Portaaviones2Health == 0)
-                                {
-                                    Console.WriteLine($"{shipName} Hundido!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            HitsPlayer1 += 1;                    
-                        }
-                        else
-                        {
-                            Console.WriteLine("Agua");
-                        }
-                        List<string> attacks = BoardPlayer2.coordSurround(coord1, coord2);
-                        foreach (string attack in attacks)
-                        {
-                            this.BoardPlayer1.shots.Add(attack.ToUpper());
-                        }
-                        Console.WriteLine($"Atacó {player.Name}");
-                        MissedShotsPlayer1 = 0;
-                    }            
-                }
-                else if (MissedShotsPlayer2 == 3 && player == this.Player2)
-                {
-                    bool hit = false;
-                    bool outOfBoard = false;
+                    this.Attack(coord1, coord2, this.Player2/*, this.BoardPlayer2, this.Player1, this.BoardPlayer1*/);
                     System.Console.WriteLine();
-                    System.Console.WriteLine($"Ataca {player.Name}:");
-                    Console.WriteLine("A donde quiere atacar?");
-                    Console.Write("Escriba la primer coordenada(A-J): ");
-                    string coord1 = Console.ReadLine();
-                    Console.Write("Escriba la segunda coordenada(1-10): ");
-                    string coord2 = Console.ReadLine();
-                    if (!Board.num.Contains(coord2))
-                    {
-                        Console.WriteLine("No puede atacar en esta ubicacion");
-                        System.Console.WriteLine("Esta fuera del tablero");
-                        outOfBoard = true;
-                    }
-                    else if (!Board.abc.Contains(coord1.ToUpper()))
-                    {
-                        Console.WriteLine("No puede atacar en esta ubicacion");
-                        System.Console.WriteLine("Esta fuera del tablero");
-                        outOfBoard = true;
-                    }
-                                
-                    for (int i = 0; i < BoardPlayer2.shots.Count; i+=2)
-                    {
-                        string setter1 = Convert.ToString(BoardPlayer2.shots[i]);
-                        string setter2 = Convert.ToString(BoardPlayer2.shots[i+1]);
-                        if (setter1 == coord1.ToUpper())
-                        {
-                            if (setter2 == coord2)
-                            {
-                                Console.WriteLine("Ya ha atacado aqui");
-                                System.Console.WriteLine("Intente denuevo");
-                                outOfBoard = true;
-                            }
-                        }
-                    }
-                    if (outOfBoard)
-                    {
-                        Attack(player);
-                    }
-                    else
-                    {
-                        hit = this.BoardPlayer1.CheckShip(coord1,coord2, BoardPlayer1.shipPos, out string shipName);
-                        if (hit)
-                        {
-                            if (shipName.ToLower() == "lancha")
-                            {
-                                Lancha1Health -=1;
-                                if (Lancha1Health == 0)
-                                {
-                                    Console.WriteLine($"Hundido {shipName}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "crucero")
-                            {
-                                Crucero1Health -=1;
-                                if (Crucero1Health == 0)
-                                {
-                                    Console.WriteLine($"Hundido {shipName}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "submarino")
-                            {
-                                Submarino1Health -=1;
-                                if (Submarino1Health == 0)
-                                {
-                                    Console.WriteLine($"Hundido {shipName}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "buque")
-                            {
-                                Buque1Health -=1;
-                                if (Buque1Health == 0)
-                                {
-                                    Console.WriteLine($"Hundido {shipName}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else if (shipName.ToLower() == "portaaviones")
-                            {
-                                Portaaviones1Health -=1;
-                                if (Portaaviones1Health == 0)
-                                {
-                                    Console.WriteLine($"Hundido {shipName}");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Tocado");
-                                }
-                            }
-                            else
-                            {
-                            }
-                            HitsPlayer2 += 1;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Agua");
-                        }
-                        List<string> attacks = BoardPlayer1.coordSurround(coord1, coord2);
-                        foreach (string attack in attacks)
-                        {
-                            this.BoardPlayer2.shots.Add(attack.ToUpper());
-                        }
-                        Console.WriteLine($"Atacó {player.Name}");
-                        MissedShotsPlayer2 = 0;
-                        }
-                    
-                    }
+                    this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                    ShowBoard(this.Player2, BoardPlayer1, BoardPlayer2);
+                    recentAttacker = Player2;
                 }
                 else
                 {
-                    base.Attack(player);
-                    if (!Hit && player == this.Player1)
+                    System.Console.WriteLine();
+                    System.Console.WriteLine($"Ataca {Player1.Name}:");
+                    Console.WriteLine("A donde quiere atacar?");
+                    Console.Write("Escriba la primer coordenada(A-J): ");
+                    string coord1 = Console.ReadLine();
+                    Console.Write("Escriba la segunda coordenada(1-10): ");
+                    string coord2 = Console.ReadLine();
+                    this.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
+                    System.Console.WriteLine();
+                    this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                    ShowBoard(this.Player1, BoardPlayer1, BoardPlayer2);
+                    recentAttacker = Player1;
+                }
+                if (BombHitsPlayer1 == 15 || BombHitsPlayer2 == 15)
+                {
+                    EndGame();
+                    if (BombHitsPlayer2 == 15)
                     {
-                        MissedShotsPlayer1 += 1;
+                        Player1.statistics.ModifyStatics(Player1, false);
+                        Player2.statistics.ModifyStatics(Player2, true);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player2.Name}!!");
                     }
-                    else if (!Hit && player == this.Player2)
+                    if (BombHitsPlayer1 == 15)
                     {
-                        MissedShotsPlayer2 += 1;
+                        Player1.statistics.ModifyStatics(Player1, true);
+                        Player2.statistics.ModifyStatics(Player1, false);
+                        System.Console.WriteLine();
+                        Console.WriteLine($"Ha ganado {Player1.Name}!!");
                     }
-                    else if (Hit && player == this.Player1)
+                }
+            }
+        }
+        public override string Attack(string coord1, string coord2, User attacker/*, Board attackerBoard, User defender, Board defenderBoard*/)
+        {
+            Board attackerBoard, defenderBoard;
+            User defender;
+            string result = "";
+            if (attacker == this.Player1)
+            {
+                attacker = Player1;
+                defender = Player2;
+                attackerBoard = BoardPlayer1;
+                defenderBoard = BoardPlayer2;
+            }
+            else{
+                attacker = Player2;
+                defender = Player1;
+                attackerBoard = BoardPlayer2;
+                defenderBoard = BoardPlayer1;
+            }
+
+                bool outOfBoard = CoordCheck(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+
+                // #######################
+                if ((attacker == Player1 && MissedShots1 == 1) || attacker == Player2 && MissedShots2 == 1)
+                {
+                    System.Console.WriteLine("Entraste al tirador de bombas");
+                    List<string> bombita = attackerBoard.coordSurround(coord1, coord2);
+                    for (int i = 0; i < bombita.Count; i += 2)
                     {
-                        MissedShotsPlayer1 = 0;
+                        string setter1 = Convert.ToString(bombita[i]);
+                        string setter2 = Convert.ToString(bombita[i + 1]);
+
+                        bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
+                        if (repeatedShot == false)
+                        {
+                            attackerBoard.shots.Add(setter1);
+                            attackerBoard.shots.Add(setter2);
+                            (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                            if (hit)
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                                BombHitsPlayer1 += 1;
+                                result = sink ? "Hundido" : "Tocado";
+
+                            }
+                            else
+                            {
+                                System.Console.Write($"{setter1}{setter2} -> ");
+                                Console.WriteLine("Agua");
+                                result = "Agua";
+                            }
+
+                        }
                     }
-                    else if (Hit && player == this.Player2)
-                    {
-                        MissedShotsPlayer2 = 0;
-                    }
-                } 
+                    // MissedShots1 corresponde a player1. Si el attacker es player1 entonces si igualo a 0 de lo contrario lo dejo con el mismo valor
+                    // Lo mismo con MissedShots2
+                    MissedShots1 = attacker == Player1 ? 0 : MissedShots1 ;
+                    MissedShots2 = attacker == Player2 ? 0 : MissedShots2 ;
+                }
+                // #######################
+                else
+                {
+                    result = base.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
+                    MissedShots1 += 1;
+                }
+                return result;
         }
     }
 }

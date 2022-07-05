@@ -8,31 +8,27 @@ namespace Library
 
         public void ShowMenu() //Cuando llega aca que es lo primero que deberia pasar ya tiene q estar registrado y no es asi 
         {
-            Console.WriteLine("Elige una opción \n 1- Registrarse \n 2- Jugar \n 3- Salir");
+            Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
 
             int num = int.Parse(Console.ReadLine());
 
             if (num == 1)
             {
-                Register();
-                return;
-            }
-
-            if (num == 2)
-            {
-                Console.WriteLine("\nIngresa tu nombre de usuario para continuar");
+                Console.Write("\nIngresa tu nombre de usuario para continuar: ");
                 string name = Console.ReadLine();
 
-                foreach (var item in administrator.usersRegistered)
+                bool knownUser = false;
+                foreach (var (item, state) in administrator.usersRegisteredWithState)
                 {
-                    Console.WriteLine(item.Name);
+                    //Console.WriteLine(item.Name);
 
                     if (item.Name.ToLower() == name.Trim().ToLower())
                     {
-                        //SelectMode(item);
-                        GoPlay(item);
-                        return;
-
+                        System.Console.WriteLine("\n-- Inicio de sesión exitoso --"); 
+                        knownUser = true;
+                        //######
+                        // Hay que ver si acá no hay que indicar que ya existe un usuario con ese nombre
+                        //return knownUser;
                     }
                 }
                 if (knownUser==false)
@@ -41,30 +37,31 @@ namespace Library
                     System.Console.WriteLine("...");
                     //Si no se encuentra en el sistema se crea y se envía a la lista de usuarios registrados
                     User user = new User(name);
-                    administrator.usersRegistered.Add(user);
-                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados");
+                    administrator.usersRegisteredWithState.Add(user, null);
+                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados\n");
                     knownUser = true;
-                    ShowMenu();
+                    SelectMode(user);
+                    //ShowMenu();
                     //return knownUser;
                 }
             }
             else if(num == 2)
             {
-                SelectMode(administrator.usersRegistered.Last());
-            }
+                SelectMode(administrator.usersRegisteredWithState.Keys.Last());
 
-            if (num == 3)
+            }
+            else if (num == 3)
             {
+                //######
+                //Acá hay que añadir el chequeo que identifique que usuario es
                 Console.WriteLine("\nTe esperamos la proxima!");
                 return;
             }
-
             else
             {
-                Console.WriteLine("\nNo tenemos una opción para ese numero");
+                Console.WriteLine("\nNo es una opción válida");
             }
             return;
-
         }
 
         public void Register()
@@ -77,7 +74,7 @@ namespace Library
             if (UserName != string.Empty)
             {
                 //SelectMode(administrator.CheckUser());
-                administrator.MatchPlayers(administrator.CheckUser(UserName), "Classic");
+               // administrator.MatchPlayers(administrator.CheckUser(UserName), "Classic");
             }
 
             else
@@ -91,9 +88,10 @@ namespace Library
             Administrator.Instance.UsersToPlay.Add(user, "classic");
 
         }
-        /*
-        public void SelectMode(User user)
+
+        public (bool,int) SelectMode(User user)
         {
+            bool addedPlayer = false;
             //List<Lobby> modes = administrator.modeList;
 
             //Recorre la lista de nombres.
@@ -101,25 +99,50 @@ namespace Library
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");
             int n = 0;
+            System.Console.WriteLine("------------------------");
+            System.Console.WriteLine(" 1- Classic\n 2- Bomb\n 3- TimeTrial\n 4- Challenge");
+            
+            /*
             foreach (Lobby lobby in modes)
             {
                 n++;
                 Console.WriteLine($"{n}-{lobby.Name}");
             }
+            */
             int num = int.Parse(Console.ReadLine());
 
+            /*
             if (modes.Contains(modes.ElementAt(num - 1)))
-            {
                 modes.ElementAt(num - 1).AddUserToWaitList(user);
                 Console.WriteLine($"\nEstas en la lista de espera para jugar al modo {modes.ElementAt(num - 1).Name}");
                 //Console.WriteLine(administrator.modeList.ElementAt(0).usersWaiting.Count);
             }
+            */
+            if (num == 1)
+            {
+                administrator.UsersToPlay.Add(user,"classic");
+                addedPlayer = true;
+            }
+            else if (num == 2)
+            {
+                administrator.UsersToPlay.Add(user,"bomb");
+                addedPlayer = true;
+            }
+            else if (num == 3)
+            {
+                administrator.UsersToPlay.Add(user,"timetrial");
+                addedPlayer = true;
+            }
+            else if (num == 4)
+            {
+                administrator.UsersToPlay.Add(user,"challenge");
+                addedPlayer = true;
+            }
             else
             {
-                Console.WriteLine("No tenemos un modo de juego asignado para ese numero");
+                Console.WriteLine("No tenemos un modo de juego válido");
             }
-            return;
+            return (addedPlayer,num);
         }
-        */
     }
 }
