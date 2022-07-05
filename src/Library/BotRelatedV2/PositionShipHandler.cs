@@ -86,8 +86,13 @@ namespace Library
                     }
                     break;
                 case PositionShipState.Complete:
-                    response = "La flota esta lista para comenzar";
                     State = PositionShipState.Start;
+                    Game game = Administrator.Instance.GetPlayerGame(message.Chat.Id);
+                    if (game.boardPlayer1.shipCount() == 5 && game.boardPlayer2.shipCount() == 5)
+                    {
+                        Bot.sendTelegramMessage(game.player1, "Para comenzar envía /Atacar");
+                        Bot.sendTelegramMessage(game.player2, $"El jugador {game.player1.Name} comienza atacando.");
+                    }
                     break;
             }
         }
@@ -110,6 +115,7 @@ namespace Library
 
         private void AddShipToBoard(String check1, String check2, String direction, int shipSize, Message message, out string response)
         {
+            response = string.Empty;
             bool overShip, overBoard;
             Board board = Administrator.Instance.GetPlayerBoard(message.From.Id);
             (overBoard, overShip) = board.Positioner(check1, check2, direction1, shipNames[shipSize], shipSize);
@@ -124,20 +130,29 @@ namespace Library
                 response = "No se puede porque ya hay una nave en esa ubicación. \n /Reintentar";
                 State = PositionShipState.Start;
             }
+
             else
             {
-                if (board.shipCount() < 5)
+                Game game = Administrator.Instance.GetPlayerGame(message.Chat.Id);
+                User player = game.player1.Id == message.From.Id ? game.player1 : game.player2;
+                State = PositionShipState.Start;
+                if (board.shipCount() == 5)
                 {
-                    State = PositionShipState.Start;
-                    response = "La nave esta lista, debe posicionar la siguiente nave";
+                    //Bot.sendTelegramMessage(player, "La nave esta lista.");
+                    Bot.sendTelegramMessage(player, "La flota esta lista.");
+                }
+                else if (board.shipCount() < 5)
+                {
+                    Bot.sendTelegramMessage(player, "La nave esta lista, debe posicionar la siguiente nave");
                     InternalHandle(message, out response);
+                }
 
-                }
-                else
+                if (game.boardPlayer1.shipCount() == 5 && game.boardPlayer2.shipCount() == 5)
                 {
-                    State = PositionShipState.End;
-                    response = "La flota esta lista para comenzarr";
+                    Bot.sendTelegramMessage(game.player1, "Para Comenzar envía /Atacar");
+                    Bot.sendTelegramMessage(game.player2, $"El jugador {game.player1.Name} comienza atacando.");
                 }
+
             }
         }
 

@@ -37,7 +37,7 @@ namespace Library
                 if (user.Id == message.From.Id)
                 {
                     response = "Estas en la lista de espera para jugar al modo Bomb.";
-                    Administrator.Instance.UsersToPlay.Add(user, "Bomb");
+                    Administrator.Instance.UsersToPlay.Add(user, "bomb");
                     Administrator.Instance.MatchPlayers();
                 }
             }

@@ -37,7 +37,7 @@ namespace Library
                 if (user.Id == message.From.Id)
                 {
                     response = "Estas en la lista de espera para jugar al modo Challenge.";
-                    Administrator.Instance.UsersToPlay.Add(user, "Challenge");
+                    Administrator.Instance.UsersToPlay.Add(user, "challenge");
                     Administrator.Instance.MatchPlayers();
                 }
             }

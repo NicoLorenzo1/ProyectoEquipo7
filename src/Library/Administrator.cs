@@ -53,10 +53,6 @@ namespace Library
                         {
                             if (UsersToPlay.ElementAt(x).Value == match1.Value.ToLower())
                             {
-
-                                //await TelegramBot.telegramClient.SendTextMessageAsync(match1.Key.IdChat, $"Comenzara la batalla contra {match2.Key.Name}");
-                                //await TelegramBot.telegramClient.SendTextMessageAsync(match2.Key.IdChat, $"Comenzara la batalla contra {match1.Key.Name}");
-
                                 //game.StartGame();
                                 if (match1.Value.ToLower() == "classic")
                                 {

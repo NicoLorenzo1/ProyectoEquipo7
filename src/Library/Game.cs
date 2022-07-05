@@ -1,5 +1,4 @@
 using System;
-using Telegram.Bot;
 
 namespace Library
 {
@@ -65,83 +64,78 @@ namespace Library
         /// </summary>
         public virtual void StartGame()
         {
-            System.Console.WriteLine("Comienza la batalla naval!!");
-            /*
-            sendTelegramMessage(Player1, "Comienza la batalla naval!!");
-            sendTelegramMessage(Player2, "Comienza la batalla naval!!");
+            //System.Console.WriteLine("Comienza la batalla naval!!");
+            Bot.sendTelegramMessage(Player1, "Comienza la batalla naval!!");
+            Bot.sendTelegramMessage(Player2, "Comienza la batalla naval!!");
 
-            sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
-            sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
-            */
+            Bot.sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
+            Bot.sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
 
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
             System.Console.WriteLine();
 
-            /*
-            sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
-            sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
-            */
-
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
-            BoardPlayer1.PositionShips();
-            System.Console.WriteLine($"Posicionamiento de barcos de {Player2.Name}");
-            BoardPlayer2.PositionShips();
+            Bot.sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            Bot.sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
+            //BoardPlayer1.PositionShips();
+            //BoardPlayer2.PositionShips();
 
             User recentAttacker = this.Player2;
-
-            OnGoing = true;
-            while (OnGoing)
-            {
-                if (recentAttacker == this.Player1)
-                {
-                    System.Console.WriteLine();
-                    System.Console.WriteLine($"Ataca {Player2.Name}:");
-                    Console.WriteLine("A donde quiere atacar?");
-                    Console.Write("Escriba la primer coordenada(A-J): ");
-                    string coord1 = Console.ReadLine();
-                    Console.Write("Escriba la segunda coordenada(1-10): ");
-                    string coord2 = Console.ReadLine();
-                    this.Attack(coord1, coord2, this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
-                    System.Console.WriteLine();
-                    this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
-                    ShowBoard(this.Player2);
-                    recentAttacker = Player2;
-                }
-                else
-                {
-                    System.Console.WriteLine();
-                    System.Console.WriteLine($"Ataca {Player1.Name}:");
-                    Console.WriteLine("A donde quiere atacar?");
-                    Console.Write("Escriba la primer coordenada(A-J): ");
-                    string coord1 = Console.ReadLine();
-                    Console.Write("Escriba la segunda coordenada(1-10): ");
-                    string coord2 = Console.ReadLine();
-                    this.Attack(coord1, coord2, this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
-                    this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
-                    ShowBoard(this.Player1);
-                    recentAttacker = Player1;
-                }
-                if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
-                {
-                    EndGame();
-                    if (HitsPlayer2 == 15)
-                    {
-                        Player1.statistics.ModifyStatics(false);
-                        Player2.statistics.ModifyStatics(true);
-                        System.Console.WriteLine();
-                        Console.WriteLine($"Ha ganado {Player2.Name}!!");
-                    }
-                    if (HitsPlayer1 == 15)
-                    {
-                        Player1.statistics.ModifyStatics(true);
-                        Player2.statistics.ModifyStatics(false);
-                        System.Console.WriteLine();
-                        Console.WriteLine($"Ha ganado {Player1.Name}!!");
-                    }
-                }
-            }
+            /*
+                        OnGoing = true;
+                        while (OnGoing)
+                        {
+                            if (recentAttacker == this.Player1)
+                            {
+                                System.Console.WriteLine();
+                                System.Console.WriteLine($"Ataca {Player2.Name}:");
+                                Console.WriteLine("A donde quiere atacar?");
+                                Console.Write("Escriba la primer coordenada(A-J): ");
+                                string coord1 = Console.ReadLine();
+                                Console.Write("Escriba la segunda coordenada(1-10): ");
+                                string coord2 = Console.ReadLine();
+                                this.Attack(coord1, coord2, this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
+                                System.Console.WriteLine();
+                                this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
+                                ShowBoard(this.Player2);
+                                recentAttacker = Player2;
+                            }
+                            else
+                            {
+                                System.Console.WriteLine();
+                                System.Console.WriteLine($"Ataca {Player1.Name}:");
+                                Console.WriteLine("A donde quiere atacar?");
+                                Console.Write("Escriba la primer coordenada(A-J): ");
+                                string coord1 = Console.ReadLine();
+                                Console.Write("Escriba la segunda coordenada(1-10): ");
+                                string coord2 = Console.ReadLine();
+                                this.Attack(coord1, coord2, this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
+                                this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
+                                ShowBoard(this.Player1);
+                                recentAttacker = Player1;
+                            }
+                            if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
+                            {
+                                EndGame();
+                                if (HitsPlayer2 == 15)
+                                {
+                                    Player1.statistics.ModifyStatics(Player1, false);
+                                    Player2.statistics.ModifyStatics(Player2, true);
+                                    System.Console.WriteLine();
+                                    Console.WriteLine($"Ha ganado {Player2.Name}!!");
+                                }
+                                if (HitsPlayer1 == 15)
+                                {
+                                    Player1.statistics.ModifyStatics(Player1, true);
+                                    Player2.statistics.ModifyStatics(Player1, false);
+                                    System.Console.WriteLine();
+                                    Console.WriteLine($"Ha ganado {Player1.Name}!!");
+                                }
+                            }
+                        }
+                        */
         }
 
+    
         /// <summary>
         /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
         /// es el encargado de conocer que ataques se realizan en cada momento
@@ -393,11 +387,6 @@ namespace Library
             //administrator.currentGame.Remove(this);            
         }
 
-        private async void sendTelegramMessage(User user, string message)
-        {
-            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
-
-        }
         public User player1
         {
             get
@@ -427,6 +416,21 @@ namespace Library
             get
             {
                 return this.BoardPlayer2;
+            }
+        }
+
+        public int hitsPlayer1
+        {
+            get
+            {
+                return HitsPlayer1;
+            }
+        }
+        public int hitsPlayer2
+        {
+            get
+            {
+                return HitsPlayer2;
             }
         }
     }
