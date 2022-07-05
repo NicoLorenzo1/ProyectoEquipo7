@@ -26,7 +26,9 @@ namespace Library
             this.MissedShots1 = 0;
             this.MissedShots2 = 0;
         }
-
+        /// <summary>
+        /// inicia la instancia del modo de juego
+        /// </summary>
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
@@ -94,7 +96,15 @@ namespace Library
                 }
             }
         }
-        public override string Attack(string coord1, string coord2, User attacker/*, Board attackerBoard, User defender, Board defenderBoard*/)
+
+        /// <summary>
+        /// Método de ataque
+        /// </summary>
+        /// <param name="coord1">Primer valor de la coordenada de ataque</param>
+        /// <param name="coord2">Segundo valor de la coordenada de ataque</param>
+        /// <param name="attacker">Jugador que realiza el ataque</param>
+        /// <returns>Devuelve el resultado del ataque</returns>
+        public override string Attack(string coord1, string coord2, User attacker)
         {
             Board attackerBoard, defenderBoard;
             User defender;

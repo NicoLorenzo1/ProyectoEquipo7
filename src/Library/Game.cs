@@ -132,7 +132,10 @@ namespace Library
         /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
-        /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
+        /// <param name="coord1">Primer valor de la coordenada de ataque</param>
+        /// <param name="coord2">Segundo valor de la coordenada de ataque</param>
+        /// <param name="attacker">Jugador que realiza el ataque</param>
+        /// <returns>Devuelve el resultado del ataque</returns>
         public virtual string Attack(string coord1, string coord2, User attacker)
         {
             string result = "";
@@ -180,7 +183,12 @@ namespace Library
             }
             return result;
         }
-
+        /// <summary>
+        /// Checkeo de si la posición del ataque es válida
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <returns>Devuelve si el ataque está dentro del tablero</returns>
         public bool CoordCheck(string coord1, string coord2)
         {
             bool outOfBoard = false;
@@ -204,6 +212,13 @@ namespace Library
                 return outOfBoard;
             }
         }
+        /// <summary>
+        /// Checkeo si la coordenada no ha sido atacada
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <param name="shotsBoard">Tablero que realizó los ataques</param>
+        /// <returns>Devuelve si no se ha atacado en un sitio</returns>
         public bool ShotHistory(string coord1, string coord2, Board shotsBoard)
         {
             bool alreadyShot = false;
@@ -225,6 +240,13 @@ namespace Library
             }
             return alreadyShot;
         }
+
+        /// <summary>
+        /// Método que determina si un barco fue hundido o no
+        /// </summary>
+        /// <param name="currentShipName">El nombre del barco al que se le pegó</param>
+        /// <param name="Player">Usuario al que corresponde el barco</param>
+        /// <returns>Devuelve si el barco fue hundido o tocado</returns>
         public (bool, bool) ShipMessage(string currentShipName, User Player)
         {
             bool sink = false;
@@ -452,7 +474,6 @@ namespace Library
             }
             */
         }
-
         public virtual User CheckMatch()
         {
             if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
@@ -471,7 +492,10 @@ namespace Library
                 return null;
             }
         }
-
+        /// <summary>
+        /// Se determina el ganador del juego y se termina dicho juego
+        /// </summary>
+        /// <returns>Devuelve el usuario que ganó</returns>
         public virtual User GameWinner()
         {
             User winner;
@@ -495,6 +519,10 @@ namespace Library
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
         }
+
+        /// <summary>
+        /// Resetea la vida de los barcos
+        /// </summary>
         public void RestartHits()
         {
             Lancha1Health = 1;
