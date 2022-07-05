@@ -29,7 +29,7 @@ namespace Library
 
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Los comandos disponibles son; \n-Iniciar \n-Estadisticas";
+            response = "Los comandos disponibles son; \n-/Tablero \n-/Estadisticas";
         }
 
         public enum CommandsHandlerState

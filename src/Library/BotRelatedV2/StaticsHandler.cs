@@ -3,7 +3,8 @@ using Telegram.Bot.Types;
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "estadisticas".
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "estadisticas". En caso que el usuario no se haya registrado 
+    /// no le mostrara las estadisticas.
     /// </summary>
     public class StaticsHandler : BaseHandler
     {
@@ -11,7 +12,7 @@ namespace Library
 
         public StaticsHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "estadisticas" };
+            this.Keywords = new string[] { "estadisticas", "/Estadisticas", "Estadisticas" };
             State = StaticsHandlerState.Start;
         }
 
@@ -31,16 +32,16 @@ namespace Library
         {
             response = "No hay estadisticas disponibles para mostrar.";
 
-            /* //IL if (User.users.Count > 0)
+            if (Administrator.Instance.usersRegisteredWithState.Count > 0)
             {
-                foreach (var user in User.users)
+                foreach (var user in Administrator.Instance.usersRegisteredWithState)
                 {
-                    if (user.Id == message.From.Id)
+                    if (user.Key.Id == message.From.Id)
                     {
-                        response = $"Las estadisticas del usuario: {user.Name} son {Statistics.ShowStats(user)}";
+                        response = $"Las estadisticas del usuario: {user.Key.Name} son {Statistics.ShowStats(user.Key)}";
                     }
                 }
-            }*/
+            }
         }
 
         public enum StaticsHandlerState

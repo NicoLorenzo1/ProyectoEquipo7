@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando para seleccionar modo de juego.
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando para seleccionar modo de juego cuando se le envía la palabra clave (jugar)
     /// </summary>
     public class SelectModeHandler : BaseHandler
     {
@@ -12,7 +12,6 @@ namespace Library
         public SelectModeHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "/jugar", "/Jugar" };
-            // this.State = SelectModeState.Start;
         }
 
         protected override bool CanHandle(Message message)
@@ -36,11 +35,11 @@ namespace Library
         }
     }
     public enum SelectModeState
-        {
-            Start,
-            ModeSelected,
-            ReadyToPlay,
-            ChallengeState
-            
-        }
+    {
+        Start,
+        ModeSelected,
+        ReadyToPlay,
+        ChallengeState,
+        TimeTrialState
+    }
 }

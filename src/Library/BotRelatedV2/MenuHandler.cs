@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 namespace Library
 {
     /// <summary>
-    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "hola".
+    /// Un "handler" del patrón Chain of Responsibility que implementa el comando "Iniciar".
     /// </summary>
     public class MenuHandler : BaseHandler
     {
@@ -14,7 +14,7 @@ namespace Library
         /// <param name="next">El próximo "handler".</param>
         public MenuHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Iniciar" };
+            this.Keywords = new string[] { "Iniciar", "iniciar" };
             this.State = MenuState.Start;
         }
 
