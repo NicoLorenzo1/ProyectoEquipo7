@@ -250,7 +250,6 @@ namespace Library
         AttackPositionCheck2Player2,
         Wait,
         End
-
     }
 }
 

@@ -30,8 +30,6 @@ namespace Library
             this.Player2 = player2;
             this.BoardPlayer1 = new Board(Player1);
             this.BoardPlayer2 = new Board(Player2);
-            ChallengeHitsPlayer1 = 0;
-            ChallengeHitsPlayer2 = 0;
             WinsPlayer1 = 0;
             WinsPlayer1 = 0;
         }
@@ -120,10 +118,10 @@ namespace Library
                             WinsPlayer2 += 1;
                             System.Console.WriteLine();
                             Console.WriteLine($"Gana {Player2.Name}");
-                            ChallengeHitsPlayer1 = 0;
-                            ChallengeHitsPlayer2 = 0;
+
                             OnGoing = false;
                             hitsPlayer2 = 0;
+                            hitsPlayer1 = 0;
                             RestartHits();
                         }
                         if (hitsPlayer1 == 1)
@@ -131,9 +129,9 @@ namespace Library
                             WinsPlayer1 += 1;
                             System.Console.WriteLine();
                             Console.WriteLine($"Gana {Player1.Name}");
-                            ChallengeHitsPlayer1 = 0;
-                            ChallengeHitsPlayer2 = 0;
+
                             OnGoing = false;
+                            hitsPlayer1 = 0;
                             hitsPlayer1 = 0;
                             RestartHits();
                         }

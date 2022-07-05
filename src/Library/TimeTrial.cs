@@ -27,14 +27,14 @@ namespace Library
 
         public void StartTimer()
         {
-            timerCounter.Elapsed += timerCounter_Elapsed;
+            timerCounter.Elapsed += timerCounterElapsed;
             timerCounter.AutoReset = false;
             timerCounter.Enabled = true;
             timerCounter.Start();
             //Console.ReadKey();
         }
 
-        private void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
+        private void timerCounterElapsed(Object source, ElapsedEventArgs e)
         {
             if (OnGoing)
             {

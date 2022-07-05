@@ -93,7 +93,7 @@ namespace Library
             User user = isUserRegistered(chatId);
             if (user != null)
             {
-                Console.WriteLine("\nEl usuario ya esta registrado en el juego");
+                Console.WriteLine("\nEl usuario se registro en el juego");
                 user.Name = name; //Actualizo el nombre del usuario
                 return user;
             }
@@ -112,7 +112,6 @@ namespace Library
         {
             foreach (Game game in currentGame)
             {
-                Console.WriteLine($">>>> playerId {game.player1.Id} - {game.player2.Id} - {playerId}");
                 if (game.player1.Id == playerId)
                 {
                     return game.boardPlayer1;
@@ -181,21 +180,6 @@ namespace Library
                 u.IdChat = id;
                 usersRegisteredWithState.Add(u, state);
             }
-        }
-
-        public void RemovePlayer(long id)
-        {
-            //Borrar el usuario de la lista de espera
-            foreach (var (user, mode) in UsersToPlay)
-            {
-                if (user.Id == id)
-                {
-                    UsersToPlay.Remove(user);
-                }
-            }
-            //Terminar cualquier partida en curso y designar ganador al oponente
-            Game game = GetPlayerGame(id);
-            game.EndGame();
         }
 
         public bool BotEnabled
