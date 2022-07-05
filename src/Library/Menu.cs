@@ -130,7 +130,7 @@ namespace Library
             }
             else if (num == 3)
             {
-                administrator.UsersToPlay.Add(user,"timeTrial");
+                administrator.UsersToPlay.Add(user,"timetrial");
                 addedPlayer = true;
             }
             else if (num == 4)

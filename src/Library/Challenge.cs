@@ -38,7 +38,7 @@ namespace Library
             System.Console.WriteLine("Challenge!!!");
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
 
-            while (WinsPlayer1 < 2 || WinsPlayer2 < 2)
+            while (WinsPlayer1 < 2 && WinsPlayer2 < 2)
             {
                 int counter = WinsPlayer1 + WinsPlayer2;
                 if (counter == 0)
@@ -72,23 +72,6 @@ namespace Library
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
                         Attack(coord1, coord2, Player2, BoardPlayer2, Player1, BoardPlayer1);
-                        
-                        bool outOfBoard = CoordCheck(coord1, coord2);
-                        bool alreadyShot = ShotHistory(coord1, coord2);
-                        if (outOfBoard == false && alreadyShot && false)
-                        {
-                            ChallengeHitsPlayer2 += 1;
-                        }
-
-                        for (int i = 0; i < BoardPlayer2.shots.Count; i += 2)
-                        {
-                            System.Console.WriteLine(BoardPlayer2.shots.Count);
-                            string setter1 = Convert.ToString(BoardPlayer2.shots[i]);
-                            string setter2 = Convert.ToString(BoardPlayer2.shots[i + 1]);
-                            System.Console.WriteLine($"{setter1} {setter2}");
-                        }
-                        // Estas corrigiendo
-
                         this.BoardPlayer2.PrintBoard(this.BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                         ShowBoard(Player2, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player2;
@@ -103,22 +86,14 @@ namespace Library
                         Console.Write("Escriba la segunda coordenada(1-10): ");
                         string coord2 = Console.ReadLine();
                         Attack(coord1, coord2, Player1, BoardPlayer1, Player2, BoardPlayer2);
-
-                        bool outOfBoard = CoordCheck(coord1, coord2);
-                        bool alreadyShot = ShotHistory(coord1, coord2);
-                        if (outOfBoard == false && alreadyShot == false)
-                        {
-                            ChallengeHitsPlayer1 += 1;
-                        }
-
                         this.BoardPlayer1.PrintBoard(this.BoardPlayer2.shipPos, this.BoardPlayer1.shots, "EnemyBoard");
                         ShowBoard(Player1, BoardPlayer1, BoardPlayer2);
                         recentAttacker = Player1;
                     }
-                    if ((ChallengeHitsPlayer1 == 1 || ChallengeHitsPlayer2 == 1))
+                    if ((hitsPlayer1 == 1 || hitsPlayer2 == 1))
                     {
 
-                        if (ChallengeHitsPlayer2 == 1)
+                        if (hitsPlayer2 == 1)
                         {
                             WinsPlayer2 += 1;
                             System.Console.WriteLine();
@@ -126,8 +101,10 @@ namespace Library
                             ChallengeHitsPlayer1 = 0;
                             ChallengeHitsPlayer2 = 0;
                             OnGoing = false;
+                            hitsPlayer2=0;
+                            RestartHits();
                         }
-                        if (ChallengeHitsPlayer1 == 1)
+                        if (hitsPlayer1 == 1)
                         {
                             WinsPlayer1 += 1;
                             System.Console.WriteLine();
@@ -135,6 +112,8 @@ namespace Library
                             ChallengeHitsPlayer1 = 0;
                             ChallengeHitsPlayer2 = 0;
                             OnGoing = false;
+                            hitsPlayer1=0;
+                            RestartHits();
                         }
                     }
                 }

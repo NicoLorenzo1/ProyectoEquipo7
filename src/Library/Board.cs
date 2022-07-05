@@ -644,7 +644,6 @@ namespace Library
         /// <returns>coincidence</returns>
         public (bool, string) CheckShip(string check1, string check2, ArrayList chosenShips)
         {
-            System.Console.WriteLine("Acá estas en Checkship...");
             bool coincidence = false;
             string currentShipName = "";
             foreach (ArrayList item in chosenShips)

@@ -8,7 +8,7 @@ namespace Library
     /// Nuevo modo de juego el cual se va a implementar para la entrega final, se basa en el modo de juego base pero se le suma la cualidad de que va a tener un
     /// tiempo limitado, logrando de esta forma una modalidad de juego mas rapida.
     /// </summary>
-    public class TimeTrialMode : Game
+    public class TimeTrial : Game
     {
         private User Player1;
         private User Player2;
@@ -21,28 +21,13 @@ namespace Library
         System.Timers.Timer timerCounter = new System.Timers.Timer(180000);
 
 
-        public TimeTrialMode(User player1, User player2, string name) : base(player1, player2, name)
+        public TimeTrial(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
         }
-        /*
-        public TimeTrialMode(string name) : base(name)
-        {
-            if (name.ToLower() == "timetrial mode")
-            {
-                this.Name = name;
-                TimeTrialMode game = new TimeTrialMode(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
-            }
-            else
-            {
-                Console.WriteLine("Modo incorrecto");
-            }
-        }
-        */
         public override void StartGame()
         {
             while (true)

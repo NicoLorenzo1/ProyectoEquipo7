@@ -104,7 +104,7 @@ namespace Library
             if (attacker == this.Player1)
             {
                 bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
                 // #######################
                 if (MissedShots1 == 1)
@@ -116,7 +116,7 @@ namespace Library
                         string setter1 = Convert.ToString(bombita[i]);
                         string setter2 = Convert.ToString(bombita[i + 1]);
 
-                        bool repeatedShot = ShotHistory(setter1, setter2);
+                        bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
                         if (repeatedShot == false)
                         {
                             this.BoardPlayer1.shots.Add(setter1);
@@ -148,7 +148,7 @@ namespace Library
             else if (attacker == this.Player2)
             {
                 bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
                 // #######################
                 if (MissedShots2 == 1)
@@ -159,13 +159,14 @@ namespace Library
                         string setter1 = Convert.ToString(bombita[i]);
                         string setter2 = Convert.ToString(bombita[i + 1]);
 
-                        bool repeatedShot = ShotHistory(setter1, setter2);
+                        bool repeatedShot = ShotHistory(setter1, setter2, attackerBoard);
                         if (repeatedShot == false)
                         {
                             this.BoardPlayer2.shots.Add(setter1);
                             this.BoardPlayer2.shots.Add(setter2);
                         }
                     }
+                    
                     MissedShots2 = 0;
                 }
                 // #######################

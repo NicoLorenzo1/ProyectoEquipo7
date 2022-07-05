@@ -53,7 +53,6 @@ namespace Library
                                 Game game = new Game(match1.Key, match2.Key, "classic");
                                 game.StartGame();
                             }
-
                             else if (match1.Value == "challenge")
                             {
                                 KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
@@ -65,7 +64,12 @@ namespace Library
                                 KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
                                 Bomb bomb = new Bomb(match1.Key, match2.Key, "bomb");
                                 bomb.StartGame();
-                                
+                            }
+                            else if (match1.Value == "timetrial")
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                TimeTrial timeTrial = new TimeTrial(match1.Key, match2.Key, "timetrial");
+                                timeTrial.StartGame();
                             }
                         }
                     }

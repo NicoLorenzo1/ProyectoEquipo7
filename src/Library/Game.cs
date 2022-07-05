@@ -142,7 +142,7 @@ namespace Library
             if (attacker == this.Player1)
             {
                 bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
                 if (outOfBoard == true || alreadyShot == true)
                 {
@@ -170,7 +170,7 @@ namespace Library
             {
 
                 bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2);
+                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
 
 
                 if (outOfBoard == true || alreadyShot == true)
@@ -220,13 +220,13 @@ namespace Library
                 return outOfBoard;
             }
         }
-        public bool ShotHistory(string coord1, string coord2)
+        public bool ShotHistory(string coord1, string coord2, Board shotsBoard)
         {
             bool alreadyShot = false;
-            for (int i = 0; i < BoardPlayer1.shots.Count; i += 2)
+            for (int i = 0; i < shotsBoard.shots.Count; i += 2)
             {
-                string setter1 = Convert.ToString(BoardPlayer1.shots[i]);
-                string setter2 = Convert.ToString(BoardPlayer1.shots[i + 1]);
+                string setter1 = Convert.ToString(shotsBoard.shots[i]);
+                string setter2 = Convert.ToString(shotsBoard.shots[i + 1]);
                 if (setter1 == coord1.ToUpper())
                 {
                     if (setter2 == coord2)
@@ -463,7 +463,7 @@ namespace Library
             {
                 Console.WriteLine("No es una opción válida");
                 System.Console.WriteLine("Intente denuevo");
-                ShowBoard(user,board1,board2);
+                ShowBoard(user, board1, board2);
             }
         }
         /// <summary>
@@ -475,6 +475,19 @@ namespace Library
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
             //administrator.currentGame.Remove(this);            
+        }
+        public void RestartHits()
+        {
+            Lancha1Health = 1;
+            Crucero1Health = 2;
+            Submarino1Health = 3;
+            Buque1Health = 4;
+            Portaaviones1Health = 5;
+            Lancha2Health = 1;
+            Crucero2Health = 2;
+            Submarino2Health = 3;
+            Buque2Health = 4;
+            Portaaviones2Health = 5;
         }
 
         private async void sendTelegramMessage(User user, string message)
@@ -517,6 +530,28 @@ namespace Library
             {
                 return this.Mode;
             }
-        } 
+        }
+        public int hitsPlayer1
+        {
+            get
+            {
+                return this.HitsPlayer1;
+            }
+            set
+            {
+                HitsPlayer1 = value;
+            }
+        }
+        public int hitsPlayer2
+        {
+            get
+            {
+                return this.HitsPlayer2;
+            }
+            set
+            {
+                HitsPlayer2 = value;
+            }
+        }
     }
 }
