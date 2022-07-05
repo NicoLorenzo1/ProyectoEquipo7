@@ -1,5 +1,5 @@
 using Telegram.Bot.Types;
-using Telegram.Bot;
+
 namespace Library
 {
     /// <summary>
@@ -7,8 +7,6 @@ namespace Library
     /// </summary>
     public class Administrator
     {
-        private static IHandler firstHandler;
-        private static TelegramBotClient telegramClient;
         public List<User> usersRegistered = new List<User>();
         public List<Game> currentGame = new List<Game>();
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
@@ -37,54 +35,51 @@ namespace Library
         /// <param name="mode">Modo de juego seleccionado.</param>
         public async void MatchPlayers()
         {
-            int counter = 0;
-            //UsersToPlay.Add(user, mode);
             KeyValuePair<User, string> match1;
+
 
             for (int i = 0; i < UsersToPlay.Count; i++)
             {
-                if (counter == 0)
+                match1 = UsersToPlay.ElementAt(i);
+                for (int x = i; x < UsersToPlay.Count; x++)
                 {
-                    match1 = UsersToPlay.ElementAt(i);
-                    counter = +1;
-                    for (int x = i; x < UsersToPlay.Count; x++)
+                    if (!(UsersToPlay.ElementAt(x).Key == match1.Key))
                     {
-                        if (!(UsersToPlay.ElementAt(x).Key == match1.Key))
+                        if (UsersToPlay.ElementAt(x).Value == match1.Value)
                         {
-                            if (UsersToPlay.ElementAt(x).Value == match1.Value.ToLower())
+                            if (match1.Value == "classic")
                             {
-                                //game.StartGame();
-                                if (match1.Value.ToLower() == "classic")
-                                {
-                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Game game = new Game(match1.Key, match2.Key, "classic");
-                                    game.StartGame();
-                                }
-                                else if (match1.Value.ToLower() == "bomb")
-                                {
-                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "bomb");
-                                    game.StartGame();
-                                }
-                                else if (match1.Value.ToLower() == "challenge")
-                                {
-                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "challenge");
-                                    game.StartGame();
-                                }
-                                else if (match1.Value.ToLower() == "challenge")
-                                {
-                                    KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
-                                    Challenge game = new Challenge(match1.Key, match2.Key, "challenge");
-                                    game.StartGame();
-                                }
-
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                Game game = new Game(match1.Key, match2.Key, "classic");
+                                game.StartGame();
+                            }
+                            else if (match1.Value == "challenge")
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                Challenge challenge = new Challenge(match1.Key, match2.Key, "challenge");
+                                challenge.StartGame();
+                            }
+                            else if (match1.Value == "bomb")
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                Bomb bomb = new Bomb(match1.Key, match2.Key, "bomb");
+                                bomb.StartGame();
+                            }
+                            else if (match1.Value == "timetrial")
+                            {
+                                KeyValuePair<User, string> match2 = UsersToPlay.ElementAt(x);
+                                TimeTrial timeTrial = new TimeTrial(match1.Key, match2.Key, "timetrial");
+                                timeTrial.StartGame();
                             }
                         }
+                    }
+                    else
+                    {
                     }
                 }
             }
         }
+
 
         /// <summary>
         /// Crea un objeto User en caso de que el jugador no esté ya registrado.
@@ -137,26 +132,5 @@ namespace Library
             }
             return null;
         }
-
-
-        //lista general de modos de juego.
-        
-        public List<Lobby> modeList = new List<Lobby>()
-        {
-            new TimeTrial("Time Trial"),
-            new Game("Classic"),
-            new Bomb("Bomb")
-        };
-
-        /*
-        //Metodo para encontrar jugadores del mismo modo para cuando tengamos los nuevos modos
-        private void MatchPlayers()
-        {
-            foreach (Lobby m in modeList)
-            {
-                m.MatchPlayers();
-            }
-        }
-        */
     }
 }

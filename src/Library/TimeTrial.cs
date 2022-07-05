@@ -21,25 +21,12 @@ namespace Library
         System.Timers.Timer timerCounter = new System.Timers.Timer(180000);
 
 
-        public TimeTrial(User player1, User player2, string name) : base(name)
+        public TimeTrial(User player1, User player2, string name) : base(player1, player2, name)
         {
             this.Player1 = player1;
             this.Player2 = player2;
             BoardPlayer1 = new Board(this.Player1);
             BoardPlayer2 = new Board(this.Player2);
-        }
-        public TimeTrial(string name) : base(name)
-        {
-            if (name.ToLower() == "timetrial mode")
-            {
-                this.Name = name;
-                TimeTrial game = new TimeTrial(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), this.Name);
-                this.StartGame();   
-            }
-            else
-            {
-                Console.WriteLine("Modo incorrecto");
-            }
         }
         public override void StartGame()
         {
@@ -66,14 +53,6 @@ namespace Library
         private static void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
         {
             Console.WriteLine("finalizo");
-        }
-
-        public override void MatchPlayers()
-        {
-            TimeTrial game = new TimeTrial(this.usersWaiting.ElementAt(0), this.usersWaiting.ElementAt(1), "Time Trial");
-            base.MatchPlayers();
-            Console.WriteLine($"Comenzará una nueva partida de contrarreloj con los jugadores {this.usersWaiting.ElementAt(0)} , {this.usersWaiting.ElementAt(1)}.");
-            game.StartGame();
         }
     }
 }

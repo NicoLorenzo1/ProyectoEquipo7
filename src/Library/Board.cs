@@ -216,7 +216,7 @@ namespace Library
         public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
-            for (int s = 1; s <= 5; s++)
+            for (int s = 1; s <= 2; s++)
             {
                 Ship actualShip = new Ship(s);
 
@@ -355,7 +355,7 @@ namespace Library
                         IndexCheck1 = (rowNum.IndexOf(entry2));
                         if (x == 0)
                         {
-                            shipTest = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos, out string shipName);
+                            (shipTest, string currentShipName) = CheckShip(entry1, rowNum[IndexCheck1], this.shipPos);
                             if (shipTest == true)
                             {
                                 trigger = true;
@@ -407,7 +407,7 @@ namespace Library
                             }
                         }
                         shipPos.Add(posList);
-                        string finalTable=PrintBoard(this.shipPos, this.shots, "MyBoard");
+                        string finalTable = PrintBoard(this.shipPos, this.shots, "MyBoard");
                         System.Console.WriteLine("### Aca viene el nuevo print: ###");
                         System.Console.WriteLine($"{finalTable}");
                         return (overBoard, overShip);
@@ -680,7 +680,7 @@ namespace Library
         /// <param name="chosenShips"> Lista de barcos en donde se verificará si hay una coincidencia</param>
         /// <param name="shipName"> Retorna el nombre del barco en el cual se generó la coincidencia</param>
         /// <returns>coincidence</returns>
-        public bool CheckShip(string check1, string check2, ArrayList chosenShips, out string shipName)
+        public (bool, string) CheckShip(string check1, string check2, ArrayList chosenShips)
         {
             bool coincidence = false;
             foreach (ArrayList item in chosenShips)
@@ -695,9 +695,9 @@ namespace Library
                         string numCheck = Convert.ToString(item[i + 1]);
                         if (check2 == numCheck)
                         {
-                            shipName = Convert.ToString(item[0]);
+                            currentShipName = Convert.ToString(item[0]);
                             coincidence = true;
-                            return coincidence;
+                            return (coincidence, currentShipName);
                         }
                         else
                         {
@@ -708,8 +708,7 @@ namespace Library
                     }
                 }
             }
-            shipName = "";
-            return coincidence;
+            return (coincidence, currentShipName);
         }
         /// <summary>
         /// Por Expert, al Board ser el responsable de conocer lo que se encuentra en cada linea
@@ -741,7 +740,7 @@ namespace Library
                     string setter1 = Convert.ToString(refreshShots[i]);
                     string setter2 = Convert.ToString(refreshShots[i + 1]);
 
-                    bool result = CheckShip(setter1, setter2, refreshShips, out string shipName);
+                    (bool result, string currentShipName) = CheckShip(setter1, setter2, refreshShips);
                     if (result == true)
                     {
                         EditBoard(setter1, setter2, "X", boardRows);
@@ -787,7 +786,7 @@ namespace Library
                     int rowPosThree = IndexY;
                     if (rowPosOne >= 0)
                     {
-                        System.Console.WriteLine("Entro a rowPosOne");
+                        //System.Console.WriteLine("Entro a rowPosOne");
                         for (int i = IndexX - 1; i <= IndexX + 1; i++)
                         {
                             if (i >= 1 && i <= 11)
@@ -863,32 +862,32 @@ namespace Library
             return shipPos.Count;
         }
 
-        /*   
-            public void showList()
-            {
-                foreach (ArrayList item in shipPos)
-                {
-                    System.Console.WriteLine($"{item[0]} está ubicado en: ");
 
-                    for (int i = 1; i < (item.Count-1); i+=2)
+        public void showList()
+        {
+            foreach (ArrayList item in shipPos)
+            {
+                System.Console.WriteLine($"{item[0]} está ubicado en: ");
+
+                for (int i = 1; i < (item.Count - 1); i += 2)
+                {
+                    for (int j = i; j <= (i + 1); j++)
                     {
-                        for (int j = i; j <= (i+1); j++)
-                        {
-                         System.Console.Write($"[{item[j]}] ");                           
-                        }
-                        if (i==(item.Count-2))
-                        {
-                            System.Console.WriteLine();
-                        }
-                        else
-                        {
-                            System.Console.Write(",");
-                        }
+                        System.Console.Write($"[{item[j]}] ");
                     }
-                    System.Console.WriteLine();
+                    if (i == (item.Count - 2))
+                    {
+                        System.Console.WriteLine();
+                    }
+                    else
+                    {
+                        System.Console.Write(",");
+                    }
                 }
+                System.Console.WriteLine();
             }
-        */
+        }
+
     }
 
 }
