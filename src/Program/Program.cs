@@ -10,7 +10,8 @@ using Microsoft.Extensions.Options;
 namespace Library
 {
     /// <summary>
-    /// Un programa que implementa un bot de Telegram.
+    /// Un programa que implementa un bot de Telegram. Para que ejecute por el bot descomentar de los "=====" para arriba
+    /// para que funcione por consola dejar comentado el codigo del bot y descomentar de la linea "=======" para abajo.
     /// </summary>
     public abstract class Program
     {
@@ -30,7 +31,7 @@ namespace Library
             catch(Exception e){
                 Console.WriteLine($"Excepcion: {e.Message} Stacktrace: {e.StackTrace}");
             }
-
+//=====================================================================================================
             /*
             try
             {
