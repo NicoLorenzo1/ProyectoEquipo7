@@ -18,36 +18,55 @@ namespace Library
         /// </summary>
         public void ShowMenu()
         {
-            int num = 0;
-            while (num == 0)
+            Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");
+
+            int num = int.Parse(Console.ReadLine());
+
+            if (num == 1)
             {
-                Console.WriteLine("Elige una opción \n 1- /Registrarse \n 2- /Jugar \n 3- /Salir");  
-                try
+                Console.Write("\nIngresa tu nombre de usuario para continuar: ");
+                string name = Console.ReadLine();
+
+                bool knownUser = false;
+                foreach (var (item, state) in administrator.usersRegisteredWithState)
                 {
-                    num = int.Parse(Console.ReadLine());  
+                    if (item.Name.ToLower() == name.Trim().ToLower())
+                    {
+                        System.Console.WriteLine("\n-- Inicio de sesión exitoso --");
+                        knownUser = true;
+                    }
                 }
-                catch(InvalidUserInputException ex)
+                if (knownUser == false)
                 {
-                    Console.WriteLine("Input del usuario no válido");
-                    num = 0;
+                    Console.WriteLine("\nEse nombre de usuario no se encuentra registrado en el sistema aún");
+                    System.Console.WriteLine("...");
+                    //Si no se encuentra en el sistema se crea y se envía a la lista de usuarios registrados
+                    User user = new User(name);
+                    administrator.usersRegisteredWithState.Add(user, null);
+                    System.Console.WriteLine($"Se le ha añadido a lista de usuarios registrados\n");
+                    knownUser = true;
+                    SelectMode(user);
                 }
-                num = readNumber(num);
             }
+            else if (num == 2)
+            {
+                SelectMode(administrator.usersRegisteredWithState.Keys.Last());
+
+            }
+            else if (num == 3)
+            {
+                Console.WriteLine("\nTe esperamos la proxima!");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("\nNo es una opción válida");
+            }
+            return;
         }
 
-        /// <summary>
-        /// Si el número ingresado no es un int entre 1 y 4, tira excepción.
-        /// </summary>
-        /// <param name="num">Número int.</param>
-        /// <returns>El mismo int que ingresó como parámetro.</returns>
-        private int readNumber(int num)
-        {
-            if (num != 1 || num != 2 || num != 3 || num != 4)
-            {
-                throw (new InvalidUserInputException("Input de opción seleccionada del usuario no válida"));
-            }
-            return num;
-        }
+
+
 
         /// <summary>
         /// Registra al ususario.

@@ -1,4 +1,4 @@
-[System.Serializable]
+/*[System.Serializable]
 public class InvalidUserInputException : System.Exception
 {
     public InvalidUserInputException() { }
@@ -7,4 +7,4 @@ public class InvalidUserInputException : System.Exception
     protected InvalidUserInputException(
         System.Runtime.Serialization.SerializationInfo info,
         System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-}
+}*/

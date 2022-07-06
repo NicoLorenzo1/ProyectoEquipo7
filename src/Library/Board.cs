@@ -240,118 +240,67 @@ namespace Library
         /// Esto modifica el ArrayList de shipPos que es donde se almacena el barco correspondiente
         /// y las coordenadas que ocupa de forma individual
         /// </summary>
-    public void PositionShips()
+        public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
             for (int s = 1; s <= 2; s++)
             {
                 Ship actualShip = new Ship(s);
 
-                int IndexX = -1;
-                string entry1 = "";
-                while (IndexX == -1)
+                while (false)
                 {
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.Write("Ingrese la cordenada 1(A-J): ");
+                    string entry1;
                     entry1 = Console.ReadLine();
-                    try
+                    if (ABC.Contains(entry1.ToUpper()))
                     {
-                        IndexX = readColumn(entry1);
+                        int IndexX;
+                        IndexX = ABC.IndexOf(entry1.ToUpper());
+
+                        string entry2;
+                        Console.Write("Ingrese la cordenada 2(1-10): ");
+                        entry2 = Console.ReadLine();
+                        if (rowNum.Contains(entry2))
+                        {
+                            string dir;
+                            System.Console.WriteLine();
+                            System.Console.WriteLine("Dirección:");
+                            System.Console.WriteLine("---------------");
+                            System.Console.WriteLine("1-Hacia arriba");
+                            System.Console.WriteLine("2-Hacia abajo");
+                            System.Console.WriteLine("3-Derecha");
+                            System.Console.WriteLine("4-Izquierda");
+                            System.Console.WriteLine();
+                            System.Console.Write("Ingrese la dirección escogida (1-4): ");
+                            dir = Console.ReadLine();
+                            System.Console.WriteLine();
+                            bool overBoard = false;
+                            bool overShip = false;
+                            if (dir != "1" && dir != "2" && dir != "3" && dir != "4")
+                            {
+                                System.Console.WriteLine("No es un dirección válida\n");
+
+                            }
+                            else
+                            {
+                                (overBoard, overShip) = Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No es una coordenada posible");
+                            System.Console.WriteLine();
+                        }
                     }
-                    catch(InvalidUserInputException ex)
+                    else
                     {
-                        Console.WriteLine("Input del usuario no válido");
-                        IndexX = -1;
+                        Console.WriteLine("No es una coordenada posible");
+                        System.Console.WriteLine();
                     }
                 }
-
-                bool invalidNum = true;
-                string entry2 = "";
-                while (invalidNum == true)
-                {
-                    Console.Write("Ingrese la cordenada 2(1-10): ");
-                    entry2 = Console.ReadLine();
-                    try
-                    {
-                        invalidNum = isValidRow(entry2);
-                    }
-                    catch(InvalidUserInputException ex)
-                    {
-                        Console.WriteLine("Input del usuario no válido");
-                        invalidNum = true;
-                    }
-                }
-
-                System.Console.WriteLine("Dirección: \n---------------");
-                System.Console.WriteLine("1-Hacia arriba \n2-Hacia abajo");
-                System.Console.WriteLine("3-Derecha \n4-Izquierda");
-
-                string invalidDir = "0";
-                string dir = "";
-                while (invalidDir == "0")
-                {
-                    System.Console.Write("Ingrese la dirección escogida (1-4): ");
-                    dir = Console.ReadLine();
-                    try
-                    {
-                        invalidDir = readDirection(dir);
-                    }
-                    catch(InvalidUserInputException ex)
-                    {
-                        Console.WriteLine("Input del usuario no válido");
-                        invalidDir = "0";
-                    }
-                }
-
-
-                Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
             }
-        }
-
-        /// <summary>
-        /// Se usa para lanzar una excepción en caso de que la letra ingresada no este entre la A y la J.
-        /// </summary>
-        /// <param name="letter">Una letra string</param>
-        /// <returns>Un número int que es el índice de dicha letra en la lista donde están las letras posibles.</returns>
-        private int readColumn(string letter)
-        {
-            int IndexX = ABC.IndexOf(letter.ToUpper());
-
-            if (IndexX == -1) 
-            {
-                throw new InvalidUserInputException("Input de columna del usuario no válido");
-            }
-            return IndexX;
-        }
-
-        /// <summary>
-        /// Se usa para lanzar una excepción en caso de que el número hecho string no esté dentro de los posibles.
-        /// </summary>
-        /// <param name="strNumber">Número hecho string.</param>
-        /// <returns>True en caso que si lo contenga y False si no lo contiene.</returns>
-        private bool isValidRow(string strNumber)
-        {
-            bool invalidNum = rowNum.Contains(strNumber);
-
-            if (invalidNum)
-            {
-                throw new InvalidUserInputException("Input de fila del usuario no válido");
-            }
-            return invalidNum;
-        }
-
-        /// <summary>
-        /// Se usa para lanzar una excepción en caso de que el número sea distinto de 1, 2, 3 y 4.
-        /// </summary>
-        /// <param name="strNumber">Número hecho string.</param>
-        /// <returns>El mismo número hecho string que se ingresó como parámetro.</returns>
-        private string readDirection(string strNumber)
-        {
-            if (strNumber != "1" && strNumber != "2" && strNumber != "3" && strNumber != "4")
-            {
-                throw new InvalidUserInputException("Input de dirección del usuario no válido");
-            }
-            return strNumber;
         }
 
         /// <summary>
