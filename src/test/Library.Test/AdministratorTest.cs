@@ -13,6 +13,8 @@ namespace Test.Library
         public void setup()
         {
             Administrator.Instance.usersRegisteredWithState.Clear();
+            Administrator.Instance.UsersToPlay.Clear();
+
         }
         /// <summary>
         /// Test que se encarga de verificar si devuelve null en caso que no se encuentre el usuario registrado.
