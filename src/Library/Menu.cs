@@ -57,8 +57,31 @@ namespace Library
             return;
         }
 
+        public void Register()
+        {
+            Console.WriteLine("\nEnvía un nombre de usuario para registrarte.");
 
-        public (bool, int) SelectMode(User user)
+            string UserName = Console.ReadLine();
+
+            //inmediatamente luego de registrarse se lo envía a seleccionar modo
+            if (UserName != string.Empty)
+            {
+                //SelectMode(administrator.CheckUser());
+               // administrator.MatchPlayers(administrator.CheckUser(UserName), "Classic");
+            }
+
+            else
+            {
+                Console.WriteLine("\nNo enviaste un nombre de usuario valido");
+            }
+        }
+
+        /// <summary>
+        /// Selector de modos de juego
+        /// </summary>
+        /// <param name="user">Usuario que quiere jugar</param>
+        /// <returns>Devuelve que el usuario este añadido y el modo que quiere jugar</returns>
+        public (bool,int) SelectMode(User user)
         {
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");

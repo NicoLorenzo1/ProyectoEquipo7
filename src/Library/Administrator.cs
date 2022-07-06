@@ -108,6 +108,13 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Recorre todos los juegos en curso en busca de un usuario
+        /// </summary>
+        /// <param name="playerId">Id del usuario</param>
+        /// <returns>Devuelve el tablero del usuario</returns>
+        
+
         public Board GetPlayerBoard(long playerId)
         {
             foreach (Game game in currentGame)
@@ -125,6 +132,11 @@ namespace Library
             return null;
         }
 
+        /// <summary>
+        /// Recorre todos los juegos en curso en busca de un usuario
+        /// </summary>
+        /// <param name="playerChatId">Id del usuario</param>
+        /// <returns>Devuelve el juego en el que se encuentra el usuario</returns>
         public Game GetPlayerGame(long playerChatId)
         {
             foreach (Game game in currentGame)
@@ -137,6 +149,12 @@ namespace Library
             return null;
         }
 
+        /// <summary>
+        /// Checkea que el usuario esté registrado
+        /// </summary>
+        /// <param name="Id">Id del usuario</param>
+        /// <returns>Devuelve un objeto de tipo User</returns>
+
         public User isUserRegistered(long Id)
         {
             foreach (var (user, state) in usersRegisteredWithState)
@@ -148,12 +166,20 @@ namespace Library
             }
             return null;
         }
-
+        /// <summary>
+        /// Añade a un jugador a una lista de espera de un modo
+        /// </summary>
+        /// <param name="user">Usuario para jugar</param>
+        /// <param name="mode">Modo que quiere jugar el usuario</param>
         public void AddUserToPlayPool(User user, string mode)
         {
             UsersToPlay[user] = mode; // Nos aseguramos que el jugador este esperando por un solo modo de juego
         }
-
+        /// <summary>
+        /// Checkea el estado del usuario que se desea, en caso de no estar registrado, lo registra
+        /// </summary>
+        /// <param name="Id">Id del usuario</param>
+        /// <returns>Devuelve el estado actual del usuario</returns>
         public Enum GetUserState(long Id)
         {
             foreach (var (user, state) in usersRegisteredWithState)
@@ -165,6 +191,11 @@ namespace Library
             }
             return RegisterState.Start; //Si el usuario no se encuentra es porque aun no esta registrado y debe seguir el proceso de registro
         }
+        /// <summary>
+        /// Se le setea un estado al usuario
+        /// </summary>
+        /// <param name="id">Id del usuario</param>
+        /// <param name="state">Estado al que va a pasar el usuario</param>
         public void SetUserState(long id, Enum state)
         {
             User user = isUserRegistered(id);
@@ -180,6 +211,24 @@ namespace Library
                 u.IdChat = id;
                 usersRegisteredWithState.Add(u, state);
             }
+        }
+        /// <summary>
+        /// Elimina a un usuario de la lista de espera
+        /// </summary>
+        /// <param name="id">Id del usuario</param>
+        public void RemovePlayer(long id)
+        {
+            //Borrar el usuario de la lista de espera
+            foreach (var (user, mode) in UsersToPlay)
+            {
+                if (user.Id == id)
+                {
+                    UsersToPlay.Remove(user);
+                }
+            }
+            //Terminar cualquier partida en curso y designar ganador al oponente
+            Game game = GetPlayerGame(id);
+            game.EndGame();
         }
 
         public bool BotEnabled

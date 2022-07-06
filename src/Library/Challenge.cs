@@ -15,10 +15,6 @@ namespace Library
 
         private bool OnGoing;
 
-        private int ChallengeHitsPlayer1;
-
-        private int ChallengeHitsPlayer2;
-
         private int WinsPlayer1;
 
         private int WinsPlayer2;
@@ -33,7 +29,9 @@ namespace Library
             WinsPlayer1 = 0;
             WinsPlayer1 = 0;
         }
-
+        /// <summary>
+        /// Ejecuta el juego hasta que uno de los 2 jugadores gane 2 veces
+        /// </summary>
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
@@ -154,6 +152,11 @@ namespace Library
                 base.EndGame();
             }
         }
+        /// <summary>
+        /// Resetea los tableros de juego
+        /// </summary>
+        /// <param name="BoardPlayer1">Tablero a resetear</param>
+        /// <param name="BoardPlayer2">Tablero a resetear</param>
 
         public void ClearBoards(Board BoardPlayer1, Board BoardPlayer2)
         {
@@ -162,7 +165,10 @@ namespace Library
             BoardPlayer1.shots.Clear();
             BoardPlayer2.shots.Clear();
         }
-
+        /// <summary>
+        /// Determina que jugador ganó
+        /// </summary>
+        /// <returns>Devuelve el jugador que ganó</returns>
         public User GameWinner()
         {
             User winner = null;

@@ -25,6 +25,9 @@ namespace Library
             BoardPlayer2 = new Board(this.Player2);
         }
 
+        /// <summary>
+        /// Comienza el contador para el juego
+        /// </summary>
         public void StartTimer()
         {
             timerCounter.Elapsed += timerCounterElapsed;
@@ -33,7 +36,9 @@ namespace Library
             timerCounter.Start();
             //Console.ReadKey();
         }
-
+        /// <summary>
+        /// Termina el juego cuando se termine el tiempo
+        /// </summary>
         private void timerCounterElapsed(Object source, ElapsedEventArgs e)
         {
             if (OnGoing)
@@ -43,7 +48,9 @@ namespace Library
                 Bot.sendTelegramMessage(Player2, "Finalizo la Partida de timeTrial");
             }
         }
-
+        /// <summary>
+        /// Método que comienza le juego
+        /// </summary>
         public override void StartGame()
         {
             System.Console.WriteLine("Comienza la batalla naval!!");
