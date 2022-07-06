@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Diagnostics;
+
 namespace Library
 
 {
@@ -213,68 +215,105 @@ namespace Library
         /// Esto modifica el ArrayList de shipPos que es donde se almacena el barco correspondiente
         /// y las coordenadas que ocupa de forma individual
         /// </summary>
-        public void PositionShips()
+    public void PositionShips()
         {
             List<List<string>> boardRows = StartBoard();
             for (int s = 1; s <= 2; s++)
             {
                 Ship actualShip = new Ship(s);
 
-                while (false)
+                int IndexX = -1;
+                string entry1 = "";
+                while (IndexX == -1)
                 {
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.Write("Ingrese la cordenada 1(A-J): ");
-                    string entry1;
                     entry1 = Console.ReadLine();
-                    if (ABC.Contains(entry1.ToUpper()))
+                    try
                     {
-                        int IndexX;
-                        IndexX = ABC.IndexOf(entry1.ToUpper());
-
-                        string entry2;
-                        Console.Write("Ingrese la cordenada 2(1-10): ");
-                        entry2 = Console.ReadLine();
-                        if (rowNum.Contains(entry2))
-                        {
-                            string dir;
-                            System.Console.WriteLine();
-                            System.Console.WriteLine("Dirección:");
-                            System.Console.WriteLine("---------------");
-                            System.Console.WriteLine("1-Hacia arriba");
-                            System.Console.WriteLine("2-Hacia abajo");
-                            System.Console.WriteLine("3-Derecha");
-                            System.Console.WriteLine("4-Izquierda");
-                            System.Console.WriteLine();
-                            System.Console.Write("Ingrese la dirección escogida (1-4): ");
-                            dir = Console.ReadLine();
-                            System.Console.WriteLine();
-                            bool overBoard = false;
-                            bool overShip = false;
-                            if (dir != "1" && dir != "2" && dir != "3" && dir != "4")
-                            {
-                                System.Console.WriteLine("No es un dirección válida\n");
-
-                            }
-                            else
-                            {
-                                (overBoard, overShip) = Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No es una coordenada posible");
-                            System.Console.WriteLine();
-                        }
+                        IndexX = readColumn(entry1);
                     }
-                    else
+                    catch(InvalidUserInputException ex)
                     {
-                        Console.WriteLine("No es una coordenada posible");
-                        System.Console.WriteLine();
+                        Debug.WriteLine("Input del usuario no válido");
+                        IndexX = -1;
                     }
                 }
+
+                bool invalidNum = true;
+                string entry2 = "";
+                while (invalidNum == true)
+                {
+                    Console.Write("Ingrese la cordenada 2(1-10): ");
+                    entry2 = Console.ReadLine();
+                    try
+                    {
+                        invalidNum = isValidRow(entry2);
+                    }
+                    catch(InvalidUserInputException ex)
+                    {
+                        Debug.WriteLine("Input del usuario no válido");
+                        invalidNum = true;
+                    }
+                }
+
+                System.Console.WriteLine("Dirección: \n---------------");
+                System.Console.WriteLine("1-Hacia arriba \n2-Hacia abajo");
+                System.Console.WriteLine("3-Derecha \n4-Izquierda");
+
+                string invalidDir = "0";
+                string dir = "";
+                while (invalidDir == "0")
+                {
+                    System.Console.Write("Ingrese la dirección escogida (1-4): ");
+                    dir = Console.ReadLine();
+                    try
+                    {
+                        invalidDir = readDirection(dir);
+                    }
+                    catch(InvalidUserInputException ex)
+                    {
+                        Debug.WriteLine("Input del usuario no válido");
+                        invalidDir = "0";
+                    }
+                }
+
+
+                Positioner(entry1, entry2, dir, actualShip.Shipname, actualShip.ShipDim);
             }
         }
+
+        private int readColumn(string letter)
+        {
+            int IndexX = ABC.IndexOf(letter.ToUpper());
+
+            if (IndexX == -1) 
+            {
+                throw new InvalidUserInputException("Input de columna del usuario no válido");
+            }
+            return IndexX;
+        }
+
+        private bool isValidRow(string strNumber)
+        {
+            bool invalidNum = rowNum.Contains(strNumber);
+
+            if (invalidNum)
+            {
+                throw new InvalidUserInputException("Input de fila del usuario no válido");
+            }
+            return invalidNum;
+        }
+
+        private string readDirection(string strNumber)
+        {
+            if (strNumber != "1" && strNumber != "2" && strNumber != "3" && strNumber != "4")
+            {
+                throw new InvalidUserInputException("Input de dirección del usuario no válido");
+            }
+            return strNumber;
+        }
+
         /// <summary>
         /// Recibe por parametro dos coordenadas, una direccion, el tipo de barco y la dimension de barco, 
         /// y devuelve si se sale del tablero y el otro booleano devuelve si ya hay un barco en esa posicion o se solapa sobre otro
