@@ -9,6 +9,7 @@ namespace Test.Library
 {
     public class UserHistoryTest
     {
+
         [Test]
         public void SelectModeTest()
         {
@@ -17,5 +18,6 @@ namespace Test.Library
             Administrator.Instance.UsersToPlay.Add(player1, "classic");
             Assert.AreEqual(menu.addedPlayer, false);
         }
+
     }
 }

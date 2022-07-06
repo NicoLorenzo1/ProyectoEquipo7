@@ -8,6 +8,12 @@ namespace Test.Library
 {
     public class AdministratorTest
     {
+
+        [SetUp]
+        public void setup()
+        {
+            Administrator.Instance.usersRegisteredWithState.Clear();
+        }
         /// <summary>
         /// Test que se encarga de verificar si devuelve null en caso que no se encuentre el usuario registrado.
         /// </summary>
