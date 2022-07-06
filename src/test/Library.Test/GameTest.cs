@@ -4,17 +4,25 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
+
 namespace Test.Library
 {
     public class GameTest
     {
+        [SetUp]
+        public void setup()
+        {
+            Administrator.Instance.usersRegisteredWithState.Clear();
+            Administrator.Instance.BotEnabled = false;
+        }
+
         [Test]
         public void NumOutOfBoardTest()
         {
             User user = new User("User");
             User user2 = new User("User2");
             Game game = new Game(user, user2, "Classic");
-            bool coord = game.CoordCheck("a","15");
+            bool coord = game.CoordCheck("a", "15");
             Assert.IsTrue(coord);
         }
 
@@ -24,7 +32,7 @@ namespace Test.Library
             User user = new User("User");
             User user2 = new User("User2");
             Game game = new Game(user, user2, "Classic");
-            bool coord = game.CoordCheck("z","5");
+            bool coord = game.CoordCheck("z", "5");
             Assert.IsTrue(coord);
         }
 
@@ -34,7 +42,7 @@ namespace Test.Library
             User user = new User("User");
             User user2 = new User("User2");
             Game game = new Game(user, user2, "Classic");
-            bool coord = game.CoordCheck("b","5");
+            bool coord = game.CoordCheck("b", "5");
             Assert.IsFalse(coord);
         }
 
@@ -48,7 +56,7 @@ namespace Test.Library
             board.shots.Add("4");
             Game game = new Game(user, user2, "Classic");
             bool shot = game.ShotHistory("a", "4", board);
-            Assert.IsTrue(shot);
+            Assert.False(shot);
         }
 
         [Test]

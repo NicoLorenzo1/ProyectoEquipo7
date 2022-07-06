@@ -93,7 +93,7 @@ namespace Library
             User user = isUserRegistered(chatId);
             if (user != null)
             {
-                Console.WriteLine("\nEl usuario ya esta registrado en el juego");
+                Console.WriteLine("\nEl usuario se registro en el juego");
                 user.Name = name; //Actualizo el nombre del usuario
                 return user;
             }
@@ -119,7 +119,6 @@ namespace Library
         {
             foreach (Game game in currentGame)
             {
-                Console.WriteLine($">>>> playerId {game.player1.Id} - {game.player2.Id} - {playerId}");
                 if (game.player1.Id == playerId)
                 {
                     return game.boardPlayer1;

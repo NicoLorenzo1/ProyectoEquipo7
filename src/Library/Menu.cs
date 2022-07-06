@@ -5,6 +5,8 @@ namespace Library
     public class Menu
     {
         Administrator administrator = Administrator.Instance;
+        public bool addedPlayer = false;
+
 
         public void ShowMenu()
         {
@@ -81,7 +83,6 @@ namespace Library
         /// <returns>Devuelve que el usuario este añadido y el modo que quiere jugar</returns>
         public (bool,int) SelectMode(User user)
         {
-            bool addedPlayer = false;
 
             Console.WriteLine("Estos son los diferentes modos de juego, ingresa un número para seleccionar.");
             int n = 0;

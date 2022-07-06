@@ -1,5 +1,8 @@
 using Telegram.Bot.Types;
 
+/// <summary>
+/// Handler que se encarga de posicionar los barcos interactuando con el usuario, este realiza varias validaciones a la hora de recibir mensajes de usuarios.
+/// </summary>
 namespace Library
 {
     public class PositionShipHandler : BaseHandler
