@@ -3,10 +3,19 @@ using System.Diagnostics;
 
 namespace Library
 {
+    /// <summary>
+    /// Menu muestra al usuario las opciones que tiene a disposición al inicio del juego.
+    /// </summary>
     public class Menu
     {
+        /// <summary>
+        /// Se crea una única instancia de Administrador.
+        /// </summary>
         Administrator administrator = Administrator.Instance;
 
+        /// <summary>
+        /// Muestra opciones disponibles y permite elegir entre ellas.
+        /// </summary>
         public void ShowMenu()
         {
             int num = 0;
@@ -19,13 +28,18 @@ namespace Library
                 }
                 catch(InvalidUserInputException ex)
                 {
-                    Debug.WriteLine("Input del usuario no válido");
+                    Console.WriteLine("Input del usuario no válido");
                     num = 0;
                 }
                 num = readNumber(num);
             }
         }
 
+        /// <summary>
+        /// Si el número ingresado no es un int entre 1 y 4, tira excepción.
+        /// </summary>
+        /// <param name="num">Número int.</param>
+        /// <returns>El mismo int que ingresó como parámetro.</returns>
         private int readNumber(int num)
         {
             if (num != 1 || num != 2 || num != 3 || num != 4)
@@ -35,6 +49,9 @@ namespace Library
             return num;
         }
 
+        /// <summary>
+        /// Registra al ususario.
+        /// </summary>
         public void Register()
         {
             Console.WriteLine("\nEnvía un nombre de usuario para registrarte.");

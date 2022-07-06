@@ -7,11 +7,35 @@ namespace Library
     /// </summary>
     public class Administrator
     {
+        /// <summary>
+        /// Se crea un diccionario vacío que se llenará con los usuarios registrados y su estado actual.
+        /// </summary>
+        /// <typeparam name="User">Usuario registrado.</typeparam>
+        /// <typeparam name="Enum">Estado actual.</typeparam>
         public Dictionary<User, Enum> usersRegisteredWithState = new Dictionary<User, Enum>();
+
+        /// <summary>
+        /// Lista de juegos actuales.
+        /// </summary>
+        /// <typeparam name="Game">Objeto de la clase Game.</typeparam>
         public List<Game> currentGame = new List<Game>();
+
+        /// <summary>
+        /// Diccionario de Jugadores y el modo de juego que seleccionaron. Se le podría decir "lista de espera".
+        /// </summary>
+        /// <typeparam name="User">Objetos de la clase User.</typeparam>
+        /// <typeparam name="string">String que corresponde al modo de juego seleccionado.</typeparam>
+        /// <returns></returns>
         public Dictionary<User, string> UsersToPlay = new Dictionary<User, string>();
+
+        /// <summary>
+        /// Aplica Singleton.
+        /// </summary>
         private static Administrator instance;
 
+        /// <summary>
+        /// Switch para el bot.
+        /// </summary>
         private bool botEnabled = false;
 
         /// <summary>
@@ -113,8 +137,6 @@ namespace Library
         /// </summary>
         /// <param name="playerId">Id del usuario</param>
         /// <returns>Devuelve el tablero del usuario</returns>
-        
-
         public Board GetPlayerBoard(long playerId)
         {
             foreach (Game game in currentGame)

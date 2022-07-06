@@ -19,6 +19,7 @@ namespace Library
         /// </summary>
         public static void Main()
         {
+            
             try{
             Bot bot = new Bot();
             bot.Setup();
@@ -63,7 +64,8 @@ namespace Library
             {
                 Console
                     .WriteLine($"Exception: {e.Message} Stacktrace: {e.StackTrace}");
-            }*/
+            }
+            */
         }
     }
 }

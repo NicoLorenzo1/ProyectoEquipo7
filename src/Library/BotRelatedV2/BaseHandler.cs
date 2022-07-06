@@ -74,29 +74,12 @@ namespace Library
         {
             // Cuando no hay palabras clave este método debe ser sobreescrito por las clases sucesoras y por lo tanto
             // este método no debería haberse invocado.
-            try
-            {
-                Message validMessage = isValidKeyword(message);
-            }
-            catch(InvalidUserInputException ex)
-            {
-                Console.WriteLine("Input recibido del usuario no válido");
-            }
-            return this.Keywords.Any(s => message.Text.Equals(s, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        /// <summary>
-        /// Se utiliza para tirar una excepción en caso de que se cumpla cierta condición.
-        /// </summary>
-        /// <param name="message">El mensaje a procesar.</param>
-        /// <returns>El mismo mensaje que se tomó como parámetro, si es que no se dió una excepción.</returns>
-        private Message isValidKeyword(Message message)
-        {
             if (this.Keywords == null || this.Keywords.Length == 0)
             {
-                throw new InvalidUserInputException("No hay palabras clave que puedan ser procesadas");
+                throw new InvalidOperationException("No hay palabras clave que puedan ser procesadas");
             }
-            return message;
+
+            return this.Keywords.Any(s => message.Text.Equals(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>

@@ -8,22 +8,47 @@ namespace Library
 {
     public class Board
     {
+        /// <summary>
+        /// Lista de strings compuesta por las letras de la A a la J.
+        /// </summary>
+        /// <typeparam name="string">Letras.</typeparam>
         private static List<string> ABC = new List<string>()
         {
             "/","A","B","C","D","E","F","G","H","I","J"
         };
+
+        /// <summary>
+        /// Lista de strings de números del 1 al 10.
+        /// </summary>
+        /// <typeparam name="string">Números hechos strings.</typeparam>
         private static List<string> rowNum = new List<string>()
         {
             "1","2","3","4","5","6","7","8","9","10"
         };
+
+        /// <summary>
+        /// Lista de strings de símbolos a usar en el tablero.
+        /// </summary>
+        /// <typeparam name="string">Símbolos string.</typeparam>
         private static List<string> charList = new List<string>()
         {
             "-","X","O","S"
         };
 
-
+        /// <summary>
+        /// ArrayList conteniendo la posición de los barcos actual.
+        /// </summary>
         public ArrayList shipPos = new ArrayList();
+
+        /// <summary>
+        /// Lista de strings para los disparos.
+        /// </summary>
+        /// <typeparam name="string">Disparos.</typeparam>
         public List<string> shots = new List<string>();
+
+        /// <summary>
+        /// Usuario al que corresponde este tablero.
+        /// </summary>
         private User PlayerUser;
 
         /// <summary>
@@ -235,7 +260,7 @@ namespace Library
                     }
                     catch(InvalidUserInputException ex)
                     {
-                        Debug.WriteLine("Input del usuario no válido");
+                        Console.WriteLine("Input del usuario no válido");
                         IndexX = -1;
                     }
                 }
@@ -252,7 +277,7 @@ namespace Library
                     }
                     catch(InvalidUserInputException ex)
                     {
-                        Debug.WriteLine("Input del usuario no válido");
+                        Console.WriteLine("Input del usuario no válido");
                         invalidNum = true;
                     }
                 }
@@ -273,7 +298,7 @@ namespace Library
                     }
                     catch(InvalidUserInputException ex)
                     {
-                        Debug.WriteLine("Input del usuario no válido");
+                        Console.WriteLine("Input del usuario no válido");
                         invalidDir = "0";
                     }
                 }
@@ -283,6 +308,11 @@ namespace Library
             }
         }
 
+        /// <summary>
+        /// Se usa para lanzar una excepción en caso de que la letra ingresada no este entre la A y la J.
+        /// </summary>
+        /// <param name="letter">Una letra string</param>
+        /// <returns>Un número int que es el índice de dicha letra en la lista donde están las letras posibles.</returns>
         private int readColumn(string letter)
         {
             int IndexX = ABC.IndexOf(letter.ToUpper());
@@ -294,6 +324,11 @@ namespace Library
             return IndexX;
         }
 
+        /// <summary>
+        /// Se usa para lanzar una excepción en caso de que el número hecho string no esté dentro de los posibles.
+        /// </summary>
+        /// <param name="strNumber">Número hecho string.</param>
+        /// <returns>True en caso que si lo contenga y False si no lo contiene.</returns>
         private bool isValidRow(string strNumber)
         {
             bool invalidNum = rowNum.Contains(strNumber);
@@ -305,6 +340,11 @@ namespace Library
             return invalidNum;
         }
 
+        /// <summary>
+        /// Se usa para lanzar una excepción en caso de que el número sea distinto de 1, 2, 3 y 4.
+        /// </summary>
+        /// <param name="strNumber">Número hecho string.</param>
+        /// <returns>El mismo número hecho string que se ingresó como parámetro.</returns>
         private string readDirection(string strNumber)
         {
             if (strNumber != "1" && strNumber != "2" && strNumber != "3" && strNumber != "4")
@@ -870,7 +910,9 @@ namespace Library
             return shipPos.Count;
         }
 
-
+        /// <summary>
+        /// Recorre la lista de los barcos y sus coordenadas y las imprime.
+        /// </summary>
         public void showList()
         {
             foreach (ArrayList item in shipPos)
