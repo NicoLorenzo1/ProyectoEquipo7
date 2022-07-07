@@ -20,7 +20,6 @@ namespace Library
         protected override bool CanHandle(Message message)
         {
             return base.CanHandle(message);
-
         }
 
         protected override void InternalHandle(Message message, out string response)

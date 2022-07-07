@@ -38,23 +38,25 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            response = "Nos vemos la próxima!";
-
-            Game game = Administrator.Instance.GetPlayerGame(message.From.Id);
-            int result = game.watherShots + game.shipShots;
-
-            if (game.player1.Id == message.From.Id)
+            response = string.Empty;
+            if (State == CounterShotsState.Start)
             {
-                Bot.sendTelegramMessage(game.player1, $"Los disparos que tocaron agua fueron: {game.watherShots}\n Los disparos que tocaron barco fueron: {game.shipShots} \n Los disparos totales fueron {result}");
-            }
-            else
-            {
-                Bot.sendTelegramMessage(game.player2, $"Los disparos que tocaron agua fueron: {game.watherShots}\n Los disparos que tocaron barco fueron: {game.shipShots} \n Los disparos totales fueron {result}");
-            }
 
-            Administrator.Instance.SetUserState(message.From.Id, RegisterState.Start);
+                Game game = Administrator.Instance.GetPlayerGame(message.From.Id);
+                int result = game.watherShots + game.shipShots;
+
+                if (game.player1.Id == message.From.Id)
+                {
+                    Bot.sendTelegramMessage(game.player1, $"Los disparos que tocaron agua fueron: {game.watherShots}\n Los disparos que tocaron barco fueron: {game.shipShots} \n Los disparos totales fueron {result}");
+                }
+                else
+                {
+                    Bot.sendTelegramMessage(game.player2, $"Los disparos que tocaron agua fueron: {game.watherShots}\n Los disparos que tocaron barco fueron: {game.shipShots} \n Los disparos totales fueron {result}");
+                }
+
+                Administrator.Instance.SetUserState(message.From.Id, RegisterState.Start);
+            }
         }
-
         public enum CounterShotsState
         {
             Start,
