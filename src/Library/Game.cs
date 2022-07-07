@@ -27,6 +27,9 @@ namespace Library
         private int Submarino2Health = 3;
         private int Buque2Health = 4;
         private int Portaaviones2Health = 5;
+        public int watherShots = 0;
+        public int shipShots = 0;
+
 
         /// <summary>
         /// Por OCP todos los modos de juego heredan de la clase Game, que posee la lógica base del juego
@@ -171,11 +174,13 @@ namespace Library
                     (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
                     HitsPlayer1 += 1;
                     result = sink ? "Hundido" : "Tocado";
+                    shipShots = +1;
                 }
                 else
                 {
                     Console.WriteLine("Agua");
                     result = "Agua";
+                    watherShots = +1;
                 }
                 attackerBoard.shots.Add(coord1.ToUpper());
                 attackerBoard.shots.Add(coord2);

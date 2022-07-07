@@ -19,7 +19,7 @@ namespace Library
 
         protected override bool CanHandle(Message message)
         {
-                return base.CanHandle(message);
+            return base.CanHandle(message);
 
         }
 

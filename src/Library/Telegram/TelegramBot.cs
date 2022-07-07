@@ -33,8 +33,9 @@ namespace Library
                 new QuickChatHandler(
                 new PositionShipHandler(
                 new PrintBoardHandler(
+                new CounterShotsHandler(
                 new ExitHandler(null)
-            )))))))))))))));
+            ))))))))))))))));
 
             var cts = new CancellationTokenSource();
 
