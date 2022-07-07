@@ -15,7 +15,7 @@ namespace Library
         /// <param name="next">El próximo "handler".</param>
         public PrintBoardHandler(BaseHandler next) : base(next)
         {
-            this.Keywords = new string[] { "Tablero", "tablero" };
+            this.Keywords = new string[] { "Tablero", "tablero", "/MiTablero", "/TableroEnemigo" };
             State = PrintBoardState.Start;
         }
 
@@ -27,57 +27,52 @@ namespace Library
         /// <returns>true si el mensaje fue procesado; false en caso contrario.</returns>
         protected override void InternalHandle(Message message, out string response)
         {
-            response = string.Empty;
+            response = "Imprimir Tablero";
 
             if (State == PrintBoardState.Start)
             {
-                response = "¿Que tablero deseas imprimir?\n /Mitablero \n /TableroEnemigo";
+                response = "¿Que tablero deseas imprimir?\n /MiTablero \n /TableroEnemigo";
                 State = PrintBoardState.Print;
             }
             else if (State == PrintBoardState.Print)
             {
+                Game game = Administrator.Instance.GetPlayerGame(message.From.Id);
+
                 if (message.Text.ToLower() == "/MiTablero")
                 {
-                    foreach (var game in Administrator.Instance.currentGame)
+                    if (game.player1.Id == message.From.Id)
                     {
-                        if (game.player1.IdChat == message.Chat.Id)
-                        {
-                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "MyBoard");
-                            response = finalTable;
-                        }
-                        else
-                        {
-                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "MyBoard");
-                            response = finalTable;
-                        }
+                        string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "MyBoard");
+                        response = finalTable;
+                    }
+                    else
+                    {
+                        string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "MyBoard");
+                        response = finalTable;
                     }
                 }
                 else
                 {
-                    foreach (var game in Administrator.Instance.currentGame)
+                    if (game.player1.Id == message.From.Id)
                     {
-                        if (game.player1.IdChat == message.Chat.Id)
-                        {
-                            string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
-                            response = finalTable;
-                        }
-                        else
-                        {
-                            string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
-                            response = finalTable;
-                        }
+                        string finalTable = game.boardPlayer1.PrintBoard(game.boardPlayer2.shipPos, game.boardPlayer1.shots, "EnemyBoard");
+                        response = finalTable;
+                    }
+                    else
+                    {
+                        string finalTable = game.boardPlayer2.PrintBoard(game.boardPlayer1.shipPos, game.boardPlayer2.shots, "EnemyBoard");
+                        response = finalTable;
                     }
                 }
+                State = PrintBoardState.Start;
+
             }
         }
-
-
 
         public enum PrintBoardState
         {
             Start,
             Print,
-
         }
     }
 }

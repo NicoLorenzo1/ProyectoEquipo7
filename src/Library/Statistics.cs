@@ -29,13 +29,13 @@ namespace Library
         /// segun los resultados de las partidas jugadas.
         /// </summary>
         /// <param name="user">Usuario al cual se le modifican las estadísticas.</param>
-        /// <param name="boolean">Variable booleana que determina si se le agrega una
+        /// <param name="victory">Variable booleana que determina si se le agrega una
         /// victoria al usuario.</param>
-        public void ModifyStatics(User user, bool boolean)
+        public void ModifyStatics(User user, bool victory)
         {
             user.statistics.playedGames = +1;
 
-            if (boolean == true)
+            if (victory)
             {
                 user.statistics.wins = +1;
             }

@@ -220,7 +220,7 @@ namespace Library
             {
                 Ship actualShip = new Ship(s);
 
-                while (true)
+                while (false)
                 {
                     Console.WriteLine($"Ingrese la posición inicial de {actualShip.Shipname}: ");
                     Console.Write("Ingrese la cordenada 1(A-J): ");
@@ -294,7 +294,7 @@ namespace Library
             int IndexY;
             IndexY = rowNum.IndexOf(entry2) + 1;
 
-            if (dir == "1" || dir == "arriba")
+            if (dir == "1" || dir == "/arriba")
             {
                 if (IndexY - actualShipDim < 0)
                 {
@@ -376,7 +376,7 @@ namespace Library
                     }
                 }
             }
-            else if (dir == "2" || dir == "abajo")
+            else if (dir == "2" || dir == "/abajo")
             {
                 if (IndexY + actualShipDim > 11)
                 {
@@ -458,7 +458,7 @@ namespace Library
                     }
                 }
             }
-            else if (dir == "3" || dir == "derecha")
+            else if (dir == "3" || dir == "/derecha")
             {
                 if (IndexX + actualShipDim > 11)
                 {
@@ -540,7 +540,7 @@ namespace Library
                     }
                 }
             }
-            else if (dir == "4" || dir == "izquierda")
+            else if (dir == "4" || dir == "/izquierda")
             {
                 if (IndexX - actualShipDim < 0)
                 {
@@ -735,6 +735,12 @@ namespace Library
             }
         }
         //private List<string> surroundCoords = new List<string>();
+        /// <summary>
+        /// Recibe una coordenada y devuelve las 8 que la rodean
+        /// </summary>
+        /// <param name="alphaCoord">Coordenada alfabética deseada</param>
+        /// <param name="numCoord">Coordenada númerica deseada</param>
+        /// <returns>Devuelve la lista de coordenadas que se encuentran al rededor de la deseada</returns>
         public List<string> coordSurround(string alphaCoord, string numCoord)
         {
             List<string> surroundCoords = new List<string>();
@@ -850,7 +856,6 @@ namespace Library
                 System.Console.WriteLine();
             }
         }
-
     }
 
 }

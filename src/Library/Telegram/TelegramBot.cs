@@ -5,6 +5,9 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
 namespace Library
 {
+    /// <summary>
+    /// Clase telegramBot donde se encuentra la cadena de handlers que recorre al momento de encontrar una palabra clave.
+    /// </summary>
     public abstract class TelegramBot
     {
         public static TelegramBotClient telegramClient;
@@ -21,16 +24,17 @@ namespace Library
                 new RegisterHandler(
                 new SelectModeHandler(
                 new ClassicModeHandler(
-                new TimeTrialModeHandler(
+               new TimeTrialModeHandler(
                 new ChallengeModeHandler(
                 new BombModeHandler(
+                new AttackHandler(
                 new StaticsHandler(
                 new CommandsHandler(
                 new QuickChatHandler(
                 new PositionShipHandler(
                 new PrintBoardHandler(
                 new ExitHandler(null)
-            ))))))))))))));
+            )))))))))))))));
 
             var cts = new CancellationTokenSource();
 

@@ -7,23 +7,23 @@ namespace Library
     /// </summary>
     public class BombModeHandler : BaseHandler
     {
-        public BombModeState State { get; set; }
-
         public BombModeHandler(BaseHandler next) : base(next)
         {
             this.Keywords = new string[] { "/Bomb", "bomb", "Bomb" };
-            State = BombModeState.Start;
         }
 
         protected override bool CanHandle(Message message)
         {
-            if (State == BombModeState.Start)
+            Enum state = Administrator.Instance.GetUserState(message.From.Id);
+            if (state.Equals(SelectModeState.ModeSelected))
             {
+                // return true;
                 return base.CanHandle(message);
+
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -31,21 +31,21 @@ namespace Library
         {
             response = string.Empty;
 
-            //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
-            foreach (var user in User.users)
-            {
-                if (user.Id == message.From.Id)
+                //Agrego a la lista de usuarios esperando para jugar el user con la misma id de telegram
+                User user = Administrator.Instance.isUserRegistered(message.From.Id);
+
+                if (user != null)
                 {
                     response = "Estas en la lista de espera para jugar al modo Bomb.";
-                    Administrator.Instance.UsersToPlay.Add(user, "Bomb");
+                    Administrator.Instance.AddUserToPlayPool(user, "bomb");
+                    Administrator.Instance.SetUserState(message.From.Id, SelectModeState.ReadyToPlay);
                     Administrator.Instance.MatchPlayers();
                 }
+                else{
+                    response = "El usuario aun no esta registrado. Para registrarse responda /registrar";
+                }
             }
-        }
+        
 
-        public enum BombModeState
-        {
-            Start,
-        }
     }
 }

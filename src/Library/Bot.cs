@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Telegram.Bot;
 namespace Library
 {
     public class Bot
@@ -56,6 +57,14 @@ namespace Library
             var serviceProvider = services.BuildServiceProvider();
             var revealer = serviceProvider.GetService<ISecretService>();
             token = revealer.Token;
+        }
+
+        ///Metodo para enviar mensajes a travéz de telegram, recibe un user y un message como parametro.
+        public static async void sendTelegramMessage(User user, string message)
+        {
+            if(Administrator.Instance.BotEnabled){
+                await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+            }
         }
     }
 }

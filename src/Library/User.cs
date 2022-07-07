@@ -7,9 +7,7 @@ namespace Library
     /// </summary>
     public class User
     {
-        //public static Dictionary<string, int> users = new Dictionary<string, int>();
-
-        public static List<User> users = new List<User>();
+        // public static List<User> users = new List<User>();
 
         private static int count = 0;
         private string name;
@@ -27,7 +25,6 @@ namespace Library
             this.name = name;
             //this.id = count += 1;
             this.statistics = new Statistics(this);
-            users.Add(this);
         }
 
         /// <summary>

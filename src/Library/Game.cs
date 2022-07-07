@@ -5,15 +5,17 @@ namespace Library
 {
     public class Game
     {
-        private User Player1;
-        private User Player2;
+        protected User Player1;
+        protected User Player2;
         private Board BoardPlayer1;
         private Board BoardPlayer2;
         private string Mode;
-        private bool OnGoing;
+        protected bool OnGoing;
         private bool Hit;
-        private int HitsPlayer1;
-        private int HitsPlayer2;
+        private int MissCounter;
+        private int HitCounter;
+        protected int HitsPlayer1;
+        protected int HitsPlayer2;
         //<summary>
         //Por Expert la clase Game es la encargada de conocer la cantidad de veces que se le
         //pegó a un barco
@@ -53,23 +55,20 @@ namespace Library
         /// </summary>
         public virtual void StartGame()
         {
+            //System.Console.WriteLine("Comienza la batalla naval!!");
+            Bot.sendTelegramMessage(Player1, "Comienza la batalla naval!!");
+            Bot.sendTelegramMessage(Player2, "Comienza la batalla naval!!");
             System.Console.WriteLine("Comienza la batalla naval!!");
             System.Console.WriteLine("Modo classic");
-            /*
-            sendTelegramMessage(Player1, "Comienza la batalla naval!!");
-            sendTelegramMessage(Player2, "Comienza la batalla naval!!");
 
-            sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
-            sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
-            */
+            Bot.sendTelegramMessage(Player1, $"{Player1.Name} vs {Player2.Name}");
+            Bot.sendTelegramMessage(Player2, $"{Player1.Name} vs {Player2.Name}");
 
             System.Console.WriteLine($"{Player1.Name} vs {Player2.Name}");
             System.Console.WriteLine();
 
-            /*
-            sendTelegramMessage(Player1, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
-            sendTelegramMessage(Player2, "Cuando estes listo, envia 'Posicionar' para comenzar a posicionar tus barcos");
-            */
+            Bot.sendTelegramMessage(Player1, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
+            Bot.sendTelegramMessage(Player2, "Cuando estes listo, envia /Posicionar para comenzar a posicionar tus barcos");
 
             System.Console.WriteLine($"Posicionamiento de barcos de {Player1.Name}");
             BoardPlayer1.PositionShips();
@@ -78,7 +77,7 @@ namespace Library
 
             User recentAttacker = this.Player2;
 
-            OnGoing = true;
+            OnGoing = true && !Administrator.Instance.BotEnabled; // Para evitar que al jugar en Telegram se ejecuten los Console.ReadLine
             while (OnGoing)
             {
                 if (recentAttacker == this.Player1)
@@ -90,7 +89,7 @@ namespace Library
                     string coord1 = Console.ReadLine();
                     Console.Write("Escriba la segunda coordenada(1-10): ");
                     string coord2 = Console.ReadLine();
-                    this.Attack(coord1, coord2, this.Player2, this.BoardPlayer2, this.Player1, this.BoardPlayer1);
+                    this.Attack(coord1, coord2, this.Player2/*, this.BoardPlayer2, this.Player1, this.BoardPlayer1*/);
                     System.Console.WriteLine();
                     this.BoardPlayer2.PrintBoard(BoardPlayer1.shipPos, BoardPlayer2.shots, "EnemyBoard");
                     ShowBoard(this.Player2, BoardPlayer1, BoardPlayer2);
@@ -105,7 +104,7 @@ namespace Library
                     string coord1 = Console.ReadLine();
                     Console.Write("Escriba la segunda coordenada(1-10): ");
                     string coord2 = Console.ReadLine();
-                    this.Attack(coord1, coord2, this.Player1, this.BoardPlayer1, this.Player2, this.BoardPlayer2);
+                    this.Attack(coord1, coord2, this.Player1/*, this.BoardPlayer1, this.Player2, this.BoardPlayer2*/);
                     System.Console.WriteLine();
                     this.BoardPlayer1.PrintBoard(BoardPlayer2.shipPos, BoardPlayer1.shots, "EnemyBoard");
                     ShowBoard(this.Player1, BoardPlayer1, BoardPlayer2);
@@ -136,67 +135,65 @@ namespace Library
         /// Por Expert, al Game tener la responsabilidad de conocer toda la lógica del juego,
         /// es el encargado de conocer que ataques se realizan en cada momento
         /// </summary>
-        /// <param name="player">Aquí se indica cual es el usuario que está atacando en ese momento</param>
-        public virtual void Attack(string coord1, string coord2, User attacker, Board attackerBoard, User defender, Board defenderBoard)
+        /// <param name="coord1">Primer valor de la coordenada de ataque</param>
+        /// <param name="coord2">Segundo valor de la coordenada de ataque</param>
+        /// <param name="attacker">Jugador que realiza el ataque</param>
+        /// <returns>Devuelve el resultado del ataque</returns>
+        public virtual string Attack(string coord1, string coord2, User attacker)
         {
+            string result = "";
+            Board attackerBoard, defenderBoard;
+            User defender;
+
             if (attacker == this.Player1)
             {
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
-
-                if (outOfBoard == true || alreadyShot == true)
-                {
-                    System.Console.WriteLine("Perdiste el turno");
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
-                }
-                else
-                {
-                    (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer1 += 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
-                }
+                attacker = Player1;
+                defender = Player2;
+                attackerBoard = BoardPlayer1;
+                defenderBoard = BoardPlayer2;
             }
-            else if (attacker == this.Player2)
+            else
             {
-
-                bool outOfBoard = CoordCheck(coord1, coord2);
-                bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
-
-
-                if (outOfBoard == true || alreadyShot == true)
+                attacker = Player2;
+                defender = Player1;
+                attackerBoard = BoardPlayer2;
+                defenderBoard = BoardPlayer1;
+            }
+            bool outOfBoard = CoordCheck(coord1, coord2);
+            bool alreadyShot = ShotHistory(coord1, coord2, attackerBoard);
+            if (outOfBoard == true || alreadyShot == true)
+            {
+                result = "reintentar";
+                System.Console.WriteLine("Perdiste el turno");
+            }
+            else
+            {
+                (bool hit, string currentShipName) = defenderBoard.CheckShip(coord1, coord2, defenderBoard.shipPos);
+                if (hit)
                 {
-                    System.Console.WriteLine("Perdiste el turno");
-                    //Attack(coord1, coord2, attacker, attackerBoard, defender, defenderBoard);
+                    (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
+                    HitsPlayer1 += 1;
+                    HitCounter += 1;
+                    result = sink ? "Hundido" : "Tocado";
                 }
                 else
                 {
-                    (bool hit, string currentShipName) = this.BoardPlayer1.CheckShip(coord1, coord2, defenderBoard.shipPos);
-                    if (hit)
-                    {
-                        (bool sink, bool wreck) = ShipMessage(currentShipName, attacker);
-                        HitsPlayer2 += 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Agua");
-                    }
-                    attackerBoard.shots.Add(coord1.ToUpper());
-                    attackerBoard.shots.Add(coord2);
-                    Console.WriteLine($"Atacó {attacker.Name}");
+                    Console.WriteLine("Agua");
+                    MissCounter += 1;
+                    result = "Agua";
                 }
+                attackerBoard.shots.Add(coord1.ToUpper());
+                attackerBoard.shots.Add(coord2);
+                Console.WriteLine($"Atacó {attacker.Name}");
             }
+            return result;
         }
-
+        /// <summary>
+        /// Checkeo de si la posición del ataque es válida
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <returns>Devuelve si el ataque está dentro del tablero</returns>
         public bool CoordCheck(string coord1, string coord2)
         {
             bool outOfBoard = false;
@@ -220,6 +217,13 @@ namespace Library
                 return outOfBoard;
             }
         }
+        /// <summary>
+        /// Checkeo si la coordenada no ha sido atacada
+        /// </summary>
+        /// <param name="coord1">primer valor de la coordenada a checkear</param>
+        /// <param name="coord2">segundo valor de la coordenada a checkear</param>
+        /// <param name="shotsBoard">Tablero que realizó los ataques</param>
+        /// <returns>Devuelve si no se ha atacado en un sitio</returns>
         public bool ShotHistory(string coord1, string coord2, Board shotsBoard)
         {
             bool alreadyShot = false;
@@ -241,6 +245,13 @@ namespace Library
             }
             return alreadyShot;
         }
+
+        /// <summary>
+        /// Método que determina si un barco fue hundido o no
+        /// </summary>
+        /// <param name="currentShipName">El nombre del barco al que se le pegó</param>
+        /// <param name="Player">Usuario al que corresponde el barco</param>
+        /// <returns>Devuelve si el barco fue hundido o tocado</returns>
         public (bool, bool) ShipMessage(string currentShipName, User Player)
         {
             bool sink = false;
@@ -432,6 +443,7 @@ namespace Library
         /// la solicitud del tablero que seleccione</param>
         public void ShowBoard(User user, Board board1, Board board2)
         {
+            /* Comentado para evitar Readlines
             System.Console.WriteLine();
             Console.WriteLine("Que tablero quiere mostrar?");
             Console.WriteLine("1- Mi tablero");
@@ -465,6 +477,43 @@ namespace Library
                 System.Console.WriteLine("Intente denuevo");
                 ShowBoard(user, board1, board2);
             }
+            */
+        }
+        public virtual User CheckMatch()
+        {
+            if (HitsPlayer1 == 15 || HitsPlayer2 == 15)
+            {
+                if (HitsPlayer1 > HitsPlayer2)
+                {
+                    return Player1;
+                }
+                else
+                {
+                    return Player2;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// Se determina el ganador del juego y se termina dicho juego
+        /// </summary>
+        /// <returns>Devuelve el usuario que ganó</returns>
+        public virtual User GameWinner()
+        {
+            User winner;
+            if (HitsPlayer1 > HitsPlayer2)
+            {
+                winner = Player1;
+            }
+            else
+            {
+                winner = Player2;
+            }
+            EndGame();
+            return winner;
         }
         /// <summary>
         /// Por Expert, el encargado de terminar un juego en curso es Game mediante el
@@ -474,8 +523,11 @@ namespace Library
         {
             OnGoing = false;
             Administrator.Instance.currentGame.Remove(this);
-            //administrator.currentGame.Remove(this);            
         }
+
+        /// <summary>
+        /// Resetea la vida de los barcos
+        /// </summary>
         public void RestartHits()
         {
             Lancha1Health = 1;
@@ -488,12 +540,6 @@ namespace Library
             Submarino2Health = 3;
             Buque2Health = 4;
             Portaaviones2Health = 5;
-        }
-
-        private async void sendTelegramMessage(User user, string message)
-        {
-            await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
-
         }
         public User player1
         {
@@ -553,5 +599,38 @@ namespace Library
                 HitsPlayer2 = value;
             }
         }
+
+        public bool onGoing
+        {
+            get
+            {
+                return this.OnGoing;
+            }
+            set
+            {
+                OnGoing = value;
+            }
+        }
+        public int missCounter
+        {
+            get
+            {
+                return this.MissCounter;
+            }
+        }
+        public int hitcounter
+        {
+            get
+            {
+                return this.HitCounter;
+            }
+        }
+
+
+    private async void sendTelegramMessage(User user, string message)
+    {
+        await TelegramBot.telegramClient.SendTextMessageAsync(user.IdChat, message);
+
     }
+}
 }
